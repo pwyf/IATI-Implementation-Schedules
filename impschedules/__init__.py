@@ -21,7 +21,7 @@ import models
 @app.route('/setup')
 def setup():
     # create properties
-    attributes = {'notes', 'status_category', 'publication_date', 'exclusions'}
+    attributes = {'notes': {}, 'status_category': {}, 'publication_date': {}, 'exclusions': {}}
     elements = {
         'organisation': {'total-budget': {}, 'recipient-org-budget': {}, 'recipient-country-budget': {},'document-link': {}},
         'activity': {
