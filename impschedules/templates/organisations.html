@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Select an organisation</h1>
+	<ul>
+	{% for org in orgs %}
+	<li><a href="{{url_for('publisher', id=org.id)}}">{{ org.publisher }}</a></li>
+	{% endfor %}
+	</ul>
+{% endblock %}

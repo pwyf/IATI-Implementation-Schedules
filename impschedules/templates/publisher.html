@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{publisher.publisher}}</h1>
+    <ul class="nav nav-tabs" id="pageTab">
+        <li><a href="#basic" data-toggle="tab">Basic information</a></li>
+        <li><a href="#detailed" data-toggle="tab">Detailed information</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="basic">
+            <h3>Basic information</h3>
+            <table class="table">
+            <thead>
+                <th>Item</th>
+                <th>Value</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Publisher name</td>
+                <td>{{publisher.publisher}}</td>
+            </tr>
+            <tr>
+                <td>Publisher code</td>
+                <td>{{publisher.publisher_code}}</td>
+            </tr>
+            <tr>
+                <td>Schedule version</td>
+                <td>{{publisher.schedule_version}}</td>
+            </tr>
+            <tr>
+                <td>Schedule date</td>
+                <td>{{publisher.schedule_date}}</td>
+            </tr>
+            </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="detailed">
+            <h3>Detailed information</h3>
+            <table class="table">
+            <thead>
+                <th>Level</th>
+                <th>Element</th>
+                <th>Compliance</th>
+                <th>Publication date</th>
+                <th>Notes</th>
+                <th>Exclusions</th>
+            </thead>
+            <tbody>
+            {% for d in data %}
+            <tr{%if (d["data"][3][0].data=='uc') %} class="error"{%elif (d["data"][3][0].data=='fp') %} class="info"{%endif%}>
+                    <td>{{d["element"].level}}</td>
+                    <td>{{d["element"].name}}{% if d["property"].defining_attribute_value %}
+                        ({{d["property"].defining_attribute_value}})
+                    {%endif%}</td>
+                    <td>{%
+                    if (d["data"][3][0].data=="fc")
+                    %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
+                    elif (d["data"][3][0].data=="uc")
+                    %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
+                    elif (d["data"][3][0].data=="pc")
+                    %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
+                    elif (d["data"][3][0].data=="up")
+                    %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
+                    elif (d["data"][3][0].data=="fp")
+                    %}<i class="icon-wrench" title="Future publication"></i><br />Future
+                    {% else %}
+                    {{ d["data"][3][0].data }}
+                    {%endif%}</td>
+                    <td>{{d["data"][0][0].data}}</td>
+                    <td>{{d["data"][1][0].data}}</td>
+                    <td>{{d["data"][2][0].data}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+{% endblock %}

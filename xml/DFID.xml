@@ -1,0 +1,393 @@
+<?xml version='1.0' encoding='utf-8'?>
+<implementation xml:lang="en" generated-datetime="2012-10-04T14:45:26+01:00">
+  <metadata>
+    <publisher code="GB-1">DFID</publisher>
+    <version>1.0</version>
+    <date>2011-04-20</date>
+  </metadata>
+  <publishing>
+    <scope value="0.9">
+      <narrative>Initially IATI information for UK will cover DFID only (approx 90% of total UK ODA).  Discussion on the publication of ODA information in IATI format from other government departments is ongoing.</narrative>
+    </scope>
+    <publication-timetable date-initial="2011-01-01">
+      <narrative>Full phase 1 implementation started in January 2011. DFID will start publishing project documents from January 2011.  Publication of results information (project completion reports, annual reviews) will commence when available in Financial Year 2011/12.  </narrative>
+    </publication-timetable>
+    <publication-frequency frequency="m" timeliness="2w">
+      <narrative>DFID plans to publish project and transaction information monthly.  It is planned that information will be published by the 15th (UK) working day of each month and will include information that has been input up to the end of the previous month.</narrative>
+    </publication-frequency>
+    <publication-lifecycle point="p">
+      <narrative>Project data will be published from the pipeline/identification stage (appraisal and design). Project documents will be published from approval stage.</narrative>
+    </publication-lifecycle>
+    <data-quality quality="u">
+      <narrative>The information that DFID provides to IATI will be operational data that has not yet necessarily been subjected to the rigours of statistical verification required before data is submitted to the CRS. 
+
+However, data is quality assured as part of the data capture process and DFID will not seek to differentiate between data published as unverified or verified.  For the initial period of implementation, DFID has instituted an additional “light touch” quality assurance process.  Over the longer-term, the presumption is for quality assurance to take place in a devolved manner, in order to drive better compliance and quality of DFID’s work. </narrative>
+    </data-quality>
+    <approach resource="d">
+      <narrative>DFID’s Aid Transparency Steering Group directs the implementation of the UK Aid Transparency Guarantee, which includes IATI commitments. DFID’s implementation of IATI is managed by existing systems and staff and is a cross departmental effort, primarily located in the Corporate Performance Group.  Policy direction is led by the Aid Effectiveness and Value for Money Department and technical implementation by the Information Systems Department.  Data is captured automatically through DFID’s project, procurement information management and electronic filing systems.  </narrative>
+    </approach>
+    <notes>
+      <narrative></narrative>
+    </notes>
+    <thresholds>
+      <narrative>When project data was first published by DFID in August 2009, projects that were closed before 13 August 2009 were excluded from publication and this exclusion will continue to be applied. Projects that have been active since 13 August 2009 will be included in the IATI data. This will keep the projects published in the IATI XML consistent with projects published on DFID's web pages.
+
+From January 2011, DFID will publish all active aid projects and components unless they fall in the following thresholds:
+
+- Project was closed before 13 August 2009
+- Project Stage is earlier than Appraisal and Design state (ARIES Stage 3)
+- Project budget is below £500
+
+</narrative>
+    </thresholds>
+    <exclusions>
+      <narrative>For aid projects the assumption will be of automatic disclosure of any information that DFID has committed to publish, however a small number of exclusions apply to these in order not to do harm to DFID's work or staff. These are based on the key principles of the UK's Freedom of Information Act and are as follows:
+
+i. International relations: Information that may harm DFID's relations with other governments or institutions.
+ii. Security and safety: Information that may pose a risk to the security or safety of any individual, including DFID staff, contractors and beneficiaries.
+iii. Personal information: Information that intrudes on the privacy of a person or could contravene confidentiality.
+iv. Commercially sensitive information: Information that does harm to DFID or DFID's partners or suppliers commercial interests.
+v. Information that is exempt from disclosure under other policies or regulations.</narrative>
+    </exclusions>
+    <constraints-other>
+      <narrative>Some IATI data from the advanced stages of the standard is not currently captured in internal systems. Work is ongoing on implementation. All new data elements will be subject to a cost/benefit analysis.</narrative>
+    </constraints-other>
+    <license license="a">
+      <narrative>DFID’s licensing policy meets the IATI standard.  When publishing our data on the web DFID is obliged to follow the guidance outlined by the UK National Archives.  DFID will allow use and reuse of the information free of charge in any format or medium, under the terms of the Open Government Licence.  
+
+This requires that information is attributed to the UK government. Where DFID has identified any third party copyright material, permission will need to be obtained from the copyright holders. </narrative>
+    </license>
+    <activity-multilevel yesno="y">
+      <narrative>DFID publishes at the project level.  For policy definition purposes, a project refers to all DFID-funded interventions, whether bilateral, core contributions to multilaterals, or agreements with non-governmental organisations etc. 
+
+For technical definition purposes, projects are umbrella records that may encapsulate several components.   Some data elements, project purpose, documents, risk and scoring are stored at project level.  All other data is recorded at component level.</narrative>
+    </activity-multilevel>
+    <segmentation segmentation="b">
+      <narrative>DFID will segment data by recipient country (including where the ‘country’ is a region or a multilateral organisation). 
+
+For technical purposes, note that projects and components will be stored as activities in the country file. No “orphaned” (standalone) component activities will be allowed as project activities will be duplicated across country files when the project has components in more than one country file. As financial information is stored at component activity level and not at project activity level, there will be no duplication of financial data.</narrative>
+    </segmentation>
+    <user-interface status="y">
+      <narrative>IATI data will be accessible through DFID’s Projects Database http://projects.dfid.gov.uk/.  
+
+DFID will utilise a web-based Representational State Transfer (RESTful) service that creates the required IATI xml file on demand from the IATI registry.  </narrative>
+    </user-interface>
+  </publishing>
+  <organisation>
+    <total-budget>
+      <status category="pc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative>Will provide data relating to current Comprehensive Spending Review (CSR) period</narrative>
+      </exclusions>
+    </total-budget>
+    <recipient-org-budget>
+      <status category="uc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We do not set budgets for individual institutions beyond are commitments to each institution. Budget data for institutions can be derived from the budgets published for each project</notes>
+    </recipient-org-budget>
+    <recipient-country-budget>
+      <status category="pc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative>Will provide data relating to current CSR period</narrative>
+      </exclusions>
+    </recipient-country-budget>
+    <document-link>
+      <status category="fp"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>FY 2011/12 when available</notes>
+    </document-link>
+  </organisation>
+  <activity>
+    <reporting-org>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </reporting-org>
+    <iati-identifier>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </iati-identifier>
+    <other-identifier>
+      <status category="fc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>This will be our DFID project identifier.</notes>
+    </other-identifier>
+    <title type="agency">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </title>
+    <title type="recipient">
+      <status category="fp"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We do not record this info in ARIES. However, we will publish a Project Summary document in the major local languages of the country for all projects approved from Jan 2011 which will contain this information.</notes>
+    </title>
+    <description type="agency">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>This field will be populated with the Project Purpose data from ARIES. We will also publish a Project Summary document in the major local languages of the country for all projects approved from Jan 2011.</notes>
+    </description>
+    <description type="recipient">
+      <status category="fp"/>
+      <publication-date>2011-04-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>This field will not be populated as we do not record this info in ARIES. However, we will publish a Project Summary document in the major written local language of the recipient country.</notes>
+    </description>
+    <activity-status>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </activity-status>
+    <activity-date type="start">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </activity-date>
+    <activity-date type="end">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </activity-date>
+    <contact-info>
+      <status category="pc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We will publish DFID's Public Enquiry Point details rather than individuals' contact details.</notes>
+    </contact-info>
+    <participating-org type="funding">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </participating-org>
+    <participating-org type="extending">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </participating-org>
+    <participating-org type="implementing">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We only record the details for the 1st level of implementation (i.e. Who we directly give our money to). There may be further organisations in the chain (e.g. A management agent further distributing funds to NGOs, contractors, etc.) which we currently do not record.</notes>
+    </participating-org>
+    <participating-org type="accountable">
+      <status category="fp"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We do not record this info in ARIES at present, but will consider recording for future publication.</notes>
+    </participating-org>
+    <recipient-country>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>At present only one country OR region is recorded on ARIES</notes>
+    </recipient-country>
+    <recipient-region>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>At present only one country OR region is recorded on ARIES</notes>
+    </recipient-region>
+    <location>
+      <status category="uc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We do not currently record this in our systems - further consideration within DFID is required.</notes>
+    </location>
+    <sector type="crs">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </sector>
+    <sector type="agency">
+      <status category="fc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </sector>
+    <policy-marker>
+      <status category="pc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We can provide CRS markers and will reassess.</notes>
+    </policy-marker>
+    <collaboration-type>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </collaboration-type>
+    <default-flow-type>
+      <status category="pc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We are reporting under the definition we currently hold, but may need to reassess.</notes>
+    </default-flow-type>
+    <default-finance-type>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </default-finance-type>
+    <default-aid-type>
+      <status category="pc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We are reporting where we have a mapping and further work is underway.</notes>
+    </default-aid-type>
+    <default-tied-status>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </default-tied-status>
+    <budget>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </budget>
+    <planned-disbursement>
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </planned-disbursement>
+    <transaction type="commitment">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <transaction type="disbursement">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Will publish all individual transactions &gt;£500; aggregate for any others.</provider-definition>
+      <notes>We will publish transactions from 12th May 2010.</notes>
+    </transaction>
+    <transaction type="reimbursement">
+      <status category="pc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We are publishing reimbursement information but we are unable to distinguish between funding and reimbursement currently.</notes>
+    </transaction>
+    <transaction type="incoming">
+      <status category="fp"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Optional - we are investigating applicability internally.</notes>
+    </transaction>
+    <transaction type="repayment">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <document-link>
+      <status category="fp"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>FY 2011/12 when available</notes>
+    </document-link>
+    <activity-website>
+      <status category="up"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Not applicable. Standard requires occurrence of 0 - many. That does not mean that DFID does not meet the standard.</notes>
+    </activity-website>
+    <related-activity>
+      <status category="fc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Optional - DFID is using this section of the standard for parent / sibling relationships under project / component; not using multi-funded option.</notes>
+    </related-activity>
+    <conditions type="attached">
+      <status category="fc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Yes</notes>
+    </conditions>
+    <conditions type="text">
+      <status category="fc"/>
+      <publication-date>2011-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>This info is published in a document.</notes>
+    </conditions>
+    <result>
+      <status category="uc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Await further details from IATI.</notes>
+    </result>
+  </activity>
+</implementation>
+
