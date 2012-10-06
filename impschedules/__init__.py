@@ -31,33 +31,33 @@ def setup():
             'title': { 
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
-                    'agency', 
-                    'recipient'
+                    'agency': {},
+                    'recipient': {}
                 }
             }, 
             'description': { 
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
-                    'agency', 
-                    'recipient'
+                    'agency': {},
+                    'recipient': {}
                 }
             },  
             'activity-status': {},
             'activity-date': { 
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
-                    'start', 
-                    'end'
+                    'start': {},
+                    'end': {}
                 }
             },
             'contact-info': {},
             'participating-org': {
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
-                    'funding',
-                    'extending',
-                    'accountable',
-                    'implementing'
+                    'funding': {},
+                    'extending': {},
+                    'accountable': {},
+                    'implementing': {}
                 }
             },
             'recipient-region': {},
@@ -66,8 +66,8 @@ def setup():
             'sector': {
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
-                    'crs',
-                    'agency'
+                    'crs': {},
+                    'agency': {}
                 }
             },
             'policy-marker': {},
@@ -80,11 +80,11 @@ def setup():
             'transaction': {
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
-                    'commitment',
-                    'disbursement',
-                    'reimbursement',
-                    'incoming',
-                    'repayment'
+                    'commitment': {},
+                    'disbursement': {},
+                    'reimbursement': {},
+                    'incoming': {},
+                    'repayment': {}
                 }
             },
             'document-link': {},
@@ -93,8 +93,8 @@ def setup():
             'conditions': {
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
-                    'attached',
-                    'text'
+                    'attached': {},
+                    'text': {}
                 }
             },
             'result': {}
