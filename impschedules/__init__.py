@@ -17,8 +17,7 @@ db = SQLAlchemy(app)
 
 import models
 
-def init_db():
-    Base.metadata.create_all(bind=engine)
+db.create_all()
 
 @app.route('/setup')
 def setup():
