@@ -249,7 +249,22 @@ def load_package():
 @app.route("/")
 def index():
     orgs = models.ImpSchedule.query.all()
-    return render_template("organisations.html", orgs=orgs)    
+    elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value, models.Element.id, models.Element.name, models.Element.level
+            ).distinct(
+            ).join(models.Element).all()
+    return render_template("organisations.html", orgs=orgs, elements=elements)    
+
+@app.route("/element/<id>")
+@app.route("/element/<id>/<type>")
+def element(id=id, type=type):
+    element = models.Element.query.filter_by(id=id).first()
+    data = db.session.query(models.Data, models.ImpSchedule
+        ).filter(models.Element.id==id, models.Property.attribute=='status_category'
+        ).join(models.Property
+        ).join(models.Element
+        ).join(models.ImpSchedule
+        ).all()
+    return render_template("element.html", element=element, data=data)
 
 @app.route("/publisher/<id>")
 def publisher(id=id):

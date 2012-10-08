@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-
 	<h1>Select an organisation</h1>
 	<ul>
 	{% for org in orgs %}
 	<li><a href="{{url_for('publisher', id=org.id)}}">{{ org.publisher }}</a></li>
+	{% endfor %}
+	</ul>
+	<h1>Select an element</h1>
+	<ul>
+	{% for element in elements %}
+	<li>{% if element.defining_attribute_value %}<a href="{{url_for('element', id=element.id, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.name|capitalize }} ({{ element.defining_attribute_value }})</a>{% else %}<a href="{{url_for('element', id=element.id)}}">{{element.level|capitalize}} - {{ element.name|capitalize }}</a>{%endif%}</li>
 	{% endfor %}
 	</ul>
 {% endblock %}
