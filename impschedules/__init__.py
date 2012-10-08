@@ -256,14 +256,25 @@ def index():
 
 @app.route("/element/<id>")
 @app.route("/element/<id>/<type>")
-def element(id=id, type=type):
-    element = models.Element.query.filter_by(id=id).first()
-    data = db.session.query(models.Data, models.ImpSchedule
-        ).filter(models.Element.id==id, models.Property.attribute=='status_category'
-        ).join(models.Property
-        ).join(models.Element
-        ).join(models.ImpSchedule
-        ).all()
+def element(id=id, type=None):
+    if (type):
+        element = db.session.query(models.Element, models.Property
+            ).filter(models.Element.id==id, models.Property.defining_attribute_value==type
+            ).join(models.Property).first()
+        data = db.session.query(models.Data, models.ImpSchedule
+            ).filter(models.Element.id==id, models.Property.attribute=='status_category', models.Property.defining_attribute_value==type
+            ).join(models.Property
+            ).join(models.Element
+            ).join(models.ImpSchedule
+            ).all()
+    else:
+        element = models.Element.query.filter_by(id=id).first()
+        data = db.session.query(models.Data, models.ImpSchedule
+            ).filter(models.Element.id==id, models.Property.attribute=='status_category'
+            ).join(models.Property
+            ).join(models.Element
+            ).join(models.ImpSchedule
+            ).all()
     return render_template("element.html", element=element, data=data)
 
 @app.route("/publisher/<id>")

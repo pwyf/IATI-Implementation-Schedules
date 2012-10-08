@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>{{element.name}}</h1>
+    <h1>{% if element[0] %}{{element[0].name}} {% if element[1].defining_attribute_value %}({{element[1].defining_attribute_value}}){%endif%}{% else %}{{element.name}}{%endif %}</h1>
     <h3>Compliance information</h3>
     <table class="table">
     <thead>
@@ -9,7 +9,7 @@
     </thead>
     <tbody>
     {% for d in data %}
-    <tr{%if (d[0].data=='uc') %} class="error"{%elif (d[0].data=='fp') %} class="info"{%endif%}><td>{{d[1].publisher}}</td><td>{{d[0].data}}
+    <tr{%if (d[0].data=='uc') %} class="error"{%elif (d[0].data=='fp') %} class="info"{%endif%}><td>{{d[1].publisher}}</td><td>
 {%
                     if (d[0].data=="fc")
                     %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
