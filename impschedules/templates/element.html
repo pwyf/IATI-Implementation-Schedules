@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{element.name}}</h1>
+    <h3>Compliance information</h3>
+    <table class="table">
+    <thead>
+        <th>Organisation</th>
+        <th>Compliance</th>
+    </thead>
+    <tbody>
+    {% for d in data %}
+    <tr{%if (d[0].data=='uc') %} class="error"{%elif (d[0].data=='fp') %} class="info"{%endif%}><td>{{d[1].publisher}}</td><td>
+{%
+                    if (d[0].data=="fc")
+                    %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
+                    elif (d[0].data=="uc")
+                    %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
+                    elif (d[0].data=="pc")
+                    %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
+                    elif (d[0].data=="up")
+                    %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
+                    elif (d[0].data=="fp")
+                    %}<i class="icon-wrench" title="Future publication"></i><br />Future
+                    {% else %}
+                    {{ d[0].data }}
+                    {%endif%}</td>
+
+</tr>
+    {% endfor %}
+    </tbody>
+    </table>        
+{% endblock %}
