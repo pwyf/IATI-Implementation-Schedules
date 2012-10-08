@@ -227,7 +227,7 @@ def load_file(file_name, context=None):
 
 
 def load_package():
-    path = 'xml'
+    path = app.config["XML_FILES_DIR"]
     listing = os.listdir(path)
     totalfiles = len(listing)
     out = ""
