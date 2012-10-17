@@ -1,0 +1,398 @@
+<?xml version='1.0' encoding='utf-8'?>
+<implementation xml:lang="en" generated-datetime="2012-10-17T23:05:07+01:00">
+  <metadata>
+    <publisher code="">UK Department of Energy &amp; Climate Change</publisher>
+    <version></version>
+    <date>2012-10-17</date>
+  </metadata>
+  <publishing>
+    <scope value="0.3448">
+      <narrative>This will cover all of the UK's Department of Energy &amp; Climate Change's share of the £2.9 billion International Climate Fund (ICF).  The Department of Energy &amp; Climate Change's allocation is £1 billion (34%) from 1 April 2011 to 31 March 2015.  The ICF will be Official Development Assistance (ODA) and will be spent in line with OECD Development Assistance Committee guidelines. The outstanding £1.9 billion is split between two departments: The Department for International Development's allocation is £1.8 billion. The Department for Environment, Food and Rural Affairs's allocation is £100 million.</narrative>
+    </scope>
+    <publication-timetable date-initial="2012-09-01">
+      <narrative>DECC plans to first publish IATI information in September 2012.  DECC started publishing project documents on our website (http://www.decc.gov.uk/en/content/cms/tackling/international/icf/icf.aspx) from May 2012 and will continue to do so as project documents (business cases, annual reviews, evaluation studies) become available.</narrative>
+    </publication-timetable>
+    <publication-frequency frequency="q" timeliness="o">
+      <narrative>DECC will submit IATI data quarterly with the most up-to-date information available.  </narrative>
+    </publication-frequency>
+    <publication-lifecycle point="o">
+      <narrative>Project data will be published following Ministerial approval.</narrative>
+    </publication-lifecycle>
+    <data-quality quality="u">
+      <narrative>The information provided will be operational data. Audited annual accounts for the Department (including ICF expenditure) are prepared separately and published on our website (http://www.decc.gov.uk/en/content/cms/about/our_goals/annual_reports/annual_reports.aspx). </narrative>
+    </data-quality>
+    <approach resource="e">
+      <narrative>The DECC ICF team will lead on implementing and managing IATI commitments.  Existing systems will be modified to meet IATI commitments.  </narrative>
+    </approach>
+    <notes>
+      <narrative></narrative>
+    </notes>
+    <thresholds>
+      <narrative>None</narrative>
+    </thresholds>
+    <exclusions>
+      <narrative>For aid projects the assumption will be of automatic disclosure of any information that UK Government has committed to publish, however a small number of exclusions apply to these in order not to do harm to UK Government’s work or staff.  These are based on the key principles of the UK’s Freedom of Information Act and are as follows:
+
+i. International relations: Information that may harm UK Government’s relations with other governments or institutions.
+ii. Security and safety: Information that may pose a risk to the security or safety of any individual, including UK Government staff, contractors and beneficiaries.
+iii. Personal information: Information that intrudes on the privacy of a person or could contravene confidentiality.
+iv. Commercially sensitive information: Information that does harm to UK Government’s or UK Government’s partners or suppliers commercial interests.
+v. Information that is exempt from disclosure under other policies or regulations
+</narrative>
+    </exclusions>
+    <constraints-other>
+      <narrative></narrative>
+    </constraints-other>
+    <license license="p">
+      <narrative>When publishing our data on the web DECC is obliged to follow the guidance outlined by the UK National Archives.  DECC will allow use and reuse of the information free of charge in any format or medium, under the terms of the Open Government Licence.  This requires that information is attributed to the UK government. 
+Where DECC has identified any third party copyright material, permission will need to be obtained from the copyright holders. 
+</narrative>
+    </license>
+    <activity-multilevel yesno="n">
+      <narrative>DECC publishes at the project level.  For policy definition purposes, a project refers to all DECC-funded interventions, whether bilateral, core contributions to multilaterals, or agreements with non-governmental organisations etc.  
+For technical definition purposes, projects are umbrella records that may encapsulate several components.   Some data elements, project purpose, documents, risk and scoring are stored at project level.
+</narrative>
+    </activity-multilevel>
+    <segmentation segmentation="s">
+      <narrative>Several projects are not specific to one country and data will be published at the project level and geographic coverage will be clearly identified.</narrative>
+    </segmentation>
+    <user-interface status="n">
+      <narrative>IATI data will be accessible through the DECC website.</narrative>
+    </user-interface>
+  </publishing>
+  <organisation>
+    <total-budget>
+      <status category="pc"/>
+      <publication-date>2012-05-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Annual budgets for 2012/13 - 2014/ 2015 for DECC provided and updated annually.  Annual International Climate Fund budgets are not disaggregated. </provider-definition>
+      <notes>http://www.decc.gov.uk/en/content/cms/about/our_goals/our_goals.aspx</notes>
+    </total-budget>
+    <recipient-org-budget>
+      <status category="up"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>N/A as budgets are not set by institutions.  However, funding through approved projects will clearly outline budgets going to which institutions.</notes>
+    </recipient-org-budget>
+    <recipient-country-budget>
+      <status category="up"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>N/A as budgets are not set by countries.  However, funding through approved projects will clearly outline budgets going to which countries, where available.</notes>
+    </recipient-country-budget>
+    <document-link>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>The International Climate Fund implementation plan.</provider-definition>
+      <notes>http://www.decc.gov.uk/assets/decc/11/tackling-climate-change/international-climate-change/3390-international-climate-fund-implementation-plan-201.pdf</notes>
+    </document-link>
+  </organisation>
+  <activity>
+    <reporting-org>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>DECC</provider-definition>
+    </reporting-org>
+    <iati-identifier>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>IATI will provide</notes>
+    </iati-identifier>
+    <other-identifier>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </other-identifier>
+    <title type="agency">
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Project Title</provider-definition>
+    </title>
+    <title type="recipient">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </title>
+    <description type="agency">
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Project description</provider-definition>
+    </description>
+    <description type="recipient">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </description>
+    <activity-status>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Status</provider-definition>
+      <notes>Only approved projects will be reported.</notes>
+    </activity-status>
+    <activity-date type="start">
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Project start date</provider-definition>
+      <notes>Signing the formal arrangement</notes>
+    </activity-date>
+    <activity-date type="end">
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Project end date</provider-definition>
+    </activity-date>
+    <contact-info>
+      <status category="pc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>DECC contacts are available on the website http://www.decc.gov.uk/en/content/cms/about/contact_us/contact_us.aspx</notes>
+    </contact-info>
+    <participating-org type="funding">
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>DECC</provider-definition>
+    </participating-org>
+    <participating-org type="extending">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </participating-org>
+    <participating-org type="implementing">
+      <status category="pc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions category="d">
+        <narrative></narrative>
+      </exclusions>
+      <notes>Where applicable - to add programme management tool.  This is those managing things on the ground.</notes>
+    </participating-org>
+    <participating-org type="accountable">
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions category="">
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Delivery Partner</provider-definition>
+      <notes>This is those managing the fund e.g. World Bank, Asian Development Bank</notes>
+    </participating-org>
+    <recipient-country>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Country / Region</provider-definition>
+      <notes>Global, region, country, instead of set codes</notes>
+    </recipient-country>
+    <recipient-region>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Country / Region</provider-definition>
+      <notes>Global, region, country, instead of set codes</notes>
+    </recipient-region>
+    <location>
+      <status category="up"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+      <notes>Projects operate over a country, region or global.</notes>
+    </location>
+    <sector type="crs">
+      <status category="fc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>CRS</provider-definition>
+      <notes>To be added to programme tool</notes>
+    </sector>
+    <sector type="agency">
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Theme</provider-definition>
+    </sector>
+    <policy-marker>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>6 Aid Targeting the Objectives of the Framework Convention on Climate Change - Mitigation </provider-definition>
+      <notes>Possible that in future there may be adaptation funding</notes>
+    </policy-marker>
+    <collaboration-type>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Funding arrangement</provider-definition>
+    </collaboration-type>
+    <default-flow-type>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>10 ODA</provider-definition>
+    </default-flow-type>
+    <default-finance-type>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Funding Type</provider-definition>
+    </default-finance-type>
+    <default-aid-type>
+      <status category="fc"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>To be added to programme tool</notes>
+    </default-aid-type>
+    <default-tied-status>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>5 Untied</provider-definition>
+    </default-tied-status>
+    <budget>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Total DECC spend &amp; allocation</provider-definition>
+    </budget>
+    <planned-disbursement>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Annual planned</provider-definition>
+    </planned-disbursement>
+    <transaction type="commitment">
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Planned spend</provider-definition>
+    </transaction>
+    <transaction type="disbursement">
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Actual</provider-definition>
+    </transaction>
+    <transaction type="reimbursement">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <transaction type="incoming">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <transaction type="repayment">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <document-link>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Documents available on DECC website http://www.decc.gov.uk/en/content/cms/tackling/international/icf/icf.aspx</notes>
+    </document-link>
+    <activity-website>
+      <status category="fc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Website</provider-definition>
+      <notes>Where applicable or DECC website</notes>
+    </activity-website>
+    <related-activity>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </related-activity>
+    <conditions type="attached">
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </conditions>
+    <conditions type="text">
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </conditions>
+    <result>
+      <status category="pc"/>
+      <publication-date>2012-09-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Logframe</provider-definition>
+      <notes>Published where available</notes>
+    </result>
+  </activity>
+</implementation>
+
