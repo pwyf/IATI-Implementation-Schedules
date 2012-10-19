@@ -7,9 +7,26 @@
 	{% endfor %}
 	</ul>
 	<h1>Select an element</h1>
-	<ul>
+	<table class="table">
+    <thead>
+    <th>Element</th>
+    <th>Compliant</th>
+    <th>Compliant %</th>
+    </thead>
+    <tbody>
 	{% for element in elements %}
-	<li>{% if element.defining_attribute_value %}<a href="{{url_for('element', id=element.id, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.name }} ({{ element.defining_attribute_value }})</a>{% else %}<a href="{{url_for('element', id=element.id)}}">{{element.level|capitalize}} - {{ element.name }}</a>{%endif%}</li>
+    <tr>
+	<td>{% if element.defining_attribute_value %}<a href="{{url_for('element', id=element.id, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.name }} ({{ element.defining_attribute_value }})</a>{% else %}<a href="{{url_for('element', id=element.id)}}">{{element.level|capitalize}} - {{ element.name }}</a>{%endif%} </td>
+    <td>{% for c in compliance %}
+{% if c.id==element.propertyid %}
+    {% if c.number is defined %}
+    {{ c.number }}</td><td>{{ (c.number/totalnum*100)|int}}%
+    {%endif%}
+{%endif%}
+        {% endfor%}</td>
+    <td>
+    </tr>
 	{% endfor %}
-	</ul>
+	</tbody>
+    </table>
 {% endblock %}

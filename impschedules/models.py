@@ -30,15 +30,23 @@ class Data(db.Model):
     impschedule_id = Column(Integer, ForeignKey('impschedule.id'))
     data = Column(UnicodeText)
     date_recorded = Column(DateTime)
+    status = Column(UnicodeText)
+    exclusions = Column(UnicodeText)
+    notes = Column(UnicodeText)
+    publication_date = Column(DateTime)
 
-    def __init__(self, property_id=None, impschedule_id=None, data=None, date_recorded=None):
+    def __init__(self, property_id=None, impschedule_id=None, data=None, date_recorded=None, status=None, exclusions=None, notes=None, publication_date=None):
         self.property_id = property_id
         self.impschedule_id = impschedule_id
         self.data = data
         self.date_recorded = date_recorded
+        self.status = status
+        self.exclusions = exclusions
+        self.notes = notes
+        self.publication_date = publication_date
 
     def __repr__(self):
-        return self.property_id, self.impschedule_id, self.data
+        return self.property_id, self.impschedule_id, self.status, self.publication_date, self.notes, self.exclusions
     
 class Property(db.Model):
     __tablename__ = 'property'
@@ -49,8 +57,7 @@ class Property(db.Model):
     defining_attribute_value = Column(UnicodeText)
     description = Column(UnicodeText)
 
-    def __init__(self, level=None, parent_element=None, attribute=None, description=None, defining_attribute=None, defining_attribute_value=None):
-        self.level = level
+    def __init__(self, parent_element=None, attribute=None, description=None, defining_attribute=None, defining_attribute_value=None):
         self.parent_element = parent_element
         self.attribute = attribute
         self.description = description
@@ -58,7 +65,7 @@ class Property(db.Model):
         self.defining_attribute_value = defining_attribute_value
 
     def __repr__(self):
-        return self.level, self.parent_element, self.attribute, self.description
+        return self.id, self.parent_element, self.defining_attribute_value, self.description
 
 class Element(db.Model):
     __tablename__ = 'element'
@@ -73,4 +80,4 @@ class Element(db.Model):
         self.description = description
 
     def __repr__(self):
-        return self.level, self.name, self.description
+        return self.id, self.level, self.name, self.description

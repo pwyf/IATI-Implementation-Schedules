@@ -112,21 +112,21 @@ def setup():
             if (elvalue.has_key("defining_attribute")):
                 # if there are multiple versions of this element, e.g. funding, extending participating-orgs
                 for defining_attribute_value in elvalue["defining_attribute_values"]:
-                    for attribute in attributes:
-                        p = models.Property()
-                        p.level = level
-                        p.parent_element = element_id
-                        p.attribute = attribute
-                        p.defining_attribute = elvalue["defining_attribute"]
-                        p.defining_attribute_value = defining_attribute_value
-                        db.session.add(p)
-            else:
-                for attribute in attributes:
+                    #for attribute in attributes:
                     p = models.Property()
                     p.level = level
                     p.parent_element = element_id
-                    p.attribute = attribute
+                    #p.attribute = attribute
+                    p.defining_attribute = elvalue["defining_attribute"]
+                    p.defining_attribute_value = defining_attribute_value
                     db.session.add(p)
+            else:
+                #for attribute in attributes:
+                p = models.Property()
+                p.level = level
+                p.parent_element = element_id
+                #p.attribute = attribute
+                db.session.add(p)
     db.session.commit()
     return "Done"
 
@@ -156,22 +156,21 @@ def parse_implementation_schedule(schedule, out, package_filename):
             else:
                 element_name = element.name
 
-            if (p.attribute == 'status_category'):
-                data.data = schedule.find(element.level).find(element_name).find("status").get("category")
-            elif (p.attribute == 'exclusions'):
-                data.data = schedule.find(element.level).find(element_name).find("exclusions").find("narrative").text
-                if (data.data is None):
-                    data.data = ""
-            elif (p.attribute =='publication_date'):
-                try:
-                    data.data = schedule.find(element.level).find(element_name).find("publication-date").text
-                except AttributeError:
-                    data.data=""
-            elif (p.attribute =='notes'):
-                try:
-                    data.data = schedule.find(element.level).find(element_name).find("notes").text
-                except AttributeError:
-                    data.data=""
+            data.status = schedule.find(element.level).find(element_name).find("status").get("category")
+            data.exclusions = schedule.find(element.level).find(element_name).find("exclusions").find("narrative").text
+            if (data.exclusions is None):
+                data.exclusions = ""
+            try:
+                data.notes = schedule.find(element.level).find(element_name).find("notes").text
+            except AttributeError:
+                data.notes=""
+            try:
+                data.publication_date = date.strptime(schedule.find(element.level).find(element_name).find("publication-date").text, "%y-%m-%d")
+            except AttributeError:
+                pass
+            except TypeError:
+                pass
+            
             data.date_recorded = datetime.now()
             db.session.add(data)
     
@@ -246,13 +245,58 @@ def load_package():
 	    #pass
     return out
 
+def test_percentages(data):
+    packages = set(map(lambda x: (x[5]), data))
+    d = dict(map(lambda x: (x[5],x[6]), data))
+    out = {}
+    for p in packages:
+        compliant = 0
+        uncompliant = 0
+        for s in d[(p)]:
+            if (s == 'fc'):
+                compliant = compliant +1
+            else:
+                uncompliant = uncompliant +1
+        #except: success = 0
+        try: 
+            out[p] =  round((float(compliant)/(compliant+uncompliant)) * 100,2)
+        except Exception, e:
+            out[p]=compliant
+        #out[p,q] = {}
+        #out[p,q]['compliant'] = d[(p,q,0.status)]
+    return out
+
 @app.route("/")
 def index():
-    orgs = models.ImpSchedule.query.all()
-    elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value, models.Element.id, models.Element.name, models.Element.level
+    orgs = models.ImpSchedule.query.order_by(models.ImpSchedule.publisher).all()
+    """elements = db.session.query(models.Property.parent_element, 
+                                models.Property.defining_attribute_value,
+                                models.Element.level,
+                                models.Element.name,
+                                models.Element.id,
+                                models.Property.id.label("propertyid")
+            ).order_by(models.Element.level.desc(), models.Element.name, models.Property.defining_attribute_value
+            ).group_by(models.Element).all()
+    """
+    
+    elements = db.session.query(models.Property.parent_element, 
+                                models.Property.defining_attribute_value, 
+                                models.Element.id, 
+                                models.Element.name, 
+                                models.Element.level,
+                                models.Property.id.label("propertyid")
             ).distinct(
             ).join(models.Element).all()
-    return render_template("organisations.html", orgs=orgs, elements=elements)    
+
+    compliance = db.session.query(models.Property.id, func.count(models.Data.id).label("number")
+            ).filter(models.Data.status=='fc'
+            ).group_by(models.Property
+            ).join(models.Data
+            ).all() 
+    
+    totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
+
+    return render_template("organisations.html", orgs=orgs, elements=elements, compliance=compliance, totalnum=totalnum.number)    
 
 @app.route("/element/<id>")
 @app.route("/element/<id>/<type>")
@@ -262,18 +306,20 @@ def element(id=id, type=None):
             ).filter(models.Element.id==id, models.Property.defining_attribute_value==type
             ).join(models.Property).first()
         data = db.session.query(models.Data, models.ImpSchedule
-            ).filter(models.Element.id==id, models.Property.attribute=='status_category', models.Property.defining_attribute_value==type
+            ).filter(models.Element.id==id, models.Property.defining_attribute_value==type
             ).join(models.Property
             ).join(models.Element
             ).join(models.ImpSchedule
+            ).order_by(models.ImpSchedule.publisher
             ).all()
     else:
         element = models.Element.query.filter_by(id=id).first()
         data = db.session.query(models.Data, models.ImpSchedule
-            ).filter(models.Element.id==id, models.Property.attribute=='status_category'
+            ).filter(models.Element.id==id
             ).join(models.Property
             ).join(models.Element
             ).join(models.ImpSchedule
+            ).order_by(models.ImpSchedule.publisher
             ).all()
     return render_template("element.html", element=element, data=data)
 
@@ -288,7 +334,7 @@ def publisher(id=id):
         d={}
         d["element"] = models.Element.query.filter_by(id=element.parent_element).first()
         d["property"] = models.Property.query.filter_by(parent_element=element.parent_element, defining_attribute_value=element.defining_attribute_value).first()
-        d["data"] = db.session.query(models.Data, models.Property
+        d["data"] = db.session.query(models.Data
             ).filter(models.Element.id==element.parent_element, models.Property.defining_attribute_value==element.defining_attribute_value, models.Data.impschedule_id==publisher.id
             ).join(models.Property
             ).join(models.Element

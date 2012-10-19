@@ -1,29 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>{% if element[0] %}{{element[0].name}} {% if element[1].defining_attribute_value %}({{element[1].defining_attribute_value}}){%endif%}{% else %}{{element.name}}{%endif %}</h1>
+    <h1>{% if element[0] %}{{element[0].name}} {% if element[1].defining_attribute_value %}({{element[1].defining_attribute_value}} - {{element[1].id}}){%endif%}{% else %}{{element.name}}{%endif %}</h1>
     <h3>Compliance information</h3>
     <table class="table">
     <thead>
         <th>Organisation</th>
         <th>Compliance</th>
+        <th>Publication date</th>
+        <th>Notes</th>
+        <th>Exclusions</th>
     </thead>
     <tbody>
     {% for d in data %}
-    <tr{%if (d[0].data=='uc') %} class="error"{%elif (d[0].data=='fp') %} class="info"{%endif%}><td>{{d[1].publisher}}</td><td>
+    <tr{%if (d[0].status=='uc') %} class="error"{%elif (d[0].status=='fp') %} class="info"{%endif%}><td>{{d[1].publisher}}</td><td>
 {%
-                    if (d[0].data=="fc")
+                    if (d[0].status=="fc")
                     %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-                    elif (d[0].data=="uc")
+                    elif (d[0].status=="uc")
                     %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
-                    elif (d[0].data=="pc")
+                    elif (d[0].status=="pc")
                     %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-                    elif (d[0].data=="up")
+                    elif (d[0].status=="up")
                     %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-                    elif (d[0].data=="fp")
+                    elif (d[0].status=="fp")
                     %}<i class="icon-wrench" title="Future publication"></i><br />Future
                     {% else %}
-                    {{ d[0].data }}
+                    {{ d[0].status }}
                     {%endif%}</td>
+		    <td>{{d[0].publication_date}}</td>
+            <td>{{d[0].notes}}</td>
+            <td>{{d[0].exclusions}}</td>
 
 </tr>
     {% endfor %}

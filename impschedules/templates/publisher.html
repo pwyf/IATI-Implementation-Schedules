@@ -46,28 +46,28 @@
             </thead>
             <tbody>
             {% for d in data %}
-            <tr{%if (d["data"][3][0].data=='uc') %} class="error"{%elif (d["data"][3][0].data=='fp') %} class="info"{%endif%}>
+            <tr{%if (d["data"][0].data=='uc') %} class="error"{%elif (d["data"][0].data=='fp') %} class="info"{%endif%}>
                     <td>{{d["element"].level}}</td>
                     <td>{{d["element"].name}}{% if d["property"].defining_attribute_value %}
                         ({{d["property"].defining_attribute_value}})
                     {%endif%}</td>
                     <td>{%
-                    if (d["data"][3][0].data=="fc")
+                    if (d["data"][0].status=="fc")
                     %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-                    elif (d["data"][3][0].data=="uc")
+                    elif (d["data"][0].status=="uc")
                     %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
-                    elif (d["data"][3][0].data=="pc")
+                    elif (d["data"][0].status=="pc")
                     %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-                    elif (d["data"][3][0].data=="up")
+                    elif (d["data"][0].status=="up")
                     %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-                    elif (d["data"][3][0].data=="fp")
+                    elif (d["data"][0].status=="fp")
                     %}<i class="icon-wrench" title="Future publication"></i><br />Future
                     {% else %}
-                    {{ d["data"][3][0].data }}
+                    {{ d["data"][0].status }}
                     {%endif%}</td>
-                    <td>{{d["data"][0][0].data}}</td>
-                    <td>{{d["data"][1][0].data}}</td>
-                    <td>{{d["data"][2][0].data}}</td>
+                    <td>{{d["data"][0].publication_date}}</td>
+                    <td>{{d["data"][0].notes}}</td>
+                    <td>{{d["data"][0].exclusions}}</td>
             </tr>
             {% endfor %}
             </tbody>
