@@ -54,9 +54,9 @@
             {% for d in data %}
             <tr{%if (d["data"][0].data=='uc') %} class="error"{%elif (d["data"][0].data=='fp') %} class="info"{%endif%}>
                     <td>{{d["element"].level}}</td>
-                    <td>{{d["element"].name}}{% if d["property"].defining_attribute_value %}
+                    <td><a href="{{url_for('element', id=d["element"].id, type=d["property"].defining_attribute_value)}}">{{d["element"].name}}{% if d["property"].defining_attribute_value %}
                         ({{d["property"].defining_attribute_value}})
-                    {%endif%}</td>
+                    {%endif%}</a></td>
                     <td>{%
                     if (d["data"][0].status=="fc")
                     %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
@@ -79,4 +79,5 @@
             </tbody>
             </table>
         </div>
+    </div>
 {% endblock %}

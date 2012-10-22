@@ -13,6 +13,7 @@ import re
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
 celery = Celery(app)
+app.secret_key = app.config["SECRET_KEY"]
 db = SQLAlchemy(app)
 
 import models
@@ -350,6 +351,26 @@ def publisher(id=id):
 
     return render_template("publisher.html", publisher=publisher, data=data2, segments=publisher_data)
 
+@app.route("/publisher/<id>/edit", methods=['GET', 'POST'])
+def publisher_edit(id=id):
+    if (request.method == 'POST'):
+        if (request.form['password'] == app.config["SECRET_PASSWORD"]):
+            publisher = models.ImpSchedule.query.filter_by(id=id).first()
+            publisher.publisher = request.form['publisher']
+            publisher.publisher_code = request.form['publisher_code']
+            publisher.schedule_version = request.form['schedule_version']
+            publisher.schedule_date = request.form['schedule_date']
+            db.session.add(publisher)
+            db.session.commit()
+            flash('Updated', "success")
+            return render_template("publisher_editor.html", publisher=publisher)
+        else:
+            flash('Incorrect password', "error")
+            publisher = models.ImpSchedule.query.filter_by(id=id).first()
+            return render_template("publisher_editor.html", publisher=publisher)
+    else:
+        publisher = models.ImpSchedule.query.filter_by(id=id).first()
+        return render_template("publisher_editor.html", publisher=publisher)
 
 @app.route("/flush")
 def flush():

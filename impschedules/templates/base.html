@@ -46,6 +46,16 @@
     <div class="alert alert-error alert-block"><h4>Watch out!</h4>
     <p>This site is in beta; the content should not be relied on. You're strongly advised to check out the <a href="http://aidtransparency.net/implementation">original implementation schedules</a> before drawing strong conclusions about this data.</p>
     </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+                  <div class="alert alert-{{category}}">
+                    <p>{{message}}</p>
+                    </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
         {% block content %}
         {% endblock %}
   </div>
