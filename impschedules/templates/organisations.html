@@ -1,30 +1,64 @@
 {% extends "base.html" %}
 {% block content %}
+    <script src="static/jquery.tablesorter.min.js"></script>
+    <script >
+    $(function() {
+    $("table#elements").tablesorter({ sortList: [[0,1]] });
+    $("table#publishers").tablesorter({ sortList: [[0,0]] });
+    });
+
+    </script>
 	<h1>Select an organisation</h1>
-	<ul>
+    <table class="table" id="publishers">
+    <thead>
+    <th>Publisher</th><!--<th>Initial implementation</th><th>Compliance</th>-->
+    </thead>
+    <tbody>
 	{% for org in orgs %}
-	<li><a href="{{url_for('publisher', id=org.id)}}">{{ org.publisher }}</a></li>
+    <tr>
+	<td><a href="{{url_for('publisher', id=org.id)}}">{{ org.publisher }}</a></td><!--<td></td><td></td>-->
+    </tr>
 	{% endfor %}
-	</ul>
-	<h1>Select an element</h1>
-	<table class="table">
+    </tbody>
+    </table>
+
+
+    <h1>Select an element</h1>
+	<table class="table" id="elements">
     <thead>
     <th>Element</th>
     <th>Compliant</th>
+    <th>Partial</th>
+    <th>Uncompliant</th>
+    <th>Future</th>
+    <th>Unable</th>
     <th>Compliant %</th>
     </thead>
     <tbody>
 	{% for element in elements %}
-    <tr>
-	<td>{% if element.defining_attribute_value %}<a href="{{url_for('element', id=element.id, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.name }} ({{ element.defining_attribute_value }})</a>{% else %}<a href="{{url_for('element', id=element.id)}}">{{element.level|capitalize}} - {{ element.name }}</a>{%endif%} </td>
-    <td>{% for c in compliance %}
-{% if c.id==element.propertyid %}
-    {% if c.number is defined %}
-    {{ c.number }}</td><td>{{ (c.number/totalnum*100)|int}}%
+    {% if compliance[element.propertyid] is defined %}
+    {% set cd = compliance[element.propertyid] %}
+    {% set pct_compliant = (cd['fc']/totalnum*100)|int %}
     {%endif%}
-{%endif%}
-        {% endfor%}</td>
+    <tr{%if (pct_compliant<30) %} class="error"{%elif (pct_compliant>70) %} class="success"{%endif%}>
+	<td>{% if element.defining_attribute_value %}<a href="{{url_for('element', id=element.id, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.name }} ({{ element.defining_attribute_value }})</a>{% else %}<a href="{{url_for('element', id=element.id)}}">{{element.level|capitalize}} - {{ element.name }}</a>{%endif%} </td>
+
     <td>
+    {{cd['fc']}}
+    </td>
+    <td>
+    {{cd['pc']}}
+    </td>
+    <td>
+    {{cd['uc']}}
+    </td>
+    <td>
+    {{cd['fp']}}
+    </td>
+    <td>
+    {{cd['up']}}
+    </td>
+    <td><span class="pct">{{ pct_compliant }}</pct></td>
     </tr>
 	{% endfor %}
 	</tbody>

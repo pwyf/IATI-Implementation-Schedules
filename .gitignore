@@ -4,6 +4,8 @@
 .gitignore
 *.md~
 *.sqlite
+*.css~
+*.html~
 pyenv
 pip-log.txt
 config.py

@@ -245,25 +245,23 @@ def load_package():
 	    #pass
     return out
 
-def test_percentages(data):
-    packages = set(map(lambda x: (x[5]), data))
-    d = dict(map(lambda x: (x[5],x[6]), data))
+def nest_compliance_results(data):
+    properties = set(map(lambda x: (x[2]), data))
+    b = map(lambda x: (x[2],(x[6], x[7])), data)
     out = {}
-    for p in packages:
-        compliant = 0
-        uncompliant = 0
-        for s in d[(p)]:
-            if (s == 'fc'):
-                compliant = compliant +1
-            else:
-                uncompliant = uncompliant +1
-        #except: success = 0
-        try: 
-            out[p] =  round((float(compliant)/(compliant+uncompliant)) * 100,2)
-        except Exception, e:
-            out[p]=compliant
-        #out[p,q] = {}
-        #out[p,q]['compliant'] = d[(p,q,0.status)]
+    for s, k in b:
+        try:
+            out[s].update({(k[0], k[1])})
+        except KeyError:
+            out[s] = {}
+            out[s].update({(k[0], k[1])})
+    values = {'fc', 'pc', 'uc', 'fp', 'up'}
+    for t in out:
+        for v in values:
+            try:
+                a=out[t][v]
+            except KeyError:
+                out[t][v] = 0
     return out
 
 @app.route("/")
@@ -288,15 +286,20 @@ def index():
             ).distinct(
             ).join(models.Element).all()
 
-    compliance = db.session.query(models.Property.id, func.count(models.Data.id).label("number")
-            ).filter(models.Data.status=='fc'
-            ).group_by(models.Property
-            ).join(models.Data
-            ).all() 
-    
-    totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
+    compliance_data = db.session.query(models.Property.parent_element, 
+                                models.Property.defining_attribute_value, 
+                                models.Property.id.label("propertyid"),
+                                models.Element.id, 
+                                models.Element.name, 
+                                models.Element.level,
+                                models.Data.status,
+                                func.count(models.Data.id)
+            ).group_by(models.Data.status, models.Property
+            ).join(models.Element).join(models.Data).all()
 
-    return render_template("organisations.html", orgs=orgs, elements=elements, compliance=compliance, totalnum=totalnum.number)    
+    compliance = nest_compliance_results(compliance_data)
+    totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
+    return render_template("organisations.html", orgs=orgs, elements=elements, compliance=compliance, totalnum=totalnum.number)
 
 @app.route("/element/<id>")
 @app.route("/element/<id>/<type>")
