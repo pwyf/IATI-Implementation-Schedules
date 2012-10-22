@@ -30,6 +30,12 @@
                 <td>Schedule date</td>
                 <td>{{publisher.schedule_date}}</td>
             </tr>
+            {% for segment in segments %}
+            <tr>
+                <td>{{segment.segment}}</td>
+                <td>{{segment.segment_value}}</td>
+            </tr>
+            {% endfor %}
             </tbody>
             </table>
         </div>

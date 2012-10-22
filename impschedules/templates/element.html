@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>{% if element[0] %}{{element[0].name}} {% if element[1].defining_attribute_value %}({{element[1].defining_attribute_value}} - {{element[1].id}}){%endif%}{% else %}{{element.name}}{%endif %}</h1>
-    <h3>Compliance information</h3>
+    <h1>{% if element[0] %}{{element[0].name}} {% if element[1].defining_attribute_value %}({{element[1].defining_attribute_value}}){%endif%}{% else %}{{element.name}}{%endif %}</h1>
+    <h3>Implementation Schedule Information</h3>
     <table class="table">
     <thead>
         <th>Organisation</th>

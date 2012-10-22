@@ -21,6 +21,7 @@ db.create_all()
 
 @app.route('/setup')
 def setup():
+    db.create_all()
     # create properties
     attributes = {'notes': {}, 'status_category': {}, 'publication_date': {}, 'exclusions': {}}
     elements = {
@@ -128,7 +129,7 @@ def setup():
                 #p.attribute = attribute
                 db.session.add(p)
     db.session.commit()
-    return "Done"
+    return 'Setup. <a href="/parse">Parse</a> XML files?'
 
 def parse_implementation_schedule(schedule, out, package_filename):
  
@@ -141,6 +142,40 @@ def parse_implementation_schedule(schedule, out, package_filename):
     sched = models.ImpSchedule(**out) 
     db.session.add(sched)
     db.session.commit()
+
+    pd = {}
+    pd["publishing_scope_value"] = schedule.find("publishing").find("scope").get("value")
+    pd["publishing_scope_narrative"] = schedule.find("publishing").find("scope").find("narrative").text
+    pd["publishing_timetable_date_initial"] = schedule.find("publishing").find("publication-timetable").get("date-initial")
+    pd["publishing_timetable_narrative"] = schedule.find("publishing").find("publication-timetable").find("narrative").text
+    pd["publishing_frequency_frequency"] = schedule.find("publishing").find("publication-frequency").get("frequency")
+    pd["publishing_frequency_timeliness"] = schedule.find("publishing").find("publication-frequency").get("timeliness")
+    pd["publishing_frequency_narrative"] = schedule.find("publishing").find("publication-frequency").find("narrative").text
+    pd["publishing_lifecycle_point"] = schedule.find("publishing").find("publication-lifecycle").get("point")
+    pd["publishing_lifecycle_narrative"] = schedule.find("publishing").find("publication-lifecycle").find("narrative").text
+    pd["publishing_data_quality_quality"] = schedule.find("publishing").find("data-quality").get("quality")
+    pd["publishing_data_quality_narrative"] = schedule.find("publishing").find("data-quality").find("narrative").text
+    pd["publishing_approach_resource"] = schedule.find("publishing").find("approach").get("resource")
+    pd["publishing_approach_narrative"] = schedule.find("publishing").find("approach").find("narrative").text
+    pd["publishing_notes"] = schedule.find("publishing").find("notes").find("narrative").text
+    pd["publishing_thresholds"] = schedule.find("publishing").find("thresholds").find("narrative").text
+    pd["publishing_exclusions"] = schedule.find("publishing").find("exclusions").find("narrative").text
+    pd["publishing_constraints"] = schedule.find("publishing").find("constraints-other").find("narrative").text
+    pd["publishing_license"] = schedule.find("publishing").find("license").get("license")
+    pd["publishing_license_narrative"] = schedule.find("publishing").find("license").find("narrative").text
+    pd["publishing_multilevel"] = schedule.find("publishing").find("activity-multilevel").get("yesno")
+    pd["publishing_multilevel_narrative"] = schedule.find("publishing").find("activity-multilevel").find("narrative").text
+    pd["publishing_segmentation"] = schedule.find("publishing").find("segmentation").get("segmentation")
+    pd["publishing_segmentation_narrative"] = schedule.find("publishing").find("segmentation").find("narrative").text
+    pd["publishing_user_interface_status"] = schedule.find("publishing").find("user-interface").get("status")
+    pd["publishing_user_interface_narrative"] = schedule.find("publishing").find("segmentation").find("narrative").text
+
+    for k, v in pd.items():
+        d = models.ImpScheduleData()
+        d.publisher_id = sched.id
+        d.segment = k
+        d.segment_value = v
+        db.session.add(d)
 
     elements = models.Element.query.all()
     for element in elements:
@@ -174,36 +209,6 @@ def parse_implementation_schedule(schedule, out, package_filename):
             data.date_recorded = datetime.now()
             db.session.add(data)
     
-    # check each element in organisation and activity
-    """
-    out["publishing"] = {}
-    out["publishing_scope_value"] = schedule.find("publishing").find("scope").get("value")
-    out["publishing_scope_narrative"] = schedule.find("publishing").find("scope").find("narrative").text
-    out["publishing_timetable_date_initial"] = schedule.find("publishing").find("publication-timetable").get("date-initial")
-    out["publishing_timetable_narrative"] = schedule.find("publishing").find("publication-timetable").find("narrative").text
-    out["publishing_frequency_frequency"] = schedule.find("publishing").find("publication-frequency").get("frequency")
-    out["publishing_frequency_timeliness"] = schedule.find("publishing").find("publication-frequency").get("timeliness")
-    out["publishing_frequency_narrative"] = schedule.find("publishing").find("publication-frequency").find("narrative").text
-    out["publishing_lifecycle_point"] = schedule.find("publishing").find("publication-lifecycle").get("point")
-    out["publishing_lifecycle_narrative"] = schedule.find("publishing").find("publication-lifecycle").find("narrative").text
-    out["publishing_data_quality_quality"] = schedule.find("publishing").find("data-quality").get("quality")
-    out["publishing_data_quality_narrative"] = schedule.find("publishing").find("data-quality").find("narrative").text
-    out["publishing_approach_resource"] = schedule.find("publishing").find("approach").get("resource")
-    out["publishing_approach_narrative"] = schedule.find("publishing").find("approach").find("narrative").text
-    out["publishing"]["notes"] = schedule.find("publishing").find("notes").find("narrative").text
-    out["publishing_thresholds"] = schedule.find("publishing").find("thresholds").find("narrative").text
-    out["publishing"]["exclusions"] = schedule.find("publishing").find("exclusions").find("narrative").text
-    out["publishing_constraints"] = schedule.find("publishing").find("constraints-other").find("narrative").text
-    out["publishing_license"] = schedule.find("publishing").find("license").get("license")
-    out["publishing_license_narrative"] = schedule.find("publishing").find("license").find("narrative").text
-    out["publishing_multilevel"] = schedule.find("publishing").find("activity-multilevel").get("yesno")
-    out["publishing_multilevel_narrative"] = schedule.find("publishing").find("activity-multilevel").find("narrative").text
-    out["publishing_segmentation"] = schedule.find("publishing").find("segmentation").get("segmentation")
-    out["publishing_segmentation_narrative"] = schedule.find("publishing").find("segmentation").find("narrative").text
-    out["publishing_user_interface_status"] = schedule.find("publishing").find("user-interface").get("status")
-    out["publishing_user_interface_narrative"] = schedule.find("publishing").find("segmentation").find("narrative").text
-    
-    """
     db.session.commit()
     return "Done "
 
@@ -266,16 +271,11 @@ def nest_compliance_results(data):
 
 @app.route("/")
 def index():
-    orgs = models.ImpSchedule.query.order_by(models.ImpSchedule.publisher).all()
-    """elements = db.session.query(models.Property.parent_element, 
-                                models.Property.defining_attribute_value,
-                                models.Element.level,
-                                models.Element.name,
-                                models.Element.id,
-                                models.Property.id.label("propertyid")
-            ).order_by(models.Element.level.desc(), models.Element.name, models.Property.defining_attribute_value
-            ).group_by(models.Element).all()
-    """
+    #orgs = models.ImpSchedule.query.order_by(models.ImpSchedule.publisher).all()
+    orgs = db.session.query(models.ImpSchedule, models.ImpScheduleData.segment_value
+            ).filter(models.ImpScheduleData.segment=="publishing_timetable_date_initial"
+            ).join(models.ImpScheduleData
+            ).order_by(models.ImpSchedule.publisher).all()
     
     elements = db.session.query(models.Property.parent_element, 
                                 models.Property.defining_attribute_value, 
@@ -329,6 +329,10 @@ def element(id=id, type=None):
 @app.route("/publisher/<id>")
 def publisher(id=id):
     publisher = models.ImpSchedule.query.filter_by(id=id).first()
+    publisher_data = db.session.query(models.ImpScheduleData
+            ).filter(models.ImpSchedule.id==id
+            ).join(models.ImpSchedule
+            ).all()
     
     data2 = []
     elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value).distinct()
@@ -344,11 +348,18 @@ def publisher(id=id):
             ).all()
         data2.append(d)
 
-    return render_template("publisher.html", publisher=publisher, data=data2)
+    return render_template("publisher.html", publisher=publisher, data=data2, segments=publisher_data)
+
+
+@app.route("/flush")
+def flush():
+    db.session.remove()
+    db.drop_all()
+    return 'Deleted. <a href="/setup">Setup</a> again?'
 
 @app.route("/parse")
 def parse():
     #try:
-        return load_package()
+        return load_package() + '<br />Parsed successfully. <a href="/">Go to front page</a>?'
     #except Exception, e:
     #    return "Failed"

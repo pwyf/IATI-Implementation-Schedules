@@ -23,6 +23,22 @@ class ImpSchedule(db.Model):
     def __repr__(self):
         return self.publisher, self.id
 
+class ImpScheduleData(db.Model):
+    __tablename__ = 'impscheduledata'
+    id = Column(Integer, primary_key=True)
+    publisher_id = Column(Integer, ForeignKey('impschedule.id'))
+    segment = Column(UnicodeText)
+    segment_value = Column(UnicodeText)
+
+    def __init__(self, publisher_id=None, segment=None, segment_value=None):
+        self.publisher_id = publisher_id
+        self.segment = segment
+        self.segment_value = segment_value
+
+    def __repr__(self):
+        return self.id, self.publisher_id, self.segment, self.segment_value
+
+
 class Data(db.Model):
     __tablename__ = 'data'
     id = Column(Integer, primary_key=True)

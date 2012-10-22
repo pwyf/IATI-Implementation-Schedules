@@ -19,3 +19,23 @@ table .orange{color:#f89406;border-bottom-color:#f89406;}
 table .headerSortUp.orange,table .headerSortDown.orange{background-color:#fee9cc;}
 table .purple{color:#7a43b6;border-bottom-color:#7a43b6;}
 table .headerSortUp.purple,table .headerSortDown.purple{background-color:#e2d5f0;}
+
+footer {
+    background-color: #F5F5F5;
+    border-top: 1px solid #E5E5E5;
+    margin-top: 70px;
+    padding: 70px 0;
+}
+
+.navbar-inverse .navbar-inner {
+    background-color: #365E93;
+    background-image: linear-gradient(to bottom, #365E93, #365E80);
+    border-color: #252525;
+}
+
+body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      .navbar-inverse .brand, .navbar-inverse .nav > li > a {
+        color:#ffffff;
+      }
