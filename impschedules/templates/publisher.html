@@ -2,11 +2,11 @@
 {% block content %}
     <h1>{{publisher.publisher}}</h1>
     <ul class="nav nav-tabs" id="pageTab">
-        <li><a href="#basic" data-toggle="tab">Basic information</a></li>
-        <li><a href="#detailed" data-toggle="tab">Detailed information</a></li>
+        <li><a href="#basic" data-toggle="tab" class="firsttab">Basic information</a></li>
+        <li><a href="#detailed" data-toggle="tab" class="secondtab">Detailed information</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane active" id="basic">
+        <div class="tab-pane" id="basic">
             <h3>Basic information</h3>
             <table class="table">
             <thead>
@@ -39,7 +39,7 @@
             </tbody>
             </table>
         </div>
-        <div class="tab-pane" id="detailed">
+        <div class="tab-pane active" id="detailed">
             <h3>Detailed information</h3>
             <table class="table">
             <thead>
@@ -80,4 +80,9 @@
             </table>
         </div>
     </div>
+    <script>
+     $(function () {
+    $('#pageTab .secondtab').tab('show');
+    })
+    </script>
 {% endblock %}

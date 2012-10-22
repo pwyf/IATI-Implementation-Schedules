@@ -336,7 +336,7 @@ def publisher(id=id):
             ).all()
     
     data2 = []
-    elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value).distinct()
+    elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value).order_by(models.Element.level, models.Property.parent_element, models.Property.defining_attribute_value).distinct()
     
     for element in elements:
         d={}
