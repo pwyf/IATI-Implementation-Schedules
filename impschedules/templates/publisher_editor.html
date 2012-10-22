@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+    <form action="" method="post">
+    <h1>{{publisher.publisher}}</h1>
+    <h3>Edit this publisher</h3>
+    <table class="table">
+    <thead>
+        <th>Item</th>
+        <th>Value</th>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Publisher name</td>
+        <td><input type="text" value="{{publisher.publisher}}" name="publisher" /></td>
+    </tr>
+    <tr>
+        <td>Publisher code</td>
+        <td><input type="text" value="{{publisher.publisher_code}}" name="publisher_code" /></td>
+    </tr>
+    <tr>
+        <td>Schedule version</td>
+        <td><input type="text" value="{{publisher.schedule_version}}" name="schedule_version" /></td>
+    </tr>
+    <tr>
+        <td>Schedule date</td>
+        <td><input type="text" value="{{publisher.schedule_date}}" name="schedule_date" /></td>
+    </tr>
+    <tr>
+        <td>Secret password</td>
+        <td><input type="password" value="" name="password" /></td>
+    </tr>
+    <tr>
+    <td colspan="2">
+    <input type="submit" value="Update" class="btn" />
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </form>
+{% endblock %}
