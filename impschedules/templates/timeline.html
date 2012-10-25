@@ -1,0 +1,90 @@
+{% set active_page='timeline'%}{% extends "base.html" %}
+{% block content %}
+
+  <!-- Recline CSS components -->
+  <link rel="stylesheet" href="/static/css/graph.css">
+  <link rel="stylesheet" href="/static/css/multiview.css">
+  <!-- /Recline CSS components -->
+
+  <!-- 3rd party JS libraries -->
+  <script type="text/javascript" src="/static/vendor/underscore/1.4.2/underscore.js"></script>
+  <script type="text/javascript" src="/static/vendor/backbone/0.9.2/backbone.js"></script>
+  <script type="text/javascript" src="/static/vendor/mustache/0.5.0-dev/mustache.js"></script>
+  <script type="text/javascript" src="/static/vendor/bootstrap/2.0.2/bootstrap.js"></script>
+  <script type="text/javascript" src="/static/vendor/flotr2/flotr2.js"></script>
+  <script type="text/javascript" src="/static/src/view.graph.js"></script>
+  <script type="text/javascript" src="/static/src/model.js"></script>
+  <script type="text/javascript" src="/static/src/backend.memory.js"></script>
+  <script type="text/javascript" src="/static/src/backend.json.js"></script>
+  <script type="text/javascript" src="/static/src/backend.gdocs.js"></script>
+  <script type="text/javascript" src="/static/src/view.multiview.js"></script>
+  <script type="text/javascript" src="/static/src/widget.filtereditor.js"></script>
+  <script type="text/javascript" src="/static/src/widget.fields.js"></script>
+  <script type="text/javascript" src="/static/src/widget.pager.js"></script>
+  <script type="text/javascript" src="/static/src/widget.facetviewer.js"></script>
+  <script type="text/javascript" src="/static/src/widget.queryeditor.js"></script>
+
+<div class="container">
+    <div class="alert alert-info alert-block">
+    <p>Select "date" from the <b>Group Column</b> drop-down box. You can then choose which element you are interested in, and add new elements by clicking "add series".</p>
+    </div>
+<div id="mygraph"></div>
+<div style='clear: both;' />
+<script type="text/javascript">
+
+
+var $el = $('#mygraph');
+var url = "/api/elements/dates/groups";
+
+// Get the dataset via JSON
+var dataset = new recline.Model.Dataset({
+  url:url,
+  fields: [
+      {% for element in elements %}
+      {id: '{{element.propertyid}}', label: "{{element.level|capitalize}} - {{element.name}}{% if element.defining_attribute_value %} ({{element.defining_attribute_value}}){%endif%}", type: "string"},
+      {%endfor%}
+      {id: 'date', type: 'date', label:"Date"}
+    ],
+  backend:'json'
+});
+
+var views = [
+       {
+         id: 'graph',
+         label: 'Graph',
+         view: new recline.View.Graph({
+           model: dataset
+         })
+       }
+    ];
+
+var sidebarViews = [
+];
+
+var state = {
+    "graph": {
+        group: "date",
+        series: [{% for element in elements %} {% if loop.first %}'{{element.propertyid}}'{% else %}, '{{element.propertyid}}'{%endif%}{%endfor%}]
+    },
+    currentView: "graph"
+    };
+
+ var myExplorer = new recline.View.MultiView({
+   model: dataset,
+   el: $el,
+   views: views,
+   sidebarViews: sidebarViews,
+  state: state
+ });
+this.viewExplorer();
+
+dataset.fetch().done(function(dataset) {
+  if (console) {
+    console.log(dataset.records);
+  }
+});
+
+
+
+</script>
+{% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response
+from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response, current_app
 from flask.ext.celery import Celery
 #from celery.task.sets import TaskSet # Is this going to be used?
 import sys, os
@@ -9,6 +9,7 @@ from sqlalchemy import func
 from lxml import etree
 from datetime import date, datetime
 import re
+import json
 
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
@@ -19,6 +20,17 @@ db = SQLAlchemy(app)
 import models
 
 db.create_all()
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        return json.JSONEncoder.default(self, obj)
+
+def jsonify(*args, **kwargs):
+    return current_app.response_class(json.dumps(dict(*args, **kwargs),
+            indent=None if request.is_xhr else 2, cls=JSONEncoder),
+        mimetype='application/json')
 
 @app.route('/setup')
 def setup():
@@ -201,10 +213,8 @@ def parse_implementation_schedule(schedule, out, package_filename):
             except AttributeError:
                 data.notes=""
             try:
-                data.publication_date = date.strptime(schedule.find(element.level).find(element_name).find("publication-date").text, "%y-%m-%d")
+                data.publication_date = datetime.strptime(schedule.find(element.level).find(element_name).find("publication-date").text, "%Y-%m-%d")
             except AttributeError:
-                pass
-            except TypeError:
                 pass
             
             data.date_recorded = datetime.now()
@@ -249,6 +259,86 @@ def load_package():
         #except Exception, e:
         #    out = out + 'Failed:', e
 	    #pass
+    return out
+
+def publication_timeline(data, cumulative=False, group=6, provide={7,2}, label_group="date", label_provide={"count", "element"}):
+    properties = set(map(lambda x: (str(x[group])), data))
+    #ba = map(lambda x: (x[group],(str(x[6]), x[7])), data)
+    b = map(lambda x: (x[group],list(map(lambda y: str(x[y]), provide))), data)
+    out = {}
+    out['publication'] = {}
+    out['publication_sorted'] = {}
+    out['unknown'] = {}
+    for s, k in b:
+        try:
+            if (k[0] != "None"):
+                out['publication'][str(s)].update({(k[0], k[1])})
+            else:
+                out['unknown'][str(s)].update({(k[0], k[1])})
+        except KeyError:
+            if (k[0] != "None"):
+                out['publication'][str(s)] = {}
+                out['publication'][str(s)].update({(k[0], k[1])})
+            else:
+                out['unknown'][str(s)] = {}
+                out['unknown'][str(s)].update({(k[0], k[1])})
+    for t in out:
+        try:
+            a=out[t]
+        except KeyError:
+            out[t] = 0
+    out['publication_sorted'] = []
+    for e, v in out['publication'].items():
+        prevkey_val = 0
+        latest_count = {}
+        try: 
+            del v["None"]
+        except KeyError:
+            pass
+        for key in sorted(v.iterkeys()):
+            newdata = {}
+            newdata[label_group] = e
+            if (cumulative == True):
+                try:
+                    latest_count[e] = int(v[key])
+                except KeyError:
+                    latest_count[e] = 0
+                prevkey_val = int(v[key]) + prevkey_val
+            newdata["count"] = int(v[key]) + latest_count[e]
+            newdata["element"] = key
+            out['publication_sorted'].append(newdata)
+    return out
+
+def publication_dates_groups(data, cumulative=False, group=6, provide={7,2}, label_group="date", label_provide={"count", "element"}):
+    properties = set(map(lambda x: (str(x[group])), data))
+    elements = set(map(lambda x: (x[2]), data))
+    alldata = map(lambda x: ((str(x[group]), x[2]),x[7]), data)
+    
+    b = map(lambda x: (x[group],list(map(lambda y: str(x[y]), provide))), data)
+    out = {}
+
+    out["dates"] = []
+    prev_values = {}
+    for p in sorted(properties):
+        # get each element
+        newdata = {}
+        newdata["date"] = p
+        for e in elements:
+            try:
+                print prev_values[e]
+            except KeyError:
+                prev_values[e] = 0
+            newdata[e] = 0
+            for data in alldata:
+                if ((data[0][0] == p) and (data[0][1]==e)):
+                    newdata[e] = data[1]
+                    prev_values[e] = prev_values[e] + data[1]
+                else:
+                    newdata[e] = prev_values[e]
+            if (newdata[e] == 0):
+                newdata[e] = prev_values[e]
+        out["dates"].append(newdata)
+        # get each date
     return out
 
 def nest_compliance_results(data):
@@ -371,6 +461,50 @@ def publisher_edit(id=id):
     else:
         publisher = models.ImpSchedule.query.filter_by(id=id).first()
         return render_template("publisher_editor.html", publisher=publisher)
+
+@app.route("/timeline")
+def timeline(id=id):
+    elements = db.session.query(models.Property.parent_element, 
+                            models.Property.defining_attribute_value, 
+                            models.Element.id, 
+                            models.Element.name, 
+                            models.Element.level,
+                            models.Property.id.label("propertyid")
+        ).distinct(
+        ).join(models.Element).all()
+    return render_template("timeline.html", elements=elements)
+
+@app.route("/api/elements/dates")
+def element_dates():
+    compliance_data = db.session.query(models.Property.parent_element, 
+                            models.Property.defining_attribute_value, 
+                            models.Property.id.label("propertyid"),
+                            models.Element.id, 
+                            models.Element.name, 
+                            models.Element.level,
+                            models.Data.publication_date,
+                            func.count(models.Data.id)
+        ).group_by(models.Data.status, models.Property
+        ).join(models.Element).join(models.Data).all()
+
+    compliance = publication_timeline(compliance_data, True)
+    return jsonify(compliance)
+
+@app.route("/api/elements/dates/groups")
+def element_dates_groups():
+    compliance_data = db.session.query(models.Property.parent_element, 
+                            models.Property.defining_attribute_value, 
+                            models.Property.id.label("propertyid"),
+                            models.Element.id, 
+                            models.Element.name, 
+                            models.Element.level,
+                            models.Data.publication_date,
+                            func.count(models.Data.id)
+        ).group_by(models.Data.status, models.Property
+        ).join(models.Element).join(models.Data).all()
+
+    compliance = publication_dates_groups(compliance_data, True)
+    return jsonify(compliance)
 
 @app.route("/flush")
 def flush():

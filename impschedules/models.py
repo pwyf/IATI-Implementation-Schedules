@@ -49,7 +49,7 @@ class Data(db.Model):
     status = Column(UnicodeText)
     exclusions = Column(UnicodeText)
     notes = Column(UnicodeText)
-    publication_date = Column(DateTime)
+    publication_date = Column(Date)
 
     def __init__(self, property_id=None, impschedule_id=None, data=None, date_recorded=None, status=None, exclusions=None, notes=None, publication_date=None):
         self.property_id = property_id

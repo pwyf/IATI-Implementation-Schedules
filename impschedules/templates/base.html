@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% set active_page = active_page|default('index') -%}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -8,13 +8,11 @@
     <title>Implementation schedule browser</title>
     <link href="/static/bootstrap-responsive.css" media="all" rel="stylesheet" type="text/css" />
     <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" media="all" rel="stylesheet" type="text/css" />
-    <script src="/static/jquery.js?body=1" type="text/javascript"></script>
+    <script src="/static/vendor/jquery/1.7.1/jquery.js" type="text/javascript"></script>
     <script src="/static/bootstrap.js?body=1" type="text/javascript"></script>
     <script src="/static/bootstrap.min.js?body=1" type="text/javascript"></script>
     <script src="/static/d3.v2.min.js?body=1" type="text/javascript"></script>
     <script src="/static/home.js?body=1" type="text/javascript"></script>
-    <script src="/static/organisation_quality.js?body=1" type="text/javascript"></script>
-    <script src="/static/test_summaries.js?body=1" type="text/javascript"></script>
     <script src="/static/application.js?body=1" type="text/javascript"></script>
     <link href="/static/style.css" media="all" rel="stylesheet" type="text/css" />
 </head>
@@ -31,8 +29,8 @@
           <a class="brand" href="/">Implementation Schedule Browser</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <!--<li><a href="#compare">Compare</a></li>-->
+              <li{% if active_page == "index" %} class="active"{%endif%}><a href="/">Home</a></li>
+              <li{% if active_page == "timeline" %} class="active"{%endif%}><a href="/timeline">Timeline</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
