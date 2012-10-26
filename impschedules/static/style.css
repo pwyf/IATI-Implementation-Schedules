@@ -39,3 +39,6 @@ body {
       .navbar-inverse .brand, .navbar-inverse .nav > li > a {
         color:#ffffff;
       }
+.recline-data-explorer .header {
+    display: none;
+}

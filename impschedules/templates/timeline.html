@@ -40,10 +40,10 @@ var url = "/api/elements/dates/groups";
 var dataset = new recline.Model.Dataset({
   url:url,
   fields: [
-      {% for element in elements %}
-      {id: '{{element.propertyid}}', label: "{{element.level|capitalize}} - {{element.name}}{% if element.defining_attribute_value %} ({{element.defining_attribute_value}}){%endif%}", type: "string"},
-      {%endfor%}
       {id: 'date', type: 'date', label:"Date"}
+      {% for element in elements %},
+      {id: '{{element.propertyid}}', label: "{{element.level|capitalize}} - {{element.name}}{% if element.defining_attribute_value %} ({{element.defining_attribute_value}}){%endif%}", type: "string"}
+      {%endfor%}
     ],
   backend:'json'
 });
@@ -53,7 +53,8 @@ var views = [
          id: 'graph',
          label: 'Graph',
          view: new recline.View.Graph({
-           model: dataset
+           model: dataset,
+            group: "date"
          })
        }
     ];
@@ -62,7 +63,8 @@ var sidebarViews = [
 ];
 
 var state = {
-    "graph": {
+    "view-graph": {
+        graphType: "line", 
         group: "date",
         series: [{% for element in elements %} {% if loop.first %}'{{element.propertyid}}'{% else %}, '{{element.propertyid}}'{%endif%}{%endfor%}]
     },
@@ -74,7 +76,7 @@ var state = {
    el: $el,
    views: views,
    sidebarViews: sidebarViews,
-  state: state
+   state: state
  });
 this.viewExplorer();
 
