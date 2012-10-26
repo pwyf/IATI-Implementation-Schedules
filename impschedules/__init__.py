@@ -309,8 +309,24 @@ def publication_timeline(data, cumulative=False, group=6, provide={7,2}, label_g
             out['publication_sorted'].append(newdata)
     return out
 
+@app.route("/api/elements/dates/groups")
+def element_dates_groups():
+    compliance_data = db.session.query(models.Property.parent_element, 
+                            models.Property.defining_attribute_value, 
+                            models.Property.id.label("propertyid"),
+                            models.Element.id, 
+                            models.Element.name, 
+                            models.Element.level,
+                            models.Data.publication_date,
+                            func.count(models.Data.id)
+        ).group_by(models.Property.id, models.Data.publication_date
+        ).join(models.Element).join(models.Data).all()
+
+    compliance = publication_dates_groups(compliance_data, True)
+    return jsonify(compliance)
+
 def publication_dates_groups(data, cumulative=False, group=6, provide={7,2}, label_group="date", label_provide={"count", "element"}):
-    properties = set(map(lambda x: (str(x[group])), data))
+    dates = set(map(lambda x: (str(x[group])), data))
     elements = set(map(lambda x: (x[2]), data))
     alldata = map(lambda x: ((str(x[group]), x[2]),x[7]), data)
     
@@ -319,7 +335,7 @@ def publication_dates_groups(data, cumulative=False, group=6, provide={7,2}, lab
 
     out["dates"] = []
     prev_values = {}
-    for p in sorted(properties):
+    for p in sorted(dates):
         # get each element
         newdata = {}
         newdata["date"] = p
@@ -339,6 +355,7 @@ def publication_dates_groups(data, cumulative=False, group=6, provide={7,2}, lab
                 newdata[e] = prev_values[e]
         out["dates"].append(newdata)
         # get each date
+
     return out
 
 def nest_compliance_results(data):
@@ -490,21 +507,6 @@ def element_dates():
     compliance = publication_timeline(compliance_data, True)
     return jsonify(compliance)
 
-@app.route("/api/elements/dates/groups")
-def element_dates_groups():
-    compliance_data = db.session.query(models.Property.parent_element, 
-                            models.Property.defining_attribute_value, 
-                            models.Property.id.label("propertyid"),
-                            models.Element.id, 
-                            models.Element.name, 
-                            models.Element.level,
-                            models.Data.publication_date,
-                            func.count(models.Data.id)
-        ).group_by(models.Data.status, models.Property
-        ).join(models.Element).join(models.Data).all()
-
-    compliance = publication_dates_groups(compliance_data, True)
-    return jsonify(compliance)
 
 @app.route("/flush")
 def flush():
