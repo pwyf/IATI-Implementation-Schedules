@@ -331,6 +331,7 @@ def publisher_implementation_data(publisher_code):
                             models.Data.publication_date,
                             models.Data.notes,
                             models.Element.name,
+                            models.Element.level,
                             models.Property.defining_attribute,
                             models.Property.defining_attribute_value
                         ).filter(models.ImpSchedule.publisher_code==publisher_code
@@ -339,9 +340,10 @@ def publisher_implementation_data(publisher_code):
                         ).join(models.ImpSchedule
                         ).all()
 
-    d = map(lambda x: {"element": str(x[3]), 
-                       "element_attribute": str(x[4]), 
-                       "element_attribute_part": str(x[5]),
+    d = map(lambda x: {"element": str(x[3]),
+                       "element_level": str(x[4]), 
+                       "element_attribute": str(x[5]), 
+                       "element_attribute_part": str(x[6]),
                        "status": x[0], 
                        "publication_date": str(x[1]), 
                        "notes": str(x[2])}, data)
