@@ -7,7 +7,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask import render_template
 from sqlalchemy import func
 from lxml import etree
-from datetime import date, datetime
+import datetime
 import re
 import json
 
@@ -308,6 +308,56 @@ def publication_timeline(data, cumulative=False, group=6, provide={7,2}, label_g
             newdata["element"] = key
             out['publication_sorted'].append(newdata)
     return out
+
+@app.route("/api/publishers/<publisher_code>")
+def publisher_implementation_data(publisher_code):
+    publisher = models.ImpSchedule.query.filter_by(publisher_code=publisher_code).first()
+   
+    data2 = []
+    elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value).order_by(models.Element.level, models.Property.parent_element, models.Property.defining_attribute_value).distinct()
+    
+    for element in elements:
+        d={}
+        d["element"] = models.Element.query.filter_by(id=element.parent_element).first()
+        d["property"] = models.Property.query.filter_by(parent_element=element.parent_element, defining_attribute_value=element.defining_attribute_value).first()
+        d["data"] = db.session.query(models.Data
+            ).filter(models.Element.id==element.parent_element, models.Property.defining_attribute_value==element.defining_attribute_value, models.Data.impschedule_id==publisher.id
+            ).join(models.Property
+            ).join(models.Element
+            ).all()
+        data2.append(d)
+
+    data = db.session.query(models.Data.status,
+                            models.Data.publication_date,
+                            models.Data.notes,
+                            models.Element.name,
+                            models.Property.defining_attribute,
+                            models.Property.defining_attribute_value
+                        ).filter(models.ImpSchedule.publisher_code==publisher_code
+                        ).join(models.Property
+                        ).join(models.Element
+                        ).join(models.ImpSchedule
+                        ).all()
+
+    d = map(lambda x: {"element": str(x[3]), 
+                       "element_attribute": str(x[4]), 
+                       "element_attribute_part": str(x[5]),
+                       "status": x[0], 
+                       "publication_date": str(x[1]), 
+                       "notes": str(x[2])}, data)
+    
+    return jsonify({"publisher": publisher.as_dict(), "data": d})
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        return json.JSONEncoder.default(self, obj)
+
+def jsonify(*args, **kwargs):
+    return current_app.response_class(json.dumps(dict(*args, **kwargs),
+            indent=None if request.is_xhr else 2, cls=JSONEncoder),
+        mimetype='application/json')
 
 @app.route("/api/elements/dates/groups")
 def element_dates_groups():

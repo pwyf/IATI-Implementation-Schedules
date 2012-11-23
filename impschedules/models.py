@@ -23,6 +23,9 @@ class ImpSchedule(db.Model):
     def __repr__(self):
         return self.publisher, self.id
 
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 class ImpScheduleData(db.Model):
     __tablename__ = 'impscheduledata'
     id = Column(Integer, primary_key=True)
@@ -60,9 +63,12 @@ class Data(db.Model):
         self.exclusions = exclusions
         self.notes = notes
         self.publication_date = publication_date
-
+    
     def __repr__(self):
         return self.property_id, self.impschedule_id, self.status, self.publication_date, self.notes, self.exclusions
+    
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
     
 class Property(db.Model):
     __tablename__ = 'property'
@@ -83,6 +89,9 @@ class Property(db.Model):
     def __repr__(self):
         return self.id, self.parent_element, self.defining_attribute_value, self.description
 
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 class Element(db.Model):
     __tablename__ = 'element'
     id = Column(Integer, primary_key=True)
@@ -97,3 +106,6 @@ class Element(db.Model):
 
     def __repr__(self):
         return self.id, self.level, self.name, self.description
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
