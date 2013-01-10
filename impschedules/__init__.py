@@ -313,20 +313,6 @@ def publication_timeline(data, cumulative=False, group=6, provide={7,2}, label_g
 def publisher_implementation_data(publisher_code):
     publisher = models.ImpSchedule.query.filter_by(publisher_code=publisher_code).first()
    
-    data2 = []
-    elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value).order_by(models.Element.level, models.Property.parent_element, models.Property.defining_attribute_value).distinct()
-    
-    for element in elements:
-        d={}
-        d["element"] = models.Element.query.filter_by(id=element.parent_element).first()
-        d["property"] = models.Property.query.filter_by(parent_element=element.parent_element, defining_attribute_value=element.defining_attribute_value).first()
-        d["data"] = db.session.query(models.Data
-            ).filter(models.Element.id==element.parent_element, models.Property.defining_attribute_value==element.defining_attribute_value, models.Data.impschedule_id==publisher.id
-            ).join(models.Property
-            ).join(models.Element
-            ).all()
-        data2.append(d)
-
     data = db.session.query(models.Data.status,
                             models.Data.publication_date,
                             models.Data.notes,

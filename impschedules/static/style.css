@@ -33,12 +33,12 @@ footer {
     border-color: #252525;
 }
 
-body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-      .navbar-inverse .brand, .navbar-inverse .nav > li > a {
-        color:#ffffff;
-      }
+.navbar {
+        margin-bottom: 20px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+.navbar-inverse .brand, .navbar-inverse .nav > li > a {
+color:#ffffff;
+}
 .recline-data-explorer .header {
     display: none;
 }
