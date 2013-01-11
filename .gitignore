@@ -40,3 +40,5 @@ impschedules/static/src/view.map.js
 impschedules/static/src/view.slickgrid.js
 impschedules/static/src/view.timeline.js
 impschedules/static/src/view.transform.js
+temp/*
+*.tpml~

@@ -23,6 +23,7 @@ from lxml.builder import ElementMaker
 import lxml.etree as etree
 import datetime
 import parsedatetime.parsedatetime as pdt
+import string
 
 # Multiple structures are supported, and are imported as "structure".
 
@@ -199,7 +200,7 @@ def parse_information(root, sheet, rows):
                         else:
                             which_row = row_data
                         for cell, values in param["opts"].items():
-                            if (which_row[param["col"]+cell].value == "YES"):
+                            if ((which_row[param["col"]+cell].value) != ("" or "no" or "NO")):
                                 el.attrib[attribute] = use_code(attribute, values)
                                 break
                     

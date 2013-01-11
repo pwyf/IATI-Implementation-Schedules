@@ -534,12 +534,15 @@ def import_schedule():
         if (request.form['password'] == app.config["SECRET_PASSWORD"]):
             url = request.form['url']
             structure = request.form['structure']
-            # Get data
-            #try:
-            local_file_name = app.config["XML_FILES_DIR"] + "/" + url.split('/')[-1]
-            f = urllib.urlretrieve(url, local_file_name)
-            # Write to local file
+
+            import string
+            import random
+            local_file_name = app.config["TEMP_FILES_DIR"] + "/" + ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range (5))
             try:
+                try:
+                    f = urllib.urlretrieve(url, local_file_name)
+                except IOError:
+                    raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
                 xml = toxml.convert_schedule(local_file_name, structure)
                 doc = etree.fromstring(xml)
                 context = {}
@@ -550,7 +553,7 @@ def import_schedule():
                 flash ("Successfully imported your schedule.", "success")
                 return redirect(url_for('import_schedule'))
             except Exception, e:
-                msg = "There was an unknown error importing your schedule. Maybe it was the wrong format? The error was: " + str(e)
+                msg = "There was an unknown error importing your schedule. The error was: " + str(e)
                 flash (msg, "error")
                 return redirect(url_for('import_schedule'))
             

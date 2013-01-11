@@ -14,9 +14,7 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///impschedules.sqlite'
 # Enable this if you want to debug on a local install.
 
 XML_FILES_DIR = '/home/mark/sites/IATI-Implementation-Schedules/xml'
-TEMP_FILES_DIR = '/home/mark/sites/IATI-Implementation-Schedules/temp'
 
 # MAKE SURE TO CHANGE THESE LINES
 SECRET_KEY = "some_really_secret_key"
 SECRET_PASSWORD = "some_really_secret_password"
-
