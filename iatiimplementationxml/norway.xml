@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='utf-8'?>
+<implementation xml:lang="en" generated-datetime="2013-01-09T20:31:14">
+  <metadata>
+    <publisher code="">Unverified</publisher>
+    <version></version>
+    <date>2013-01-09</date>
+  </metadata>
+  <publishing/>
+  <organisation>
+    <total-budget>
+      <status category="pc"/>
+      <publication-date>1905-07-05</publication-date>
+      <notes>We can only publish data for one year since we only have one year budgets in Norway</notes>
+    </total-budget>
+    <recipient-org-budget>
+      <status category="fc"/>
+    </recipient-org-budget>
+    <recipient-country-budget>
+      <status category="fc"/>
+    </recipient-country-budget>
+    <document-link>
+      <status category="up"/>
+    </document-link>
+  </organisation>
+  <activity>
+    <reporting-org>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </reporting-org>
+    <iati-identifier>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </iati-identifier>
+    <other-identifier>
+      <status category="up"/>
+    </other-identifier>
+    <title type="agency">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </title>
+    <title type="recipient">
+      <status category="up"/>
+    </title>
+    <description type="agency">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </description>
+    <description type="recipient">
+      <status category="up"/>
+    </description>
+    <activity-status>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </activity-status>
+    <activity-date type="start">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </activity-date>
+    <activity-date type="end">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </activity-date>
+    <contact-info>
+      <status category="up"/>
+    </contact-info>
+    <participating-org type="funding">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </participating-org>
+    <participating-org type="extending">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </participating-org>
+    <participating-org type="implementing">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </participating-org>
+    <participating-org type="accountable">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </participating-org>
+    <recipient-country>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </recipient-country>
+    <recipient-region>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </recipient-region>
+    <location>
+      <status category="up"/>
+    </location>
+    <sector type="crs">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </sector>
+    <sector type="agency">
+      <status category="na"/>
+    </sector>
+    <policy-marker>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </policy-marker>
+    <collaboration-type>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </collaboration-type>
+    <default-flow-type>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </default-flow-type>
+    <default-finance-type>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </default-finance-type>
+    <default-aid-type>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </default-aid-type>
+    <default-tied-status>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </default-tied-status>
+    <budget>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </budget>
+    <planned-disbursement>
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </planned-disbursement>
+    <budget-identifier type="economic">
+      <status/>
+    </budget-identifier>
+    <budget-identifier type="administrative-functional">
+      <status/>
+    </budget-identifier>
+    <transaction type="commitment">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </transaction>
+    <transaction type="disbursement">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </transaction>
+    <transaction type="reimbursement">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </transaction>
+    <transaction type="incoming">
+      <status category="fc"/>
+      <publication-date>2013-01-01</publication-date>
+    </transaction>
+    <transaction type="repayment">
+      <status category="na"/>
+    </transaction>
+    <document-link>
+      <status category="up"/>
+    </document-link>
+    <activity-website>
+      <status category="up"/>
+    </activity-website>
+    <related-activity>
+      <status category="up"/>
+    </related-activity>
+    <conditions type="attached">
+      <status category="up"/>
+    </conditions>
+    <conditions type="text">
+      <status category="up"/>
+    </conditions>
+    <result>
+      <status category="up"/>
+    </result>
+  </activity>
+</implementation>
