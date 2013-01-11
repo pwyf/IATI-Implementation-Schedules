@@ -1,12 +1,17 @@
 IATI-Implementation-Schedules
 =============================
 
-Small flask app to view XML implementation schedules
+Small flask app to view XML implementation schedules. Makes extensive use of
+https://github.com/Bjwebb/iati-implementationxml
+
+Copyright (C) 2012 Ben Webb <bjwebb67@googlemail.com>
+
+AGPL v3.0 Licensed
 
 License: AGPL v3.0
 ==================
 
-Copyright (C) 2012
+Copyright (C) 2012 contributors
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -66,6 +71,10 @@ Get the tests:
 Parse the XML files, located in /xml: 
 
     http://127.0.0.1:5000/parse
+
+Import new schedules (must be available from a publicly accessible URL): 
+
+    http://127.0.0.1:5000/import
 
 Visit the main page and you should be able to browse your implementation schedules: 
 

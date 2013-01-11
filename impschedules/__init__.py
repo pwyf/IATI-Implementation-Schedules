@@ -10,6 +10,9 @@ from lxml import etree
 import datetime
 import re
 import json
+import urllib
+import iatiimplementationxml.toxml as toxml
+from cStringIO import StringIO
 
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
@@ -524,6 +527,44 @@ def index():
     compliance = nest_compliance_results(compliance_data)
     totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
     return render_template("organisations.html", orgs=orgs, elements=elements, compliance=compliance, totalnum=totalnum.number)
+
+@app.route("/import", methods=['GET', 'POST'])
+def import_schedule():
+    if (request.method == 'POST'):
+        if (request.form['password'] == app.config["SECRET_PASSWORD"]):
+            url = request.form['url']
+            structure = request.form['structure']
+            # Get data
+            #try:
+            local_file_name = app.config["XML_FILES_DIR"] + "/" + url.split('/')[-1]
+            f = urllib.urlretrieve(url, local_file_name)
+            # Write to local file
+            try:
+                xml = toxml.convert_schedule(local_file_name, structure)
+                doc = etree.fromstring(xml)
+                context = {}
+                context['source_file'] = url
+
+                schedules = doc.findall("metadata")
+                parse_implementation_schedule(doc, context.copy(), url)
+                flash ("Successfully imported your schedule.", "success")
+                return redirect(url_for('import_schedule'))
+            except Exception, e:
+                msg = "There was an unknown error importing your schedule. Maybe it was the wrong format? The error was: " + str(e)
+                flash (msg, "error")
+                return redirect(url_for('import_schedule'))
+            
+            #except:
+            #    flash ("Could not retrieve URL. Are you sure you spelt it correctly?")
+            #    return redirect(url_for('import_schedule'))
+            # Pass to implementation schedule converter
+            
+            # Parse and import
+        else:
+            flash("Wrong password", "error")
+            return redirect(url_for('import_schedule'))
+    else:
+        return render_template("import.html")
 
 @app.route("/element/<id>")
 @app.route("/element/<id>/<type>")
