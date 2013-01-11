@@ -85,7 +85,10 @@ def use_code(heading, text, codes=None):
     """
     if heading in codes:
         if text == '': return ''
-        return codes[heading][text]
+        try:
+            return codes[heading][text]
+        except KeyError:
+            raise Exception("Error finding code " + text + " under " + header + " in your structure. You may be using a different version of the template.")
     else:
         return text
 

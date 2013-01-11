@@ -254,7 +254,12 @@ codes_activity = {
                    'Future publication': 'fp',
                    'Partially compliant': 'pc',
                    'Unable to publish': 'up',
-                   'Under consideration': 'uc' },
+                   'Under consideration': 'uc',
+                   'YES': 'fc',
+                   'FUTURE': 'fp',
+                   'PARTIAL': 'pc',
+                   'NO': 'up',
+                   'POSSIBLE': 'uc' },
     # Exclusions
     'exclusions': { 'a) Not applicable to organisation': 'a',
                     'b) A non-disclosure policy': 'b',
@@ -306,6 +311,7 @@ codes = {
     # System resource
     'resource': {  'Direct feed from internal systems': 'd',
                    'Excel spreadsheet conversion': 'e',
+                   'Excel spread sheet conversion': 'e',
                    'Manual capture through an online tool (web entry platform)': 'm',
                    'Other': 'o'},
     # Timeliness
