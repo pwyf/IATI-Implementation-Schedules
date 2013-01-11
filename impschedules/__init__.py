@@ -146,7 +146,7 @@ def setup():
 
 def parse_implementation_schedule(schedule, out, package_filename):
  
-    out["last_updated_date"] = datetime.now()
+    out["last_updated_date"] = datetime.datetime.now()
     out["publisher"] = schedule.find("metadata").find("publisher").text
     out["publisher_code"] = schedule.find("metadata").find("publisher").get("code")
     out["schedule_version"] = schedule.find("metadata").find("version").text
@@ -157,31 +157,106 @@ def parse_implementation_schedule(schedule, out, package_filename):
     db.session.commit()
 
     pd = {}
-    pd["publishing_scope_value"] = schedule.find("publishing").find("scope").get("value")
-    pd["publishing_scope_narrative"] = schedule.find("publishing").find("scope").find("narrative").text
-    pd["publishing_timetable_date_initial"] = schedule.find("publishing").find("publication-timetable").get("date-initial")
-    pd["publishing_timetable_narrative"] = schedule.find("publishing").find("publication-timetable").find("narrative").text
-    pd["publishing_frequency_frequency"] = schedule.find("publishing").find("publication-frequency").get("frequency")
-    pd["publishing_frequency_timeliness"] = schedule.find("publishing").find("publication-frequency").get("timeliness")
-    pd["publishing_frequency_narrative"] = schedule.find("publishing").find("publication-frequency").find("narrative").text
-    pd["publishing_lifecycle_point"] = schedule.find("publishing").find("publication-lifecycle").get("point")
-    pd["publishing_lifecycle_narrative"] = schedule.find("publishing").find("publication-lifecycle").find("narrative").text
-    pd["publishing_data_quality_quality"] = schedule.find("publishing").find("data-quality").get("quality")
-    pd["publishing_data_quality_narrative"] = schedule.find("publishing").find("data-quality").find("narrative").text
-    pd["publishing_approach_resource"] = schedule.find("publishing").find("approach").get("resource")
-    pd["publishing_approach_narrative"] = schedule.find("publishing").find("approach").find("narrative").text
-    pd["publishing_notes"] = schedule.find("publishing").find("notes").find("narrative").text
-    pd["publishing_thresholds"] = schedule.find("publishing").find("thresholds").find("narrative").text
-    pd["publishing_exclusions"] = schedule.find("publishing").find("exclusions").find("narrative").text
-    pd["publishing_constraints"] = schedule.find("publishing").find("constraints-other").find("narrative").text
-    pd["publishing_license"] = schedule.find("publishing").find("license").get("license")
-    pd["publishing_license_narrative"] = schedule.find("publishing").find("license").find("narrative").text
-    pd["publishing_multilevel"] = schedule.find("publishing").find("activity-multilevel").get("yesno")
-    pd["publishing_multilevel_narrative"] = schedule.find("publishing").find("activity-multilevel").find("narrative").text
-    pd["publishing_segmentation"] = schedule.find("publishing").find("segmentation").get("segmentation")
-    pd["publishing_segmentation_narrative"] = schedule.find("publishing").find("segmentation").find("narrative").text
-    pd["publishing_user_interface_status"] = schedule.find("publishing").find("user-interface").get("status")
-    pd["publishing_user_interface_narrative"] = schedule.find("publishing").find("segmentation").find("narrative").text
+    try:
+        pd["publishing_scope_value"] = schedule.find("publishing").find("scope").get("value")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_scope_narrative"] = schedule.find("publishing").find("scope").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_timetable_date_initial"] = schedule.find("publishing").find("publication-timetable").get("date-initial")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_timetable_narrative"] = schedule.find("publishing").find("publication-timetable").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_frequency_frequency"] = schedule.find("publishing").find("publication-frequency").get("frequency")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_frequency_timeliness"] = schedule.find("publishing").find("publication-frequency").get("timeliness")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_frequency_narrative"] = schedule.find("publishing").find("publication-frequency").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_lifecycle_point"] = schedule.find("publishing").find("publication-lifecycle").get("point")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_lifecycle_narrative"] = schedule.find("publishing").find("publication-lifecycle").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_data_quality_quality"] = schedule.find("publishing").find("data-quality").get("quality")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_data_quality_narrative"] = schedule.find("publishing").find("data-quality").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_approach_resource"] = schedule.find("publishing").find("approach").get("resource")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_approach_narrative"] = schedule.find("publishing").find("approach").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_notes"] = schedule.find("publishing").find("notes").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_thresholds"] = schedule.find("publishing").find("thresholds").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_exclusions"] = schedule.find("publishing").find("exclusions").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_constraints"] = schedule.find("publishing").find("constraints-other").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_license"] = schedule.find("publishing").find("license").get("license")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_license_narrative"] = schedule.find("publishing").find("license").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_multilevel"] = schedule.find("publishing").find("activity-multilevel").get("yesno")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_multilevel_narrative"] = schedule.find("publishing").find("activity-multilevel").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_segmentation"] = schedule.find("publishing").find("segmentation").get("segmentation")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_segmentation_narrative"] = schedule.find("publishing").find("segmentation").find("narrative").text
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_user_interface_status"] = schedule.find("publishing").find("user-interface").get("status")
+    except AttributeError:
+        pass
+    try:
+        pd["publishing_user_interface_narrative"] = schedule.find("publishing").find("segmentation").find("narrative").text
+    except AttributeError:
+        pass
 
     for k, v in pd.items():
         d = models.ImpScheduleData()
@@ -205,7 +280,10 @@ def parse_implementation_schedule(schedule, out, package_filename):
                 element_name = element.name
 
             data.status = schedule.find(element.level).find(element_name).find("status").get("category")
-            data.exclusions = schedule.find(element.level).find(element_name).find("exclusions").find("narrative").text
+            try:
+                data.exclusions = schedule.find(element.level).find(element_name).find("exclusions").find("narrative").text
+            except AttributeError:
+                pass
             if (data.exclusions is None):
                 data.exclusions = ""
             try:
@@ -213,11 +291,11 @@ def parse_implementation_schedule(schedule, out, package_filename):
             except AttributeError:
                 data.notes=""
             try:
-                data.publication_date = datetime.strptime(schedule.find(element.level).find(element_name).find("publication-date").text, "%Y-%m-%d")
+                data.publication_date = datetime.datetime.strptime(schedule.find(element.level).find(element_name).find("publication-date").text, "%Y-%m-%d")
             except AttributeError:
                 pass
             
-            data.date_recorded = datetime.now()
+            data.date_recorded = datetime.datetime.now()
             db.session.add(data)
     
     db.session.commit()
