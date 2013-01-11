@@ -1,0 +1,387 @@
+<?xml version='1.0' encoding='utf-8'?>
+<implementation xml:lang="en" generated-datetime="2012-10-08T22:59:30+01:00">
+  <metadata>
+    <publisher code="CB-COH-07676886">Publish What You Fund</publisher>
+    <version></version>
+    <date>2012-10-08</date>
+  </metadata>
+  <publishing>
+    <scope value="1.0">
+      <narrative>Publish What You Fund will publish 100% of total activities.</narrative>
+    </scope>
+    <publication-timetable date-initial="2011-11-29" date-full="2013-01-01">
+      <narrative>Initial implementation of the complete dataset was in November 2011, using the OpenAidRegister. The second round of publication (through the CSV Converter) will occur on 1st October 2012. Results data and project documents will be added in January 2013.</narrative>
+    </publication-timetable>
+    <publication-frequency frequency="m" timeliness="1w">
+      <narrative>Data will be exported from Sage, processed automatically, and then published. From export to publication should take less than one day, but it may take up to one week.</narrative>
+    </publication-frequency>
+    <publication-lifecycle point="i">
+      <narrative>May consider publishing planned activities at a future stage, but all of our activities are organised into three workstreams which are unlikely to change, even if the specific projects and targets within those workstreams change.</narrative>
+    </publication-lifecycle>
+    <data-quality quality="v">
+      <narrative>Data will be exported from Sage accounting software. Accounts are audited every year and subject to scrutiny by the Finance Committee of the Board of Trustees quarterly, as well as Companies House annually.</narrative>
+    </data-quality>
+    <approach resource="e">
+      <narrative>Linda Grimsey, Finance and Operations Manager, and Mark Brough, Research Officer, will work together to export the data from accounting systems and convert it to the IATI Standard. The data will first be exported from Sage (accounting software). It will then have to be processed, either using Google Refine or a custom Python script, to add information items that are not in the Sage data. The data will then be uploaded to the IATI CSV Converter and mapped across to the Standard. The IATI Registry will then be informed of the updated data.</narrative>
+    </approach>
+    <notes>
+      <narrative></narrative>
+    </notes>
+    <thresholds>
+      <narrative>No thresholds. We will publish each line in our accounts as a separate transaction, with the exception of staff salaries.</narrative>
+    </thresholds>
+    <exclusions>
+      <narrative>Staff salaries will be aggregated.</narrative>
+    </exclusions>
+    <constraints-other>
+      <narrative>Lack of automatic publication tools from Sage to the IATI Standard. Publish What You Fund will release as open-source software any tools we create to facilitate this process.</narrative>
+    </constraints-other>
+    <license license="p">
+      <narrative>All of Publish What You Fund's data will be published in the public domain. We generally adopt either a public domain or attribution-only license for all of our publications.</narrative>
+    </license>
+    <activity-multilevel yesno="n">
+      <narrative>Publishing a flat project structure (one activity per workstream); our accounting software is structured in this way.</narrative>
+    </activity-multilevel>
+    <segmentation segmentation="s">
+      <narrative>All of Publish What You Fund's activities are at international level, and we have a small number of activities so it makes sense to publish only one file.</narrative>
+    </segmentation>
+    <user-interface status="u">
+      <narrative>We may provide access to our data on our website in the future, but the value of this is likely to be fairly low relative to providing a user interface for other (larger) organisations' data.</narrative>
+    </user-interface>
+  </publishing>
+  <organisation>
+    <total-budget>
+      <status category="fp"/>
+      <publication-date>2013-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>We will publish the 2011 budget, and 2012 budget when approved by the Board.</notes>
+    </total-budget>
+    <recipient-org-budget>
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Publish What You Fund does not generally fund other intitutions or projects.</notes>
+    </recipient-org-budget>
+    <recipient-country-budget>
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Publish What You Fund does not generally fund at the country level.</notes>
+    </recipient-country-budget>
+    <document-link>
+      <status category="fp"/>
+      <publication-date>2013-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Original proposal to funders, offer letters, audited accounts, annual report when compiled.</provider-definition>
+      <notes>Dependant on agreement with funders for some of these documents.</notes>
+    </document-link>
+  </organisation>
+  <activity>
+    <reporting-org>
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Publish What You Fund</provider-definition>
+      <notes>Fixed entry</notes>
+    </reporting-org>
+    <iati-identifier>
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Departments (code)</provider-definition>
+      <notes>From Sage</notes>
+    </iati-identifier>
+    <other-identifier>
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </other-identifier>
+    <title type="agency">
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Departments (text)</provider-definition>
+      <notes>From Sage</notes>
+    </title>
+    <title type="recipient">
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </title>
+    <description type="agency">
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Need to add this manually</notes>
+    </description>
+    <description type="recipient">
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </description>
+    <activity-status>
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Implementation</provider-definition>
+      <notes>Fixed entry</notes>
+    </activity-status>
+    <activity-date type="start">
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>2011-10-01</provider-definition>
+      <notes>Fixed entry</notes>
+    </activity-date>
+    <activity-date type="end">
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>2013-10-01</provider-definition>
+      <notes>Fixed entry</notes>
+    </activity-date>
+    <contact-info>
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>info@publishwhatyoufund.org</provider-definition>
+      <notes>Fixed entry</notes>
+    </contact-info>
+    <participating-org type="funding">
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>List each of PWYF's funders alongside each activity</provider-definition>
+      <notes>Fixed entry</notes>
+    </participating-org>
+    <participating-org type="extending">
+      <status category="up"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Not relevant to PWYF</provider-definition>
+    </participating-org>
+    <participating-org type="implementing">
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Publish What You Fund</provider-definition>
+      <notes>Fixed entry</notes>
+    </participating-org>
+    <participating-org type="accountable">
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </participating-org>
+    <recipient-country>
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Bilateral/unspecified (998) in all cases</provider-definition>
+      <notes>Fixed entry</notes>
+    </recipient-country>
+    <recipient-region>
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </recipient-region>
+    <location>
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </location>
+    <sector type="crs">
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Free flow of information</provider-definition>
+      <notes>Fixed entry</notes>
+    </sector>
+    <sector type="agency">
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Will consider how we could publish multiple sectors from our accounting system (apportioning value for each of our categories)</notes>
+    </sector>
+    <policy-marker>
+      <status category="up"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Not relevant to PWYF</provider-definition>
+    </policy-marker>
+    <collaboration-type>
+      <status category="up"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Not relevant to PWYF</provider-definition>
+    </collaboration-type>
+    <default-flow-type>
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Fixed entry</notes>
+    </default-flow-type>
+    <default-finance-type>
+      <status category="up"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Not relevant to PWYF</provider-definition>
+    </default-finance-type>
+    <default-aid-type>
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Fixed entry</notes>
+    </default-aid-type>
+    <default-tied-status>
+      <status category="up"/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Not relevant to PWYF</provider-definition>
+    </default-tied-status>
+    <budget>
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>May be difficult to publish with CSV Converter</notes>
+    </budget>
+    <planned-disbursement>
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </planned-disbursement>
+    <transaction type="commitment">
+      <status category="fp"/>
+      <publication-date>2013-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Original (October 2011) budget will be published in future datasets.</provider-definition>
+      <notes>Added after export from Sage</notes>
+    </transaction>
+    <transaction type="disbursement">
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Actual (where TrueTitle = 01 Income)</provider-definition>
+      <notes>From Sage</notes>
+    </transaction>
+    <transaction type="reimbursement">
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <transaction type="incoming">
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Actual (where TrueTitle = 04 Expenses); needs to be inverse values as currently negative values.</provider-definition>
+    </transaction>
+    <transaction type="repayment">
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <document-link>
+      <status category="fp"/>
+      <publication-date>2013-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Fixed entry</notes>
+    </document-link>
+    <activity-website>
+      <status category="fc"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>http://www.publishwhatyoufund.org</provider-definition>
+      <notes>Fixed entry</notes>
+    </activity-website>
+    <related-activity>
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </related-activity>
+    <conditions type="attached">
+      <status category="fp"/>
+      <publication-date>2012-10-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>N</provider-definition>
+      <notes>Fixed entry</notes>
+    </conditions>
+    <conditions type="text">
+      <status/>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </conditions>
+    <result>
+      <status category="fp"/>
+      <publication-date>2013-01-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <provider-definition>Reports to donors? (Or just relevant excerpts for each workstream.) Final accounts an annual report?</provider-definition>
+      <notes>Added after export from Sage</notes>
+    </result>
+  </activity>
+</implementation>
+

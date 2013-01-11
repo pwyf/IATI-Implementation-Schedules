@@ -1,0 +1,357 @@
+<?xml version='1.0' encoding='utf-8'?>
+<implementation xml:lang="en" generated-datetime="2012-10-08T22:56:33+01:00">
+  <metadata>
+    <publisher code="GB-COH-4905100">Resource Extraction Monitoring (REM)</publisher>
+    <version></version>
+    <date>2012-10-08</date>
+  </metadata>
+  <publishing>
+    <scope value="1.0">
+      <narrative>IATI data will eventually cover 100% of our (REM’s) projects.  We will be starting with one project (REM currently has three ongoing projects), DFID CSCF funded, as this was requested by DFID.  </narrative>
+    </scope>
+    <publication-timetable date-initial="2012-03-01" date-full="2012-04-01">
+      <narrative>We aim to submit an initial set of IATA data by the beginning of March 2012.  This will cover one of our projects.    We aim to publish a fuller set of data and information on other projects when the web entry platform is developed and our organisation has the resources to publish – we expect to add our other projects to the registry by the middle of April 2012.  </narrative>
+    </publication-timetable>
+    <publication-frequency frequency="q" timeliness="1m">
+      <narrative>Data will be published within one month of financial reports being approved by funders.  The frequency of this depends on the project – some financial reports are quarterly, some annual.  The first project we will report on, the Sri Lanka based project, has the next financial report due at the end of January 2012.  Data will be reviewed and updated quarterly.</narrative>
+    </publication-frequency>
+    <publication-lifecycle point="i">
+      <narrative>Activity details will be published when they are approved and in the implementation stage.</narrative>
+    </publication-lifecycle>
+    <data-quality quality="v">
+      <narrative>Financial data will only be published once it has been approved by our donors following financial reporting to them.  </narrative>
+    </data-quality>
+    <approach resource="m">
+      <narrative>One part time member of staff is available to publish the data – all data to be approved by project, organisation managers and finance manager before considered suitable for publication.</narrative>
+    </approach>
+    <notes>
+      <narrative></narrative>
+    </notes>
+    <thresholds>
+      <narrative>Financial reporting (eg expenditure, budget) will be on each project as a whole, there is no minimum threshold.</narrative>
+    </thresholds>
+    <exclusions>
+      <narrative>No personal details of staff will be published, at this point no other exclusions appear necessary although all data will be reviewed in terms of staff and consultant safety before publication.</narrative>
+    </exclusions>
+    <constraints-other>
+      <narrative></narrative>
+    </constraints-other>
+    <license license="p">
+      <narrative>The data will meet the IATI standard – ie it will be public domain under the IATI license.  Please note that although the data published through IATI is free to use under the OKD Licence, provided REM is credited, all attached or linked-to documents are copyrighted and cannot be used without REM's authorisation. </narrative>
+    </license>
+    <activity-multilevel yesno="n">
+      <narrative>Each activity is a separate project – a contract funded by a particular funder/s, to carry out an agreed activity in an agreed country or area.</narrative>
+    </activity-multilevel>
+    <segmentation segmentation="o">
+      <narrative>Data will be segmented by project.  Two of our current projects are country specific, the other project currently running is mainly focussed on one country with some activities carried out in other countries.   </narrative>
+    </segmentation>
+    <user-interface status="n">
+      <narrative>We have no resources to add a user interface to our website.</narrative>
+    </user-interface>
+  </publishing>
+  <organisation>
+    <total-budget>
+      <status category="fp"/>
+      <publication-date>2012-04-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Overall budget for the year ahead should be simple to publish, and work on this will commence when the data on other projects is published.</notes>
+    </total-budget>
+    <recipient-org-budget>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </recipient-org-budget>
+    <recipient-country-budget>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </recipient-country-budget>
+    <document-link>
+      <status category="fp"/>
+      <publication-date>2012-04-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Other documents such as mission statement, etc.</notes>
+    </document-link>
+  </organisation>
+  <activity>
+    <reporting-org>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions category="">
+        <narrative></narrative>
+      </exclusions>
+    </reporting-org>
+    <iati-identifier>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>e.g. Sri Lanka - GB-COH-4905100-CSCF523</notes>
+    </iati-identifier>
+    <other-identifier>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Any other identifiers other organisation (e.g. Funders) might use for the activity.</notes>
+    </other-identifier>
+    <title type="agency">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </title>
+    <title type="recipient">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </title>
+    <description type="agency">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </description>
+    <description type="recipient">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </description>
+    <activity-status>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Implementation</notes>
+    </activity-status>
+    <activity-date type="start">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </activity-date>
+    <activity-date type="end">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </activity-date>
+    <contact-info>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </contact-info>
+    <participating-org type="funding">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions category="">
+        <narrative></narrative>
+      </exclusions>
+      <notes>4/3/12 for Sri Lanka project, 15/4/12 for other projects.
+Country funding the project.</notes>
+    </participating-org>
+    <participating-org type="extending">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </participating-org>
+    <participating-org type="implementing">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </participating-org>
+    <participating-org type="accountable">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </participating-org>
+    <recipient-country>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </recipient-country>
+    <recipient-region>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </recipient-region>
+    <location>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </location>
+    <sector type="crs">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>15150 (Strengthening Civil Society)</notes>
+    </sector>
+    <sector type="agency">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </sector>
+    <policy-marker>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </policy-marker>
+    <collaboration-type>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </collaboration-type>
+    <default-flow-type>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+      <notes>Not requested by DFID</notes>
+    </default-flow-type>
+    <default-finance-type>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Grant</notes>
+    </default-finance-type>
+    <default-aid-type>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>C01</notes>
+    </default-aid-type>
+    <default-tied-status>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Untied</notes>
+    </default-tied-status>
+    <budget>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </budget>
+    <planned-disbursement>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </planned-disbursement>
+    <transaction type="commitment">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Total value of the project</notes>
+    </transaction>
+    <transaction type="disbursement">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Project expenditure</notes>
+    </transaction>
+    <transaction type="reimbursement">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <transaction type="incoming">
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <transaction type="repayment">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </transaction>
+    <document-link>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>Documents relating to the project, including the proposal, logframe, reports to DFID, etc.</notes>
+    </document-link>
+    <activity-website>
+      <status category="fc"/>
+      <publication-date>2012-03-01</publication-date>
+      <exclusions>
+        <narrative></narrative>
+      </exclusions>
+      <notes>rem.org.uk</notes>
+    </activity-website>
+    <related-activity>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </related-activity>
+    <conditions type="attached">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </conditions>
+    <conditions type="text">
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </conditions>
+    <result>
+      <status category="up"/>
+      <exclusions category="a">
+        <narrative></narrative>
+      </exclusions>
+    </result>
+  </activity>
+</implementation>
+
