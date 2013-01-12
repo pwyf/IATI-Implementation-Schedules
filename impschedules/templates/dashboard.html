@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="jumbotron">
+    <h1>Implementation schedule browser</h1>
+    <p class="lead">This is a testing site for a forthcoming implementation schedules browser. It's under active development, so you shouldn't rely on any of the information contained in here.</p>
+    <!--<p>
+    <a class="btn btn-success btn-large">
+    Learn more
+    </a>
+    </p>-->
+    </div>
+    <div class="row">
+        <div class="span6">
+            <h1>Publishers</h1>
+            <p>See implementation schedules from individual publishers</p>
+            <p>
+            <a class="btn" href="{{url_for('publisher')}}">Publishers »</a>
+            </p>
+        </div>
+        <div class="span6">
+            <h1>Elements</h1>
+            <p>See elements across implementation schedules</p>
+            <p>
+            <a class="btn" href="{{url_for('element')}}">Elements »</a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6">
+            <h1>Timeline</h1>
+            <p>Use the timeline to see a graph of publication over time for different elements</p>
+            <p>
+            <a class="btn" href="{{url_for('timeline')}}">Timeline »</a>
+            </p>
+        </div>
+    </div>
+
+{% endblock %}
