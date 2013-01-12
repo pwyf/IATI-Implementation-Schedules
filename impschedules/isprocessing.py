@@ -6,7 +6,7 @@ import models
 import os
 from lxml import etree
 import datetime
-from properties import *
+import properties
 
 def parse_implementation_schedule(schedule, out, package_filename):
  
@@ -23,7 +23,7 @@ def parse_implementation_schedule(schedule, out, package_filename):
     pd = {}
     
     #properties come from module properties.py
-    for k, v in properties.items():
+    for k, v in properties.properties.items():
         try:
             pd[k] = (eval(v["data"]))
         except AttributeError:
