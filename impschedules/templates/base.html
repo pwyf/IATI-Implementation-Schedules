@@ -30,7 +30,9 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li{% if active_page == "index" %} class="active"{%endif%}><a href="/">Home</a></li>
-              <li{% if active_page == "timeline" %} class="active"{%endif%}><a href="/timeline">Timeline</a></li>
+              <li{% if active_page == "publishers" %} class="active"{%endif%}><a href="{{url_for('publisher')}}">Publishers</a></li>
+              <li{% if active_page == "elements" %} class="active"{%endif%}><a href="/elements">Elements</a></li>
+              <li{% if active_page == "timeline" %} class="active"{%endif%}><a href="{{url_for('timeline')}}">Timeline</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
@@ -40,10 +42,12 @@
     </div>
 
   <div class="container">
-    
+
+    {% if active_page != "index" %}    
     <div class="alert alert-error alert-block"><h4>Watch out!</h4>
     <p>This site is in beta; the content should not be relied on. You're strongly advised to check out the <a href="http://aidtransparency.net/implementation">original implementation schedules</a> before drawing strong conclusions about this data.</p>
     </div>
+    {%endif%}
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}

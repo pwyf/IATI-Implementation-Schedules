@@ -42,3 +42,5 @@ impschedules/static/src/view.timeline.js
 impschedules/static/src/view.transform.js
 temp/*
 *.tpml~
+impschedules/static/src_old
+impschedules/static/src_old/*.*

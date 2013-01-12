@@ -1,27 +1,12 @@
-{% extends "base.html" %}
+{% set active_page='elements'%}{% extends "base.html" %}
 {% block content %}
     <script src="static/jquery.tablesorter.min.js"></script>
     <script >
     $(function() {
     $("table#elements").tablesorter({ sortList: [[0,1]] });
-    $("table#publishers").tablesorter({ sortList: [[0,0]] });
     });
 
     </script>
-	<h1>Select an organisation</h1>
-    <table class="table" id="publishers">
-    <thead>
-    <th>Publisher</th><th>Initial implementation</th><!--<th>Compliance</th>-->
-    </thead>
-    <tbody>
-	{% for org in orgs %}
-    <tr>
-	<td><a href="{{url_for('publisher', id=org[0].id)}}">{{ org[0].publisher }}</a></td><td>{{org[1]}}</td><!--<td></td>-->
-    </tr>
-	{% endfor %}
-    </tbody>
-    </table>
-
 
     <h1>Select an element</h1>
 	<table class="table" id="elements">

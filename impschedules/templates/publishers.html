@@ -1,0 +1,25 @@
+{% set active_page='publishers'%}{% extends "base.html" %}
+{% block content %}
+    <script src="static/jquery.tablesorter.min.js"></script>
+    <script >
+    $(function() {
+    $("table#publishers").tablesorter({ sortList: [[0,0]] });
+    });
+
+    </script>
+    <a class="btn btn-success pull-right" href="{{url_for('import_schedule')}}">Import new schedule</a>
+	<h1>Select a publisher</h1>
+    <table class="table" id="publishers">
+    <thead>
+    <th>Publisher</th><th>Initial implementation</th>
+    </thead>
+    <tbody>
+	{% for org in orgs %}
+    <tr>
+	<td><a href="{{url_for('publisher', id=org[0].id)}}">{{ org[0].publisher }}</a></td><td>{{org[1]}}</td><!--<td></td>-->
+    </tr>
+	{% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}

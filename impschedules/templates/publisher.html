@@ -1,5 +1,6 @@
-{% extends "base.html" %}
+{% set active_page='publishers'%}{% extends "base.html" %}
 {% block content %}
+    <a class="btn btn-success pull-right" href="{{url_for('publisher_edit', id=publisher.id)}}">Edit</a>
     <h1>{{publisher.publisher}}</h1>
     <ul class="nav nav-tabs" id="pageTab">
         <li><a href="#basic" data-toggle="tab" class="firsttab">Basic information</a></li>
@@ -32,8 +33,10 @@
             </tr>
             {% for segment in segments %}
             <tr>
-                <td>{{segment.segment}}</td>
-                <td>{{segment.segment_value}}</td>
+                <td>{{properties.properties[segment.segment]["name"]}}</td>
+                <td>{% if properties.properties[segment.segment]["type"] == "text" %}{{segment.segment_value}}{%else%}
+                {{properties.codes[properties.properties[segment.segment]["code"]][segment.segment_value]}}
+                {% endif%}</td>
             </tr>
             {% endfor %}
             </tbody>
