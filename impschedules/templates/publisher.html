@@ -1,5 +1,12 @@
 {% set active_page='publishers'%}{% extends "base.html" %}
 {% block content %}
+    <script src="/static/jquery.tablesorter.min.js"></script>
+    <script >
+    $(function() {
+    $("table#tablebasic").tablesorter({ sortList: [[0,0]] });
+    });
+
+    </script>
     <a class="btn btn-success pull-right" href="{{url_for('publisher_edit', id=publisher.id)}}">Edit</a>
     <h1>{{publisher.publisher}}</h1>
     <ul class="nav nav-tabs" id="pageTab">
@@ -9,7 +16,7 @@
     <div class="tab-content">
         <div class="tab-pane" id="basic">
             <h3>Basic information</h3>
-            <table class="table">
+            <table class="table" id="tablebasic">
             <thead>
                 <th>Item</th>
                 <th>Value</th>
@@ -44,7 +51,7 @@
         </div>
         <div class="tab-pane active" id="detailed">
             <h3>Detailed information</h3>
-            <table class="table">
+            <table class="table" id="tabledetailed">
             <thead>
                 <th>Level</th>
                 <th>Element</th>
@@ -55,30 +62,30 @@
             </thead>
             <tbody>
             {% for d in data %}
-            <tr{%if (d["data"][0].data=='uc') %} class="error"{%elif (d["data"][0].data=='fp') %} class="info"{%endif%}>
-                    <td>{{d["element"].level}}</td>
-                    <td><a href="{{url_for('element', id=d["element"].id, type=d["property"].defining_attribute_value)}}">{{d["element"].name}}{% if d["property"].defining_attribute_value %}
-                        ({{d["property"].defining_attribute_value}})
-                    {%endif%}</a></td>
-                    <td>{%
-                    if (d["data"][0].status=="fc")
-                    %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-                    elif (d["data"][0].status=="uc")
-                    %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
-                    elif (d["data"][0].status=="pc")
-                    %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-                    elif (d["data"][0].status=="up")
-                    %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-                    elif (d["data"][0].status=="fp")
-                    %}<i class="icon-wrench" title="Future publication"></i><br />Future
-                    {% else %}
-                    {{ d["data"][0].status }}
-                    {%endif%}</td>
-                    <td>{{d["data"][0].publication_date}}</td>
-                    <td>{{d["data"][0].notes}}</td>
-                    <td>{{d["data"][0].exclusions}}</td>
-            </tr>
-            {% endfor %}
+                <tr{%if (d["data"][0].data=='uc') %} class="error"{%elif (d["data"][0].data=='fp') %} class="info"{%endif%}>
+                        <td>{{d["element"].level|capitalize}}</td>
+                        <td><a href="{{url_for('element', id=d["element"].id, type=d["property"].defining_attribute_value)}}">{{d["element"].description}}{% if d["property"].defining_attribute_value %}
+                            ({{d["property"].defining_attribute_value}})
+                        {%endif%}</a></td>
+                        <td>{%
+                        if (d["data"][0].status=="fc")
+                        %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
+                        elif (d["data"][0].status=="uc")
+                        %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
+                        elif (d["data"][0].status=="pc")
+                        %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
+                        elif (d["data"][0].status=="up")
+                        %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
+                        elif (d["data"][0].status=="fp")
+                        %}<i class="icon-wrench" title="Future publication"></i><br />Future
+                        {% else %}
+                        {{ d["data"][0].status }}
+                        {%endif%}</td>
+                        <td>{{d["data"][0].publication_date}}</td>
+                        <td>{{d["data"][0].notes}}</td>
+                        <td>{{d["data"][0].exclusions}}</td>
+                </tr>
+                {% endfor %}
             </tbody>
             </table>
         </div>

@@ -36,16 +36,31 @@ def get_date(value):
     global datemode
     try:
         date = datetime.datetime(*xlrd.xldate_as_tuple(value, datemode))
+        if (str(date) == "1905-07-07 00:00:00"):
+            raise TypeError
         return date.date().isoformat()
     except ValueError:
         return ''
     # Unfortunately properly formatted dates are not required in the CS implementation schedule. Allow this for now, deal with it later.
     except TypeError:
-        if (value.startswith("number:")):
-            value = value.strip("number:")
-            value = int(value)
+        try:
+            if (value.startswith("number:")):
+                value = value.strip("number:")
+                value = str(int(value))
+        # It's a float
+        except AttributeError:
+            value = str(int(value))
         if (len(value) == 4):
             # If the length is 4, it's probably a year
+            try:
+                thedate = datetime.datetime.strptime(value, "%Y")
+                datefix = datetime.timedelta(days=364.25)
+                thedate = thedate + datefix
+                return (thedate.date().isoformat())
+            except ValueError:
+                return value
+        elif (value.isdigit()):
+            value = int(value)
             try:
                 thedate = datetime.datetime.strptime(value, "%Y")
                 datefix = datetime.timedelta(days=364.25)

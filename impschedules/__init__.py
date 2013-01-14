@@ -31,12 +31,13 @@ def setup():
     # create properties
     attributes = {'notes': {}, 'status_category': {}, 'publication_date': {}, 'exclusions': {}}
     elements = {
-        'organisation': {'total-budget': {}, 'recipient-org-budget': {}, 'recipient-country-budget': {},'document-link': {}},
+        'organisation': {'total-budget': {'description': 'Organisation budget'}, 'recipient-org-budget': {'description': 'Funded institution budgets'}, 'recipient-country-budget': {'description': 'Recipient country budgets'},'document-link': {'description': 'Organisation documents'}},
         'activity': {
-            'reporting-org': {}, 
-            'iati-identifier': {}, 
-            'other-identifier': {},
+            'reporting-org': { 'description': 'Reporting organisation' }, 
+            'iati-identifier': { 'description': 'IATI Identifier' }, 
+            'other-identifier': { 'description': 'Other Identifier' },
             'title': { 
+                'description': 'Title',
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
                     'agency': {},
@@ -44,22 +45,25 @@ def setup():
                 }
             }, 
             'description': { 
+                'description': 'Description',
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
                     'agency': {},
                     'recipient': {}
                 }
-            },  
-            'activity-status': {},
+            },
+            'activity-status': {'description': 'Activity status'},
             'activity-date': { 
+                'description': 'Activity dates',
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
                     'start': {},
                     'end': {}
                 }
             },
-            'contact-info': {},
+            'contact-info': {'description': 'Contact information'},
             'participating-org': {
+                'description': 'Participating organisation',
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
                     'funding': {},
@@ -68,24 +72,26 @@ def setup():
                     'implementing': {}
                 }
             },
-            'recipient-region': {},
-            'recipient-country': {},
-            'location': {},
+            'recipient-region': {'description': 'Recipient region'},
+            'recipient-country': {'description': 'Recipient country'},
+            'location': {'description': 'Sub-national geographic location'},
             'sector': {
+                'description': 'Sector',
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
                     'crs': {},
                     'agency': {}
                 }
             },
-            'policy-marker': {},
-            'collaboration-type': {},
-            'default-flow-type': {},
-            'default-finance-type': {},
-            'default-aid-type': {},
-            'default-tied-status': {},
-            'budget': {},
+            'policy-marker': {'description': 'Policy marker'},
+            'collaboration-type': {'description': 'Collaboration type'},
+            'default-flow-type': {'description': 'Flow type'},
+            'default-finance-type': {'description': 'Finance type'},
+            'default-aid-type': {'description': 'Aid type'},
+            'default-tied-status': {'description': 'Tied aid status'},
+            'budget': {'description': 'Budget'},
             'transaction': {
+                'description': 'Transactions',
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
                     'commitment': {},
@@ -95,10 +101,11 @@ def setup():
                     'repayment': {}
                 }
             },
-            'document-link': {},
-            'activity-website': {},
-            'related-activity': {},
+            'document-link': {'description': 'Activity documents'},
+            'activity-website': {'description': 'Activity website'},
+            'related-activity': {'description': 'Related activity'},
             'conditions': {
+                'description': 'Conditions',
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
                     'attached': {},
@@ -113,6 +120,8 @@ def setup():
             e = models.Element()
             e.name = element
             e.level = level
+            if (elvalue.has_key("description")):
+                e.description = elvalue["description"]
             db.session.add(e)
             db.session.commit()
             element_id = e.id
@@ -235,7 +244,10 @@ def publisher(id=None):
                 ).all()
         
         data2 = []
-        elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value).order_by(models.Element.level, models.Property.parent_element, models.Property.defining_attribute_value).distinct()
+        elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value
+                ).order_by(models.Property.parent_element, models.Property.defining_attribute_value
+                ).join(models.Element
+                ).distinct()
         
         for element in elements:
             d={}

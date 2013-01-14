@@ -131,8 +131,8 @@ Note that the common standard uses the term 'activity' to describe the reported 
 # () for unparsed rows, organisations
 # ('', 'element for row', 'attribute/narrative', 'attribute/narrative', 'attribute/narrative')
 publishing_rows = [
-    #there were 53
-    #first attribute says which column   to start collecting data from
+    # first attribute says which column   to start collecting data from
+    # number of rows -1 = number of spreadsheet row.
     (), #1
     (),
     (),
@@ -214,6 +214,10 @@ publishing_rows = [
     (), #80
     (),
     (),
+    # Common Standard schedules are not formatted the same as IATI schedules, so need to look for information 
+    # across several rows. "split" allows you to do this. First option should be in the same row as the 
+    # point in this publishing row (-1); second option should be 'row':N rows below. So the below should
+    # start at row 82.
     ('split', 'publication-frequency', {'frequency': {'col': 3, 'opts': {0: 'Monthly', 1: 'Quarterly', 2: 'Annually'}}, 'timeliness': {'row': 4, 'col': 2, 'opts': {0: '1 month in arrears', 1: '1 quarter in arrears', 2: '1 year in arrears'}}}),
     (),
     (),
@@ -273,7 +277,7 @@ publishing_rows = [
     (),
     (), #140
     (),
-    (10,'publication-timetable', 'date-initial'),
+    (10,'publication-timetable', 'date-initial'), # row 141 in reality
     (),
     (),
     (),
