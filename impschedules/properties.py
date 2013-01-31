@@ -182,7 +182,21 @@ properties = {
         'group': 'publishing_user_interface',
         'data' : 'schedule.find("publishing").find("segmentation").find("narrative").text',
         'type': 'text'
-    }
+         },
+    'schedule_type':
+        {
+        'name': 'Schedule type',
+        'group': 'schedule_type',
+        'data' : 'schedule.find("metadata").find("schedule_type").text',
+        'type': 'text'
+        },
+    'schedule_type_code':
+        {
+        'name': 'Schedule type_code',
+        'group': 'schedule_type',
+        'data' : 'schedule.find("metadata").find("schedule_type").get("code")',
+        'type': 'text'
+        }
 }
 status = {    'fc': 'Fully compliant',
               'fp': 'Future publication',

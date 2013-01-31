@@ -16,7 +16,7 @@
     <tbody>
 	{% for org in orgs %}
     <tr>
-	<td><a href="{{url_for('publisher', id=org[0].id)}}">{{ org[0].publisher }}</a></td><td>{{org[1]}}</td><!--<td></td>-->
+	<td><a href="{{url_for('publisher', id=org[0].id)}}">{{ org[0].publisher_actual }}</a></td><td>{{org[1]}}</td><!--<td></td>-->
     </tr>
 	{% endfor %}
     </tbody>

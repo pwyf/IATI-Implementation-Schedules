@@ -11,6 +11,7 @@ import urllib
 import string
 import random
 import iatiimplementationxml.toxml as toxml
+import collections
 
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
@@ -90,6 +91,7 @@ def setup():
             'default-aid-type': {'description': 'Aid type'},
             'default-tied-status': {'description': 'Tied aid status'},
             'budget': {'description': 'Budget'},
+            'planned-disbursement': {'description': 'Planned disbursement'},
             'transaction': {
                 'description': 'Transactions',
                 'defining_attribute': 'type',
@@ -110,6 +112,14 @@ def setup():
                 'defining_attribute_values': {
                     'attached': {},
                     'text': {}
+                }
+            },
+            'budget-identifier': {
+                'description': 'Budget identifier',
+                'defining_attribute': 'type',
+                'defining_attribute_values': {
+                    'economic': {},
+                    'administrative-functional': {}
                 }
             },
             'result': {}
@@ -153,38 +163,150 @@ def index():
 @app.route("/import", methods=['GET', 'POST'])
 def import_schedule():
     if (request.method == 'POST'):
-        if (request.form['password'] == app.config["SECRET_PASSWORD"]):
-            url = request.form['url']
-            structure = request.form['structure']
-            local_file_name = app.config["TEMP_FILES_DIR"] + "/" + ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range (5))
-            try:
-                try:
-                    f = urllib.urlretrieve(url, local_file_name)
-                except IOError:
-                    raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
-                # Pass to implementation schedule converter
-                xml = toxml.convert_schedule(local_file_name, structure)
-                doc = etree.fromstring(xml)
-                context = {}
-                context['source_file'] = url
-                schedules = doc.findall("metadata")
-                # Parse, manual check, and then import
-                try:
-                    #parse_implementation_schedule(doc, context.copy(), url, True)
+        if ("do_import" in request.form):
+            out = ""
+            out2 = ""
+            pr = {}
+            data = {}
+            s = {} # schedule
+            for field, values in request.form.items():
 
-                    flash ("Successfully parsed your implementation schedule.", "success")
-                    return render_template("import_schedule_steps.html", doc=doc, properties=properties)
+                a = field.split('#')
+
+                #a[0] is level
+                #a[1] is field name, perhaps including a type (separated by @)
+                #a[2] is field part (e.g. status_original, status_actual, etc.)
+
+                if field.startswith('metadata'):
+                    p = a[1] + "_" + a[2]
+                    s[p] = values
+
+                elif field.startswith('publishing'):
+                    try:
+                        pr[a[1]]
+                    except KeyError:
+                        pr[a[1]] = {}
+
+                    try:
+                        pr[a[1]][a[2]]
+                    except KeyError:
+                        pr[a[1]][a[2]] = {}
+
+                    pr[a[1]][a[2]] = values
+
+                elif (field.startswith('organisation') or (field.startswith('activity'))):
+                    at = a[1].split('@')
+
+                    try:
+                        at[1]
+                    except IndexError:
+                        at.append('')
+
+                    try:
+                        data[a[0]]
+                    except KeyError:
+                        data[a[0]] = {}
+
+                    try:
+                        data[a[0]][at[0]]
+                    except KeyError:
+                        data[a[0]][at[0]] = {}
+
+                    try:
+                        data[a[0]][at[0]][at[1]]
+                    except KeyError:
+                        data[a[0]][at[0]][at[1]] = {}
+
+                    data[a[0]][at[0]][at[1]][a[2]] = values
+
+            # write schedule
+            sched = models.ImpSchedule(**s)
+            db.session.add(sched)
+            db.session.commit()
+            # then write properties
+            for k, v in pr.items():
+                d = {}
+                d["publisher_id"] = sched.id
+                d["segment"] = k
+                for a, b in v.items():
+                    d["segment_value_"+a] = b
+                dd = models.ImpScheduleData(**d)
+                db.session.add(dd)
+
+            # then write data
+            elements = db.session.query(
+                    models.Element.level, 
+                    models.Element.name, 
+                    models.Element.id
+                    ).all()
+            elements = dict(map(lambda x: ((x[0],x[1]),(x[2])), elements))
+
+            element_properties = db.session.query(
+                    models.Property.parent_element, 
+                    models.Property.defining_attribute_value,
+                    models.Property.id
+                    ).all()
+            element_properties = dict(map(lambda x: ((x[0],x[1]),(x[2])), element_properties))
+
+            for level, values in data.items():
+                for element, attributes in values.items():
+                    element_id = elements[(level, element)]
+                    for defining_attribute_value, prs in attributes.items():
+                        # level
+                        # element name
+                        # defining_attribute_value
+                        # properties
+                        if (defining_attribute_value == ''):
+                            defining_attribute_value = None
+                        n = {}
+                        n["property_id"] = element_properties[(element_id, defining_attribute_value)]
+                        n["impschedule_id"] = sched.id
+                        n["date_recorded"] = datetime.datetime.now()
+                        for k, v in prs.items():
+                            n[k] = v
+                            if ((k=='date_original') or (k=='date_actual')):
+                                if (v==''):
+                                    n[k] = None
+                                else:
+                                    n[k] = datetime.datetime.strptime(v, "%Y-%m-%d")
+                        ndb = models.Data(**n)
+                        db.session.add(ndb)
+            db.session.commit()
+            flash('Successfully imported your schedule', 'success')
+            return redirect(url_for('publisher', id=sched.id))
+        else:
+            if (request.form['password'] == app.config["SECRET_PASSWORD"]):
+                url = request.form['url']
+                structure = request.form['structure']
+                local_file_name = app.config["TEMP_FILES_DIR"] + "/" + ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range (5))
+                try:
+                    try:
+                        f = urllib.urlretrieve(url, local_file_name)
+                    except IOError:
+                        raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
+                    # Pass to implementation schedule converter
+                    xml = toxml.convert_schedule(local_file_name, structure)
+                    doc = etree.fromstring(xml)
+                    context = {}
+                    context['source_file'] = url
+                    schedules = doc.findall("metadata")
+                    # Parse, manual check, and then import
+                    try:
+                        #parse_implementation_schedule(doc, context.copy(), url, True)
+
+                        flash ("Successfully parsed your implementation schedule.", "success")
+                        return render_template("import_schedule_steps.html", doc=doc, properties=properties)
+                    except Exception, e:
+                        msg = "There was an unknown error importing your schedule. The error was: " + str(e)
+                        flash (msg, "error")
+                        return redirect(url_for('import_schedule'))
                 except Exception, e:
                     msg = "There was an unknown error importing your schedule. The error was: " + str(e)
                     flash (msg, "error")
                     return redirect(url_for('import_schedule'))
-            except Exception, e:
-                msg = "There was an unknown error importing your schedule. The error was: " + str(e)
-                flash (msg, "error")
+            else:
+                flash("Wrong password", "error")
                 return redirect(url_for('import_schedule'))
-        else:
-            flash("Wrong password", "error")
-            return redirect(url_for('import_schedule'))
     else:
         return render_template("import.html")
 
@@ -230,9 +352,9 @@ def element(id=None, type=None):
                                     models.Element.id, 
                                     models.Element.name, 
                                     models.Element.level,
-                                    models.Data.status,
+                                    models.Data.status_actual,
                                     func.count(models.Data.id)
-                ).group_by(models.Data.status, models.Property
+                ).group_by(models.Data.status_actual, models.Property
                 ).join(models.Element).join(models.Data).all()
 
         compliance = nest_compliance_results(compliance_data)
@@ -249,7 +371,7 @@ def publisher(id=None):
                 ).join(models.ImpSchedule
                 ).all()
         
-        data2 = []
+        data = []
         elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value
                 ).order_by(models.Property.parent_element, models.Property.defining_attribute_value
                 ).join(models.Element
@@ -264,14 +386,16 @@ def publisher(id=None):
                 ).join(models.Property
                 ).join(models.Element
                 ).all()
-            data2.append(d)
+            data.append(d)
 
-        return render_template("publisher.html", publisher=publisher, data=data2, segments=publisher_data, properties=properties)
+        s = score(publisher_data, data)
+
+        return render_template("publisher.html", publisher=publisher, data=data, segments=publisher_data, properties=properties, score=s["value"], score_calculations=Markup(s["calculations"]))
     else:
-        orgs = db.session.query(models.ImpSchedule, models.ImpScheduleData.segment_value
+        orgs = db.session.query(models.ImpSchedule, models.ImpScheduleData.segment_value_actual
                 ).filter(models.ImpScheduleData.segment=="publishing_timetable_date_initial"
                 ).join(models.ImpScheduleData
-                ).order_by(models.ImpSchedule.publisher).all()
+                ).order_by(models.ImpSchedule.publisher_actual).all()
 
         totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
         return render_template("publishers.html", orgs=orgs, totalnum=totalnum.number)
@@ -281,10 +405,10 @@ def publisher_edit(id=id):
     if (request.method == 'POST'):
         if (request.form['password'] == app.config["SECRET_PASSWORD"]):
             publisher = models.ImpSchedule.query.filter_by(id=id).first()
-            publisher.publisher = request.form['publisher']
-            publisher.publisher_code = request.form['publisher_code']
-            publisher.schedule_version = request.form['schedule_version']
-            publisher.schedule_date = request.form['schedule_date']
+            publisher.publisher_actual = request.form['publisher']
+            publisher.publisher_code_actual = request.form['publisher_code']
+            publisher.schedule_version_actual = request.form['schedule_version']
+            publisher.schedule_date_actual = request.form['schedule_date']
             db.session.add(publisher)
             db.session.commit()
             flash('Updated', "success")

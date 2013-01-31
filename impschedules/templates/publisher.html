@@ -9,7 +9,9 @@
 
     </script>
     <a class="btn btn-success pull-right" href="{{url_for('publisher_edit', id=publisher.id)}}">Edit</a>
-    <h1>{{publisher.publisher}}</h1>
+    <h1>{{publisher.publisher_actual}}</h1>
+    <p class="lead">Score: {{score|int}}%</p>
+    <p><b>Calculation:</b><br />{{score_calculations}}</p>
     <ul class="nav nav-tabs" id="pageTab">
         <li><a href="#basic" data-toggle="tab" class="firsttab">Basic information</a></li>
         <li><a href="#detailed" data-toggle="tab" class="secondtab">Detailed information</a></li>
@@ -25,25 +27,25 @@
             <tbody>
             <tr>
                 <td>Publisher name</td>
-                <td>{{publisher.publisher}}</td>
+                <td>{{publisher.publisher_actual}}</td>
             </tr>
             <tr>
                 <td>Publisher code</td>
-                <td>{{publisher.publisher_code}}</td>
+                <td>{{publisher.publisher_code_actual}}</td>
             </tr>
             <tr>
                 <td>Schedule version</td>
-                <td>{{publisher.schedule_version}}</td>
+                <td>{{publisher.schedule_version_actual}}</td>
             </tr>
             <tr>
                 <td>Schedule date</td>
-                <td>{{publisher.schedule_date}}</td>
+                <td>{{publisher.schedule_date_actual}}</td>
             </tr>
             {% for segment in segments %}
             <tr>
                 <td>{{properties.properties[segment.segment]["name"]}}</td>
-                <td>{% if properties.properties[segment.segment]["type"] == "text" %}{{segment.segment_value}}{%else%}
-                {{properties.codes[properties.properties[segment.segment]["code"]][segment.segment_value]}}
+                <td>{% if properties.properties[segment.segment]["type"] == "text" %}{% if segment.segment_value_actual is not none %}{{segment.segment_value_actual}}{%endif%}{%else%}
+                {{properties.codes[properties.properties[segment.segment]["code"]][segment.segment_value_actual]}}
                 {% endif%}</td>
             </tr>
             {% endfor %}
@@ -69,22 +71,22 @@
                             ({{d["property"].defining_attribute_value}})
                         {%endif%}</a></td>
                         <td>{%
-                        if (d["data"][0].status=="fc")
+                        if (d["data"][0].status_actual=="fc")
                         %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-                        elif (d["data"][0].status=="uc")
+                        elif (d["data"][0].status_actual=="uc")
                         %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
-                        elif (d["data"][0].status=="pc")
+                        elif (d["data"][0].status_actual=="pc")
                         %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-                        elif (d["data"][0].status=="up")
+                        elif (d["data"][0].status_actual=="up")
                         %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-                        elif (d["data"][0].status=="fp")
+                        elif (d["data"][0].status_actual=="fp")
                         %}<i class="icon-wrench" title="Future publication"></i><br />Future
                         {% else %}
                         {{ d["data"][0].status }}
                         {%endif%}</td>
-                        <td>{{d["data"][0].publication_date}}</td>
-                        <td>{{d["data"][0].notes}}</td>
-                        <td>{{d["data"][0].exclusions}}</td>
+                        <td>{{d["data"][0].date_actual}}</td>
+                        <td>{{d["data"][0].notes_actual}}</td>
+                        <td>{% if d["data"][0].exclusions is not none %}{{d["data"][0].exclusions}}{%endif%}</td>
                 </tr>
                 {% endfor %}
             </tbody>

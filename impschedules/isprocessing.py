@@ -8,13 +8,68 @@ from lxml import etree
 import datetime
 import properties
 
+def score(publisher_data, element_data):
+    properties = dict(map(lambda x: ((x.segment),(x.segment_value_actual)), publisher_data))
+    data = map(lambda x: ((x["data"][0].status_actual),(str(x["data"][0].date_actual), str(x["data"][0].property_id))), element_data)
+    ok = 0.0
+    nook = 0.0
+    s = {}
+    s['calculations'] = ""
+    s['value'] = 0.0
+    for d, values in data:
+        if (d=='fc'):
+            ok=ok+1.0
+        elif ((d=='fp') and (values[0]!='')):
+            ok=ok+1.0
+        else:
+            nook = nook+1.0
+    
+    if (properties['publishing_timetable_date_initial'] != ''):
+        willpublish = 1.0
+        s['calculations'] += "Planning to publish to IATI<br />"
+    else:
+        willpublish = 0.0
+    if ((properties['publishing_frequency_frequency'] == 'm') or (properties['publishing_frequency_frequency'] == 'q')):
+        frequent = 1.0
+    else:
+        frequent = 0.0
+    try:
+        if ((properties['publishing_license'] == 'p') or (properties['publishing_license'] == 'a')):
+            license = 1.0
+        else:
+            license = 0.0
+    except KeyError:
+        license = 0.0
+
+    if ((license==1.0) and (frequent==1.0)):
+        s['calculations'] += "Planning to publish at least quarterly under an open license (100% score)<br />"
+    elif (license==1.0):
+        s['calculations'] += "Planning to publish under an open license, but not planning to publish at least quarterly (50% score)<br />"
+    elif (frequent==1.0):
+        s['calculations'] += "Planning to publish at least quarterly, but planning to publish under an open license (50% score)<br />"
+    
+    s['calculations'] += "Elements publishing: " + str(int(ok)) + "<br />"
+    s['calculations'] += "Elements not publishing: " + str(int(nook)) + "<br />"
+    s['calculations'] += "Elements score: " + str(int(round(((ok/(ok+nook))*100),0))) + "%<br />"
+
+    s['calculations'] += "<br />"
+    s['calculations'] += str(int(willpublish*100)) + "% (plan to publish) x " + str(int(((frequent+license)/2)*100)) + "% (publishing approach) x " + str((round(((ok/(ok+nook))*100),0))) + "% (elements score)"
+   
+    s['value'] = round((willpublish*(ok/(ok+nook))*((frequent+license)/2))*100)
+    return s
+
 def parse_implementation_schedule(schedule, out, package_filename):
  
     out["last_updated_date"] = datetime.datetime.now()
-    out["publisher"] = schedule.find("metadata").find("publisher").text
-    out["publisher_code"] = schedule.find("metadata").find("publisher").get("code")
-    out["schedule_version"] = schedule.find("metadata").find("version").text
-    out["schedule_date"] = schedule.find("metadata").find("date").text
+    out["publisher_actual"] = schedule.find("metadata").find("publisher").text
+    out["publisher_code_actual"] = schedule.find("metadata").find("publisher").get("code")
+    out["schedule_version_actual"] = schedule.find("metadata").find("version").text
+    out["schedule_date_actual"] = schedule.find("metadata").find("date").text
+
+    out["publisher_original"] = schedule.find("metadata").find("publisher").text
+    out["publisher_code_original"] = schedule.find("metadata").find("publisher").get("code")
+    out["schedule_version_original"] = schedule.find("metadata").find("version").text
+    out["schedule_date_original"] = schedule.find("metadata").find("date").text
 
     sched = models.ImpSchedule(**out) 
     db.session.add(sched)
@@ -33,7 +88,8 @@ def parse_implementation_schedule(schedule, out, package_filename):
         d = models.ImpScheduleData()
         d.publisher_id = sched.id
         d.segment = k
-        d.segment_value = v
+        d.segment_value_actual = v
+        d.segment_value_original = v
         db.session.add(d)
 
     elements = models.Element.query.all()
@@ -49,8 +105,10 @@ def parse_implementation_schedule(schedule, out, package_filename):
                 element_name = element.name + path
             else:
                 element_name = element.name
-
-            data.status = schedule.find(element.level).find(element_name).find("status").get("category")
+            try:
+                data.status_actual = schedule.find(element.level).find(element_name).find("status").get("category")
+            except AttributeError:
+                pass
             try:
                 data.exclusions = schedule.find(element.level).find(element_name).find("exclusions").find("narrative").text
             except AttributeError:
@@ -58,11 +116,11 @@ def parse_implementation_schedule(schedule, out, package_filename):
             if (data.exclusions is None):
                 data.exclusions = ""
             try:
-                data.notes = schedule.find(element.level).find(element_name).find("notes").text
+                data.notes_actual = schedule.find(element.level).find(element_name).find("notes").text
             except AttributeError:
-                data.notes=""
+                data.notes_actual=""
             try:
-                data.publication_date = datetime.datetime.strptime(schedule.find(element.level).find(element_name).find("publication-date").text, "%Y-%m-%d")
+                data.date_actual = datetime.datetime.strptime(schedule.find(element.level).find(element_name).find("publication-date").text, "%Y-%m-%d")
             except AttributeError:
                 pass
             

@@ -7,18 +7,21 @@
         <li><a href="#third" data-toggle="tab" class="third">Detailed information</a></li>
     </ul>
 
+    <form action="" method="post">
     <h1>Edit and import schedule</h1>
+    <input type="hidden" name="metadata#schedule_type#actual" value="{{doc.find("metadata").find("schedule_type").text}}" />
+    <input type="hidden" name="metadata#schedule_type_code#actual" value="{{doc.find("metadata").find("schedule_type").get("code")}}" />
+
     <p class="lead">{{doc.find("metadata").find("publisher").text}}: {{doc.find("metadata").find("schedule_type").text}} <code>{{doc.find("metadata").find("schedule_type").get("code")}}</code></p>
     <div class="alert alert-info">Some schedules are messy and the importing tool can only handle so much. Where there are mistakes, please correct them. Some assumptions have been made to help, but check that you're happy with them.</div>
-    <form action="" method="post">
 
     <div class="tab-content">
         <div class="tab-pane" id="first">
             <fieldset>
                 <legend>Create new or update existing schedule</legend>
                 <p>
-                <span><label for="import-new"><input type="radio" name="createupdate" id="import-new" checked> New</input></label></span>
-                <span><label for="import-existing"><input type="radio" name="createupdate" id="import-existing" disabled> Existing</input></label>
+                <span><label for="import-new"><input type="radio" name="form#createupdate" id="import-new" value="new" checked> New</input></label></span>
+                <span><label for="import-existing"><input type="radio" name="form#createupdate" id="import-existing" value="existing" disabled> Existing</input></label>
                 <select name="existing-publisher" disabled>
                 <option value="id">Name</option>
                 </select>
@@ -41,120 +44,120 @@
                     <tbody>
                         <tr>
                             <td>Publisher name</td>
-                            <td><input type="text" class="publisher_name original" value="{{doc.find("metadata").find("publisher").text}}" readonly/></td>
-                            <td><input type="text" class="publisher_name actual" value="{{doc.find("metadata").find("publisher").text}}"/></td>
-                            <td><div class="control-group"><select class="publisher_name change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><input type="text" name="metadata#publisher#original" class="publisher_name original" value="{{doc.find("metadata").find("publisher").text}}" readonly/></td>
+                            <td><input type="text" name="metadata#publisher#actual" class="publisher_name actual" value="{{doc.find("metadata").find("publisher").text}}"/></td>
+                            <td><div class="control-group"><select name="metadata#publisher#change" class="publisher_name change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Publisher code</td>
-                            <td><input type="text" class="publisher_code original" value="{{doc.find("metadata").find("publisher").get("code")}}" readonly/></td>
-                            <td><input type="text" class="publisher_code actual" value="{{doc.find("metadata").find("publisher").get("code")}}"/></td>
-                            <td><div class="control-group"><select class="publisher_code change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><input type="text" name="metadata#publisher_code#original" class="publisher_code original" value="{{doc.find("metadata").find("publisher").get("code")}}" readonly/></td>
+                            <td><input type="text" name="metadata#publisher_code#actual" class="publisher_code actual" value="{{doc.find("metadata").find("publisher").get("code")}}"/></td>
+                            <td><div class="control-group"><select name="metadata#publisher_code#change" class="publisher_code change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Schedule date</td>
-                            <td><input type="text" class="schedule_date original" value="{{doc.find("metadata").find("date").text}}" readonly/></td>
-                            <td><input type="text" class="schedule_date actual" value="{{doc.find("metadata").find("date").text}}"/></td>
-                            <td><div class="control-group"><select class="schedule_date change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><input type="text" name="metadata#schedule_date#original" class="schedule_date original" value="{{doc.find("metadata").find("date").text}}" readonly/></td>
+                            <td><input type="text" name="metadata#schedule_date#actual" class="schedule_date actual" value="{{doc.find("metadata").find("date").text}}"/></td>
+                            <td><div class="control-group"><select name="metadata#schedule_date#change" class="schedule_date change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Schedule version</td>
-                            <td><input type="text" class="schedule_version original" value="{{doc.find("metadata").find("version").text}}" readonly/></td>
-                            <td><input type="text" class="schedule_version actual" value="{{doc.find("metadata").find("version").text}}"/></td>
-                            <td><div class="control-group"><select class="schedule_version change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><input type="text" name="metadata#schedule_version#original" class="schedule_version original" value="{{doc.find("metadata").find("version").text}}" readonly/></td>
+                            <td><input type="text" name="metadata#schedule_version#actual" class="schedule_version actual" value="{{doc.find("metadata").find("version").text}}"/></td>
+                            <td><div class="control-group"><select name="metadata#schedule_version#change" class="schedule_version change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Initial implementation date</td>
-                            <td><input type="text" class="publishing_timetable_date_initial original" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" readonly/></td>
-                            <td><input type="text" class="publishing_timetable_date_initial actual" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" name="publishing_timetable_date_initial" id="publishing_timetable_date_initial" /></td>
-                            <td><div class="control-group"><select class="publishing_timetable_date_initial change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><input type="text" name="publishing#publishing_timetable_date_initial#original" class="publishing_timetable_date_initial original" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" readonly/></td>
+                            <td><input type="text" name="publishing#publishing_timetable_date_initial#actual" class="publishing_timetable_date_initial actual" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" name="publishing_timetable_date_initial" id="publishing_timetable_date_initial" /></td>
+                            <td><div class="control-group"><select name="publishing#publishing_timetable_date_initial#change" class="publishing_timetable_date_initial change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Frequency</td>
-                            <td><input class="publishing_timetable_frequency original" type="text" value="{{doc.find("publishing").find("publication-frequency").get("frequency")}}" readonly/></td>
+                            <td><input name="publishing#publishing_frequency_frequency#original" class="publishing_timetable_frequency original" type="text" value="{{doc.find("publishing").find("publication-frequency").get("frequency")}}" readonly/></td>
                             <td>
-                            <select class="publishing_timetable_frequency actual">
+                            <select name="publishing#publishing_frequency_frequency#actual" class="publishing_timetable_frequency actual">
                                 {% for key, value in properties.codes[properties.properties['publishing_frequency_frequency']["code"]].items() %}
                                 <option value="{{key}}" {% if key == (doc.find("publishing").find("publication-frequency").get("frequency")) %}selected {%endif%}>{{value}}</option>
                                 {%endfor%}
                             </select>
                             </td>
-                            <td><div class="control-group"><select class="publishing_timetable_frequency change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><div class="control-group"><select name="publishing#publishing_frequency_frequency#change" class="publishing_timetable_frequency change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Timeliness</td>
-                            <td><input type="text" class="publishing_timetable_timeliness original" value="{{doc.find("publishing").find("publication-frequency").get("timeliness")}}" readonly/></td>
+                            <td><input type="text" name="publishing#publishing_frequency_timeliness#original" class="publishing_timetable_timeliness original" value="{{doc.find("publishing").find("publication-frequency").get("timeliness")}}" readonly/></td>
                             <td>
-                            <select class="publishing_timetable_timeliness actual">
+                            <select name="publishing#publishing_frequency_timeliness#actual" class="publishing_timetable_timeliness actual">
                                 {% for key, value in properties.codes[properties.properties['publishing_frequency_timeliness']["code"]].items() %}
                                 <option value="{{key}}" {% if key == (doc.find("publishing").find("publication-frequency").get("timeliness")) %}selected {%endif%}>{{value}}</option>
                                 {%endfor%}
                             </select></td>
-                            <td><div class="control-group"><select class="publishing_timetable_timeliness change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><div class="control-group"><select name="publishing#publishing_frequency_timeliness#change" class="publishing_timetable_timeliness change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
-                            <td>Timeline narrative</td>
-                            <td><textarea readonly class="publishing_timetable_narrative original" rows="4">{{doc.find("publishing").find("publication-frequency").find("narrative").text}}</textarea></td>
-                            <td><textarea class="publishing_timetable_narrative actual" rows="4">{{doc.find("publishing").find("publication-frequency").find("narrative").text}}</textarea></td>
-                            <td><div class="control-group"><select class="publishing_timetable_narrative change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td>Frequency narrative</td>
+                            <td><textarea readonly name="publishing#publishing_frequency_narrative#original" class="publishing_timetable_narrative original" rows="4">{{doc.find("publishing").find("publication-frequency").find("narrative").text}}</textarea></td>
+                            <td><textarea name="publishing#publishing_frequency_narrative#actual" class="publishing_timetable_narrative actual" rows="4">{{doc.find("publishing").find("publication-frequency").find("narrative").text}}</textarea></td>
+                            <td><div class="control-group"><select name="publishing#publishing_frequency_narrative#change" class="publishing_timetable_narrative change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Thresholds</td>
-                            <td><textarea class="publishing_thresholds original" readonly rows="4">{{doc.find("publishing").find("thresholds").find("narrative").text}}</textarea></td>
-                            <td><textarea class="publishing_thresholds actual" rows="4">{{doc.find("publishing").find("thresholds").find("narrative").text}}</textarea></td>
-                            <td><div class="control-group"><select class="publishing_thresholds change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><textarea name="publishing#publishing_thresholds#original" class="publishing_thresholds original" readonly rows="4">{{doc.find("publishing").find("thresholds").find("narrative").text}}</textarea></td>
+                            <td><textarea name="publishing#publishing_thresholds#actual" class="publishing_thresholds actual" rows="4">{{doc.find("publishing").find("thresholds").find("narrative").text}}</textarea></td>
+                            <td><div class="control-group"><select name="publishing#publishing_thresholds#change" class="publishing_thresholds change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Exclusions</td>
-                            <td><textarea class="publishing_exclusions original" readonly rows="4">{{doc.find("publishing").find("exclusions").find("narrative").text}}</textarea></td>
-                            <td><textarea class="publishing_exclusions actual" rows="4">{{doc.find("publishing").find("exclusions").find("narrative").text}}</textarea></td>
-                            <td><div class="control-group"><select class="publishing_exclusions change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><textarea name="publishing#publishing_exclusions#original" class="publishing_exclusions original" readonly rows="4">{{doc.find("publishing").find("exclusions").find("narrative").text}}</textarea></td>
+                            <td><textarea name="publishing#publishing_exclusions#original" class="publishing_exclusions actual" rows="4">{{doc.find("publishing").find("exclusions").find("narrative").text}}</textarea></td>
+                            <td><div class="control-group"><select name="publishing#publishing_thresholds#change" class="publishing_exclusions change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>License</td>
-                            <td><input class="publishing_license original" type="text" value="{{doc.find("publishing").find("license").get("license")}}" readonly/></td>
-                            <td><select class="publishing_license actual">
+                            <td><input name="publishing#publishing_license#original" class="publishing_license original" type="text" value="{{doc.find("publishing").find("license").get("license")}}" readonly/></td>
+                            <td><select name="publishing#publishing_license#actual" class="publishing_license actual">
                                 {% for key, value in properties.codes[properties.properties['publishing_license']["code"]].items() %}
                                 <option value="{{key}}" {% if key == (doc.find("publishing").find("license").get("license")) %}selected {%endif%}>{{value}}</option>
                                 {%endfor%}
                             </select></td>
-                            <td><div class="control-group"><select class="publishing_license change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><div class="control-group"><select name="publishing#publishing_license#change" class="publishing_license change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Scope</td>
-                            <td><input class="publishing_scope original" type="text" value="{{doc.find("publishing").find("scope").get("value")}}" readonly/></td>
-                            <td><input class="publishing_scope actual" type="text" value="{{doc.find("publishing").find("scope").get("value")}}"/></td>
-                            <td><div class="control-group"><select class="publishing_scope change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><input name="publishing#publishing_scope_value#original" class="publishing_scope original" type="text" value="{{doc.find("publishing").find("scope").get("value")}}" readonly/></td>
+                            <td><input name="publishing#publishing_scope_value#actual" class="publishing_scope actual" type="text" value="{{doc.find("publishing").find("scope").get("value")}}"/></td>
+                            <td><div class="control-group"><select name="publishing#publishing_scope_value#change" class="publishing_scope change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
                             <td>Scope narrative</td>
-                            <td><textarea class="publishing_scope_narrative original" readonly rows="4">{{doc.find("publishing").find("scope").find("narrative").text}}</textarea></td>
-                            <td><textarea class="publishing_scope_narrative actual" rows="4">{{doc.find("publishing").find("scope").find("narrative").text}}</textarea></td>
-                            <td><div class="control-group"><select class="publishing_scope_narrative change" name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                            <td><textarea name="publishing#publishing_scope_narrative#original" class="publishing_scope_narrative original" readonly rows="4">{{doc.find("publishing").find("scope").find("narrative").text}}</textarea></td>
+                            <td><textarea name="publishing#publishing_scope_narrative#actual" class="publishing_scope_narrative actual" rows="4">{{doc.find("publishing").find("scope").find("narrative").text}}</textarea></td>
+                            <td><div class="control-group"><select name="publishing#publishing_scope_narrative#change" class="publishing_scope_narrative change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
@@ -184,36 +187,64 @@
                         <tr>
                             <td rowspan="3">{{element.tag}}{% if element.get("type") %} ({{element.get("type")}}){%endif%}</td>
                             <td>Status</td>
-                            <td><input type="text" value="{{element.find("status").get("category")}}" class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_original" readonly/></td>
-                            <td><select class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_actual" >
+                            <td><input type="text" value="{{element.find("status").get("category")}}" class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_original" name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#status_original" readonly/></td>
+                            <td><select
+                                 name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#status_actual"
+                                 class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_actual" >
                                 <option value="" {%if (element.find("status").get("category")) is none %}selected{%endif%} ></option>
                                 {% for key, value in properties.status.items() %}
-                                <option value="{{key}}" {% if key == (element.find("status").get("category")) %}selected {%endif%}>{{value}}</option>
+                                    <option value="{{key}}" {% if key == (element.find("status").get("category")) %}selected {%endif%}>{{value}}</option>
                                 {%endfor%}
                             </select></td>
-                            <td><div class="control-group"><select name="change_reason" class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_change" disabled><option value=""></option><option value="initial_date">Initial date later</option>
-<option value="no_date">No date provided</option></select></div></td>
-                        <tr>
+                            <td><div class="control-group"><select
+                             name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#status_change"
+                             class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_change" disabled>
+                                <option value=""></option>
+                                {% for key, value in properties.change_reasons.items() %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {%endfor %}
+                            </select></div></td>
+                            <tr>
                             <td>Date</td>
-                            <td><input type="text" value="{{element.find("publication-date").text}}" class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} date_original" readonly/></td>
-                            <td><input type="text" value="{{element.find("publication-date").text}}" class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} date_actual"  /></td>
+                            <td><input type="text" 
+                            value="{{element.find("publication-date").text}}" 
+                            name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#date_original"
+                            class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} date_original"
+                            readonly/></td>
+                            <td><input type="text" 
+                            value="{{element.find("publication-date").text}}" 
+                            name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#date_actual"
+                            class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} date_actual"  /></td>
                             <td>
-                                <div class="control-group">
-                                <select name="change_reason" class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} date_change" disabled>
-<option></option>                                {% for key, value in properties.change_reasons.items() %}
-                                <option value="{{key}}">{{value}}</option>
+                            <div class="control-group">
+                            <select 
+                            name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#date_change"
+                            class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} date_change" 
+                            disabled>
+                                <option></option>
+                                {% for key, value in properties.change_reasons.items() %}
+                                    <option value="{{key}}">{{value}}</option>
                                 {%endfor%}
-                                </select>
-                                </div>
+                            </select>
+                            </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Notes</td>
-                            <td><textarea readonly>{{element.find("notes").text}}</textarea></td>
-                            <td><textarea>{{element.find("notes").text}}</textarea></td>
-                            <td><div class="control-group"><select name="change_reason" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
-                                <option value="{{key}}">{{value}}</option>
-                                {%endfor%}</select></div></td>
+                            <td><textarea 
+                            name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#notes_original"
+                            readonly>{{element.find("notes").text}}</textarea></td>
+                            <td><textarea
+                            name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#notes_actual"
+                            >{{element.find("notes").text}}</textarea></td>
+                            <td><div class="control-group"><select 
+                            name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#notes_change"
+                            disabled>
+                                <option></option>
+                                {% for key, value in properties.change_reasons.items() %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {%endfor%}
+                            </select></div></td>
                         </tr>
                         {% endfor %}
                         {% endfor %}

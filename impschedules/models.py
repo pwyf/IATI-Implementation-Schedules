@@ -5,20 +5,37 @@ from impschedules import db
 class ImpSchedule(db.Model):
     __tablename__ = 'impschedule'
     id = Column(Integer, primary_key=True)
-    publisher = Column(UnicodeText)
-    publisher_code = Column(UnicodeText)
-    schedule_version = Column(UnicodeText)
-    schedule_date = Column(UnicodeText)
+    publisher_original = Column(UnicodeText)
+    publisher_code_original = Column(UnicodeText)
+    publisher_actual = Column(UnicodeText)
+    publisher_code_actual = Column(UnicodeText)
+    schedule_version_original = Column(UnicodeText)
+    schedule_date_original = Column(UnicodeText)
+    last_updated_date_original = Column(UnicodeText)
+    schedule_version_actual = Column(UnicodeText)
+    schedule_date_actual = Column(UnicodeText)
     last_updated_date = Column(UnicodeText)
     source_file = Column(UnicodeText)
+    schedule_type_original = Column(UnicodeText)
+    schedule_type_actual = Column(UnicodeText)
+    schedule_type_code_original = Column(UnicodeText)
+    schedule_type_code_actual = Column(UnicodeText)
 
-    def __init__(self, publisher=None, publisher_code=None, schedule_version=None, schedule_date=None, last_updated_date=None, source_file=None):
-        self.publisher = publisher
-        self.publisher_code = publisher_code
-        self.schedule_version = schedule_version
-        self.schedule_date = schedule_date
+    def __init__(self, publisher_original=None, publisher_code_original=None, schedule_version_original=None, schedule_date_original=None, publisher_actual=None, publisher_code_actual=None, schedule_version_actual=None, schedule_date_actual=None, last_updated_date=None, source_file=None, schedule_type_original=None, schedule_type_actual=None, schedule_type_code_original=None, schedule_type_code_actual=None):
+        self.publisher_original = publisher_original
+        self.publisher_code_original = publisher_code_original
+        self.schedule_version_original = schedule_version_original
+        self.schedule_date_original = schedule_date_original
+        self.publisher_actual = publisher_actual
+        self.publisher_code_actual = publisher_code_actual
+        self.schedule_version_actual = schedule_version_actual
+        self.schedule_date_actual = schedule_date_actual
         self.last_updated_date = last_updated_date
         self.source_file = source_file
+        self.schedule_type_original = schedule_type_original
+        self.schedule_type_actual = schedule_type_actual
+        self.schedule_type_code_original = schedule_type_code_original
+        self.schedule_type_code_actual = schedule_type_code_actual
 
     def __repr__(self):
         return self.publisher, self.id
@@ -31,15 +48,19 @@ class ImpScheduleData(db.Model):
     id = Column(Integer, primary_key=True)
     publisher_id = Column(Integer, ForeignKey('impschedule.id'))
     segment = Column(UnicodeText)
-    segment_value = Column(UnicodeText)
+    segment_value_actual = Column(UnicodeText)
+    segment_value_original = Column(UnicodeText)
+    segment_value_change = Column(UnicodeText)
 
-    def __init__(self, publisher_id=None, segment=None, segment_value=None):
+    def __init__(self, publisher_id=None, segment=None, segment_value_original=None, segment_value_actual=None, segment_value_change=None):
         self.publisher_id = publisher_id
         self.segment = segment
-        self.segment_value = segment_value
+        self.segment_value_original = segment_value_original
+        self.segment_value_actual = segment_value_actual
+        self.segment_value_change = segment_value_change
 
     def __repr__(self):
-        return self.id, self.publisher_id, self.segment, self.segment_value
+        return self.id, self.publisher_id, self.segment, self.segment_value_actual
 
 class AlterationCategory(db.Model):
     __tablename__ = 'alterationcategory'
@@ -56,29 +77,35 @@ class Data(db.Model):
     id = Column(Integer, primary_key=True)
     property_id = Column(Integer, ForeignKey('property.id'))
     impschedule_id = Column(Integer, ForeignKey('impschedule.id'))
-    data = Column(UnicodeText)
     date_recorded = Column(DateTime)
-    status = Column(UnicodeText)
+    status_original = Column(UnicodeText)
+    date_original = Column(Date)
+    notes_original = Column(UnicodeText)
+    status_actual = Column(UnicodeText)
+    date_actual = Column(Date)
+    notes_actual = Column(UnicodeText)
+    status_change = Column(UnicodeText)
+    date_change = Column(UnicodeText)
+    notes_change = Column(UnicodeText)
     exclusions = Column(UnicodeText)
-    notes = Column(UnicodeText)
-    publication_date = Column(Date)
-    actual_status = Column(UnicodeText)
-    actual_date = Column(Date)
-    alteration_category = Column(UnicodeText)
-    alteration_reason = Column(UnicodeText)
 
-    def __init__(self, property_id=None, impschedule_id=None, data=None, date_recorded=None, status=None, exclusions=None, notes=None, publication_date=None):
+    def __init__(self, property_id=None, impschedule_id=None, date_recorded=None, status_original=None, date_original=None, notes_original=None, status_actual=None, date_actual=None, notes_actual=None, status_change=None, date_change=None, notes_change=None):
         self.property_id = property_id
         self.impschedule_id = impschedule_id
-        self.data = data
         self.date_recorded = date_recorded
-        self.status = status
-        self.exclusions = exclusions
-        self.notes = notes
-        self.publication_date = publication_date
+        self.status_original = status_original
+        self.date_original = date_original
+        self.notes_original = notes_original
+        self.status_actual = status_actual
+        self.date_actual = date_actual
+        self.notes_actual = notes_actual
+        self.status_change = status_change
+        self.date_change = date_change
+        self.notes_change = notes_change
+
     
     def __repr__(self):
-        return self.property_id, self.impschedule_id, self.status, self.publication_date, self.notes, self.exclusions
+        return self.property_id, self.impschedule_id, self.status_actual, self.date_actual, self.notes_actual, self.status_original, self.date_original, self.notes_original
     
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
