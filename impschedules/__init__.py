@@ -169,19 +169,15 @@ def import_schedule():
             context['source_file'] = url
             schedules = doc.findall("metadata")
             # Parse, manual check, and then import
-            """try:"""
-            #parse_implementation_schedule(doc, context.copy(), url, True)
+            try:
+                #parse_implementation_schedule(doc, context.copy(), url, True)
 
-            flash ("Successfully parsed your implementation schedule.", "success")
-            return render_template("import_schedule_steps.html", doc=doc, properties=properties)
-            """except Exception, e:
+                flash ("Successfully parsed your implementation schedule.", "success")
+                return render_template("import_schedule_steps.html", doc=doc, properties=properties)
+            except Exception, e:
                 msg = "There was an unknown error importing your schedule. The error was: " + str(e)
                 flash (msg, "error")
-                return redirect(url_for('import_schedule'))"""
-            """except Exception, e:
-                msg = "There was an unknown error importing your schedule. The error was: " + str(e)
-                flash (msg, "error")
-                return redirect(url_for('import_schedule'))"""
+                return redirect(url_for('import_schedule'))
         else:
             flash("Wrong password", "error")
             return redirect(url_for('import_schedule'))
