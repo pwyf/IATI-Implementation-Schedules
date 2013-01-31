@@ -119,6 +119,26 @@ def parse_data(root, sheet, rows):
         
     """
     for rowx,rowname in enumerate(rows):
+        """
+        try:
+            if (rows[1] == 'notpresent'):
+                rowxml = etree.SubElement(root, rowname[0])
+                rowxml.attrib['type'] = rowname[2]
+                el = etree.SubElement(rowxml, 'status')
+                el.attrib['category'] = 'np'
+                el = etree.SubElement(rowxml, 'publication-date')
+                el.text = ""
+
+                rowxml = etree.SubElement(root, rowname[0])
+                rowxml.attrib['type'] = rowname[3]
+                el = etree.SubElement(rowxml, 'status')
+                el.attrib['category'] = 'np'
+                el = etree.SubElement(rowxml, 'publication-date')
+                el.text = ""
+                continue
+        except:
+            pass
+        """
         if rowname == '':
             continue
         if isinstance(rowname, tuple):

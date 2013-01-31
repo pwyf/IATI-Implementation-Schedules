@@ -269,6 +269,10 @@ def import_schedule():
                                     n[k] = None
                                 else:
                                     n[k] = datetime.datetime.strptime(v, "%Y-%m-%d")
+                        if (n['status_actual'] is None):
+                            n['status_actual'] = 'np'
+                        if (n['status_actual'] is None):
+                            n['status_actual'] = None
                         ndb = models.Data(**n)
                         db.session.add(ndb)
             db.session.commit()
@@ -291,15 +295,15 @@ def import_schedule():
                     context['source_file'] = url
                     schedules = doc.findall("metadata")
                     # Parse, manual check, and then import
-                    try:
-                        #parse_implementation_schedule(doc, context.copy(), url, True)
+                    """try:"""
+                    #parse_implementation_schedule(doc, context.copy(), url, True)
 
-                        flash ("Successfully parsed your implementation schedule.", "success")
-                        return render_template("import_schedule_steps.html", doc=doc, properties=properties)
-                    except Exception, e:
-                        msg = "There was an unknown error importing your schedule. The error was: " + str(e)
-                        flash (msg, "error")
-                        return redirect(url_for('import_schedule'))
+                    flash ("Successfully parsed your implementation schedule.", "success")
+                    return render_template("import_schedule_steps.html", doc=doc, properties=properties)
+                except Exception, e:
+                    msg = "There was an unknown error importing your schedule. The error was: " + str(e)
+                    flash (msg, "error")
+                    return redirect(url_for('import_schedule'))
                 except Exception, e:
                     msg = "There was an unknown error importing your schedule. The error was: " + str(e)
                     flash (msg, "error")
@@ -388,7 +392,12 @@ def publisher(id=None):
                 ).all()
             data.append(d)
 
-        s = score(publisher_data, data)
+        try:
+            s = score(publisher_data, data)
+        except IndexError:
+            s = {}
+            s['value'] = 0
+            s['calculations'] = "Not able to calculate score"
 
         return render_template("publisher.html", publisher=publisher, data=data, segments=publisher_data, properties=properties, score=s["value"], score_calculations=Markup(s["calculations"]))
     else:

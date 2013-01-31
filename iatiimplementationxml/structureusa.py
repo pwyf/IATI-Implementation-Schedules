@@ -92,7 +92,7 @@ activity_rows = [
     '', #Financial',
     'budget',
     'planned-disbursement',
-    '', #'UNDERDEVELOPMENT-RecipientCountryBudgetIdentifier',
+    '', #'budget-identifier', 'notpresent', 'economic', 'functional-administrative', #'UNDERDEVELOPMENT-RecipientCountryBudgetIdentifier',
     '', #Financial Transaction',
     ('transaction', 'type', 'commitment'),
     ('transaction', 'type', 'disbursement'),

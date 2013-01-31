@@ -65,6 +65,7 @@
             </thead>
             <tbody>
             {% for d in data %}
+            {% if d["data"][0] %}
                 <tr{%if (d["data"][0].data=='uc') %} class="error"{%elif (d["data"][0].data=='fp') %} class="info"{%endif%}>
                         <td>{{d["element"].level|capitalize}}</td>
                         <td><a href="{{url_for('element', id=d["element"].id, type=d["property"].defining_attribute_value)}}">{{d["element"].description}}{% if d["property"].defining_attribute_value %}
@@ -88,6 +89,7 @@
                         <td>{{d["data"][0].notes_actual}}</td>
                         <td>{% if d["data"][0].exclusions is not none %}{{d["data"][0].exclusions}}{%endif%}</td>
                 </tr>
+                {%endif%}
                 {% endfor %}
             </tbody>
             </table>
