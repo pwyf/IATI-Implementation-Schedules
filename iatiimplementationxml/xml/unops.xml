@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='utf-8'?>
+<implementation xml:lang="en" generated-datetime="2013-01-14T17:12:30">
+  <metadata>
+    <publisher code="41AAA">UNOPS</publisher>
+    <version></version>
+    <date>2012-08-01</date>
+  </metadata>
+  <publishing>
+    <publication-frequency timeliness="1m" frequency="m">
+      <narrative/>
+    </publication-frequency>
+    <publication-timetable date-initial="">
+      <narrative/>
+    </publication-timetable>
+  </publishing>
+  <organisation>
+    <total-budget>
+      <status category="pc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>There is an extent to which this question is not applicable to UNOPS as it is not a donor agency. UNOPS does publish a ‘budget estimate’ for next financial biennium which is submitted to and approved by the Executive Board comprised of member states. This budget estimate sets out projected management costs and the revenues necessary to cover those costs (UNOPS is self-financing and does not receive core UN funding) rather than establish a disbursement framework of funds to beneficiary country programmes.The current biennium estimate is published here: http://www.unops.org/SiteCollectionDocuments/EB%20documents/2011/DPOPS2011-5.pdf</notes>
+    </total-budget>
+    <recipient-org-budget>
+      <status category="na"/>
+    </recipient-org-budget>
+    <recipient-country-budget>
+      <status category="na"/>
+    </recipient-country-budget>
+    <document-link>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>Strategic Plan documents, Annual Reports to the Executive Board, Biennial Budget estimates, risk management frameworks and a variety of financial, project management, infrastructure and procurement policies are available at www.unops.org and as part of the Organization IATI file.</notes>
+    </document-link>
+  </organisation>
+  <activity>
+    <reporting-org>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </reporting-org>
+    <iati-identifier>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </iati-identifier>
+    <other-identifier>
+      <status category="na"/>
+    </other-identifier>
+    <title type="agency">
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>No current plans to publish in recipient language</notes>
+    </title>
+    <title type="recipient">
+      <status category="up"/>
+    </title>
+    <description type="agency">
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>No current plans to publish in recipient language</notes>
+    </description>
+    <description type="recipient">
+      <status category="up"/>
+    </description>
+    <activity-status>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </activity-status>
+    <activity-date type="start">
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>Actual start</notes>
+    </activity-date>
+    <activity-date type="end">
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>Planned end</notes>
+    </activity-date>
+    <contact-info>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </contact-info>
+    <participating-org type="funding">
+      <status category="pc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>Captured and available on project information platform</notes>
+    </participating-org>
+    <participating-org type="extending">
+      <status category="na"/>
+    </participating-org>
+    <participating-org type="implementing">
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </participating-org>
+    <participating-org type="accountable">
+      <status category="pc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>As noted in the first review, since we are listing 'project' type aid in our activity set we could say that 'UNOPS' is the 'accountable' organization for each activity entry.</notes>
+    </participating-org>
+    <recipient-country>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </recipient-country>
+    <recipient-region>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </recipient-region>
+    <location>
+      <status category="fc"/>
+      <publication-date>2012-05-01</publication-date>
+      <notes>Activities are geocoded according to UDCP/AidData methodology</notes>
+    </location>
+    <sector type="crs">
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </sector>
+    <sector type="agency">
+      <status category="na"/>
+      <notes>UNOPS does not have a policy mandate and as such does not have an internal set of sector codes referring to the areas of the recipient’s economic or social development that the activity intends to foster. There are results-based management indicators known as the 'Goals' of the 2010-2013 Strategic Plan, which are mapped to activities once per year for the Annual Report which could be added to the system however they would be of little use in the area of development coordination.</notes>
+    </sector>
+    <policy-marker>
+      <status category="na"/>
+      <publication-date>2011-10-01</publication-date>
+    </policy-marker>
+    <collaboration-type>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </collaboration-type>
+    <default-flow-type>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </default-flow-type>
+    <default-finance-type>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </default-finance-type>
+    <default-aid-type>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </default-aid-type>
+    <default-tied-status>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </default-tied-status>
+    <budget>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </budget>
+    <planned-disbursement>
+      <status category="na"/>
+    </planned-disbursement>
+    <budget-identifier type="economic">
+      <status/>
+    </budget-identifier>
+    <budget-identifier type="administrative-functional">
+      <status/>
+    </budget-identifier>
+    <transaction type="commitment">
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </transaction>
+    <transaction type="disbursement">
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+    </transaction>
+    <transaction type="reimbursement">
+      <status category="na"/>
+    </transaction>
+    <transaction type="incoming">
+      <status category="na"/>
+    </transaction>
+    <transaction type="repayment">
+      <status category="na"/>
+    </transaction>
+    <document-link>
+      <status category="fc"/>
+      <publication-date>2012-07-01</publication-date>
+      <notes>This system is fully capable of publishing project doucments for all activities. To date, selected project documents were published where the documents in question have already been made publicly available by the project partner (MPTF hub, Sida). Please see the example under the 'documents' tab on the following link: https://data.unops.org/index.htm#SegmentCode=ORG&amp;FocusCode=DATA_OVERVIEW&amp;EntityCode=PROJECT_ID&amp;EntityValue=00077183##SectionCode=OVERVIEW</notes>
+    </document-link>
+    <activity-website>
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>Each active project ID has a matching entry on our data.unops.org platform</notes>
+    </activity-website>
+    <related-activity>
+      <status category="na"/>
+    </related-activity>
+    <conditions type="attached">
+      <status category="fc"/>
+      <publication-date>2011-10-01</publication-date>
+      <notes>UNOPS can say 'N' for all activities on this question.</notes>
+    </conditions>
+    <conditions type="text">
+      <status category="na"/>
+    </conditions>
+    <result>
+      <status category="fp"/>
+      <notes>Likely progress to be made in the area of publishing outputs rather that outcomes and impacts but no firm timelines available at this date. UNOPS will continue to follow the developments of the standard in this area.</notes>
+    </result>
+  </activity>
+</implementation>

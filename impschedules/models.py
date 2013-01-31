@@ -41,6 +41,15 @@ class ImpScheduleData(db.Model):
     def __repr__(self):
         return self.id, self.publisher_id, self.segment, self.segment_value
 
+class AlterationCategory(db.Model):
+    __tablename__ = 'alterationcategory'
+    id = Column(Integer, primary_key=True)
+    name = Column(UnicodeText)
+    description = Column(UnicodeText)
+
+    def __init__(self, name=None, description=None):
+        self.name = name
+        self.description = description
 
 class Data(db.Model):
     __tablename__ = 'data'
@@ -53,6 +62,10 @@ class Data(db.Model):
     exclusions = Column(UnicodeText)
     notes = Column(UnicodeText)
     publication_date = Column(Date)
+    actual_status = Column(UnicodeText)
+    actual_date = Column(Date)
+    alteration_category = Column(UnicodeText)
+    alteration_reason = Column(UnicodeText)
 
     def __init__(self, property_id=None, impschedule_id=None, data=None, date_recorded=None, status=None, exclusions=None, notes=None, publication_date=None):
         self.property_id = property_id

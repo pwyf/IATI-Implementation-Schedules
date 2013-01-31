@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='utf-8'?>
+<implementation xml:lang="en" generated-datetime="2013-01-14T17:11:50">
+  <metadata>
+    <publisher code="41119">United Nations Population Fund (UNFPA)</publisher>
+    <version></version>
+    <date>2012-12-01</date>
+  </metadata>
+  <publishing>
+    <publication-frequency timeliness="1m" frequency="m">
+      <narrative/>
+    </publication-frequency>
+    <publication-timetable date-initial="">
+      <narrative/>
+    </publication-timetable>
+  </publishing>
+  <organisation>
+    <total-budget>
+      <status category="fc"/>
+      <publication-date>2013-06-01</publication-date>
+      <notes>UNFPA submits and publishes a biennium budget that is agreed with the Executive Board members and publishes it with the Executive Board documentation on the UNFPA website http://www.unfpa.org/public/home/exbrd/.  From 2014, UNFPA will prepare Integrated Budget for four years fully aligned with its  Strategic Plan also for the same period.</notes>
+    </total-budget>
+    <recipient-org-budget>
+      <status category="na"/>
+    </recipient-org-budget>
+    <recipient-country-budget>
+      <status category="fc"/>
+      <publication-date>2013-06-01</publication-date>
+      <notes>Country programming information including budget estimates for up to five years are published on the UNFPA website with the Executive Board documentation annually.</notes>
+    </recipient-country-budget>
+    <document-link>
+      <status category="fc"/>
+      <publication-date>2013-06-01</publication-date>
+      <notes>UNFPA publishes Annual Reports to the Executive Board, Strategic Plans and other policy documentation online</notes>
+    </document-link>
+  </organisation>
+  <activity>
+    <reporting-org>
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </reporting-org>
+    <iati-identifier>
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </iati-identifier>
+    <other-identifier>
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </other-identifier>
+    <title type="agency">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </title>
+    <title type="recipient">
+      <status category="up"/>
+    </title>
+    <description type="agency">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </description>
+    <description type="recipient">
+      <status category="up"/>
+    </description>
+    <activity-status>
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </activity-status>
+    <activity-date type="start">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </activity-date>
+    <activity-date type="end">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </activity-date>
+    <contact-info>
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </contact-info>
+    <participating-org type="funding">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </participating-org>
+    <participating-org type="extending">
+      <status category="na"/>
+    </participating-org>
+    <participating-org type="implementing">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </participating-org>
+    <participating-org type="accountable">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </participating-org>
+    <recipient-country>
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </recipient-country>
+    <recipient-region>
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </recipient-region>
+    <location>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </location>
+    <sector type="crs">
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </sector>
+    <sector type="agency">
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </sector>
+    <policy-marker>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </policy-marker>
+    <collaboration-type>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </collaboration-type>
+    <default-flow-type>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </default-flow-type>
+    <default-finance-type>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </default-finance-type>
+    <default-aid-type>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </default-aid-type>
+    <default-tied-status>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </default-tied-status>
+    <budget>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </budget>
+    <planned-disbursement>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </planned-disbursement>
+    <budget-identifier type="economic">
+      <status/>
+    </budget-identifier>
+    <budget-identifier type="administrative-functional">
+      <status/>
+    </budget-identifier>
+    <transaction type="commitment">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </transaction>
+    <transaction type="disbursement">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </transaction>
+    <transaction type="reimbursement">
+      <status category="na"/>
+      <publication-date>2013-06-01</publication-date>
+    </transaction>
+    <transaction type="incoming">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </transaction>
+    <transaction type="repayment">
+      <status category="na"/>
+      <publication-date>2013-06-01</publication-date>
+    </transaction>
+    <document-link>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </document-link>
+    <activity-website>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </activity-website>
+    <related-activity>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </related-activity>
+    <conditions type="attached">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </conditions>
+    <conditions type="text">
+      <status category="fp"/>
+      <publication-date>2013-06-01</publication-date>
+    </conditions>
+    <result>
+      <status category="fp"/>
+      <publication-date>2015-12-01</publication-date>
+    </result>
+  </activity>
+</implementation>

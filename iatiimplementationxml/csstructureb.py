@@ -1,5 +1,10 @@
 ## Common Standard implementation schedule version of structure.py
 
+identification = {
+    'name': "Common Standard Implementation Schedule",
+    'code': 'csstructureb'
+}
+
 # Which sheets information can be found in
 structure = {
     # Take this metadata from the agency page, because it includes the organisation ID
@@ -159,16 +164,16 @@ publishing_rows = [
     (),
     (),
     (),
+    (2, 'thresholds', '', ''), 
+    (),
+    (),
+    (2, 'exclusions', '', ''), #30
     (),
     (),
     (),
-    (), #30
     (),
     (),
-    (),
-    (),
-    (),
-    (),
+    ('split-scope', 'scope', {'current': {'col': 2}, 'future': {'row': 7, 'col': 2}}), #row 35 in reality
     (),
     (),
     (),
@@ -276,14 +281,14 @@ publishing_rows = [
     (),
     (),
     (), #140
-    (10,'publication-timetable', 'date-initial'), # row 140 in reality
+    ('split-pub','publication-timetable', 'date-initial'), # row 140 in reality
     (),
     (),
     (),
     (),
     (),
     (),
-    (),
+    ('split', 'license', {'license': {'col': 2, 'opts': {0: 'Public domain', 3: 'Attribution-only'}}}),
     (),
     (), #150
     (),

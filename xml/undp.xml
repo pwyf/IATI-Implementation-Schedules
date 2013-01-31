@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='utf-8'?>
+<implementation xml:lang="en" generated-datetime="2013-01-14T17:13:52">
+  <metadata>
+    <publisher code="41114">UNDP</publisher>
+    <version></version>
+    <date></date>
+  </metadata>
+  <publishing>
+    <publication-frequency timeliness="1m" frequency="m">
+      <narrative/>
+    </publication-frequency>
+    <publication-timetable date-initial="">
+      <narrative/>
+    </publication-timetable>
+  </publishing>
+  <organisation>
+    <total-budget>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>This is already published as a document. Biennium Budget. Published in machine-readable format (as links) from November 2012.</notes>
+    </total-budget>
+    <recipient-org-budget>
+      <status category="na"/>
+      <notes>Not applicable to organisation</notes>
+    </recipient-org-budget>
+    <recipient-country-budget>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>Published as part of CPD and CPAP (documents). Published machine-readable format (as links) from November 2012.</notes>
+    </recipient-country-budget>
+    <document-link>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>Strategic Plan is already published. Policy documents (poverty, energy, etc.) are also published. Published in machine-readable format (as links) from November 2012.</notes>
+    </document-link>
+  </organisation>
+  <activity>
+    <reporting-org>
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>UNDP</notes>
+    </reporting-org>
+    <iati-identifier>
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>This equates to UNDP-Atlas 'project ID'</notes>
+    </iati-identifier>
+    <other-identifier>
+      <status category="na"/>
+    </other-identifier>
+    <title type="agency">
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>In some cases, UNDP uses the official local language.</notes>
+    </title>
+    <title type="recipient">
+      <status category="pc"/>
+      <publication-date>2011-11-01</publication-date>
+    </title>
+    <description type="agency">
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>In some cases, UNDP uses the official local language.</notes>
+    </description>
+    <description type="recipient">
+      <status category="pc"/>
+      <publication-date>2011-11-01</publication-date>
+    </description>
+    <activity-status>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>UNDP publishes the activity status at the project level (activity level 1).</notes>
+    </activity-status>
+    <activity-date type="start">
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>UNDP publishes the activity start date at the project level (level 1).</notes>
+    </activity-date>
+    <activity-date type="end">
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>UNDP publishes the activity end date at the project level (activity level 1).</notes>
+    </activity-date>
+    <contact-info>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>Publish country office registry email address.</notes>
+    </contact-info>
+    <participating-org type="funding">
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>In Atlas equates to fund and donor codes.
+
+
+
+Atlas: Implementing Partner
+
+Not captured in Atlas. For reporting purposes, accountable institution and implementing will be the same.</notes>
+    </participating-org>
+    <participating-org type="extending">
+      <status category="pc"/>
+      <publication-date>2012-11-01</publication-date>
+    </participating-org>
+    <participating-org type="implementing">
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+    </participating-org>
+    <participating-org type="accountable">
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+    </participating-org>
+    <recipient-country>
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+    </recipient-country>
+    <recipient-region>
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>Since UNDP's definition of regions is different from IATI's, for the November 2011 publication, UNDP will use IATI code 998 (Unspecified), but will put UNDP's region descriptions.</notes>
+    </recipient-region>
+    <location>
+      <status category="pc"/>
+      <notes>Project locations are published in project documents. Geocoding of project locations is under development and will be available in 2013</notes>
+    </location>
+    <sector type="crs">
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>
+UNDP uses a matching table to combine DAC Sector and UNDP outcomes
+UNDP will use the definition of its Focus Area assurance.</notes>
+    </sector>
+    <sector type="agency">
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+    </sector>
+    <policy-marker>
+      <status category="pc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>Gender policy marker is in Atlas. Data quality will need to be reviewed.</notes>
+    </policy-marker>
+    <collaboration-type>
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>By default, UNDP Collaboration type is 'multilateral outflow'</notes>
+    </collaboration-type>
+    <default-flow-type>
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>By default UNDP assistance is Oficial Development Assistance (ODA)</notes>
+    </default-flow-type>
+    <default-finance-type>
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>By default all UNDP assistance is grants</notes>
+    </default-finance-type>
+    <default-aid-type>
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>By default UNDP Aid Type is 'project-type intervention'</notes>
+    </default-aid-type>
+    <default-tied-status>
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>By default UNDP aid is not tied</notes>
+    </default-tied-status>
+    <budget>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+    </budget>
+    <planned-disbursement>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+    </planned-disbursement>
+    <budget-identifier type="economic">
+      <status/>
+    </budget-identifier>
+    <budget-identifier type="administrative-functional">
+      <status/>
+    </budget-identifier>
+    <transaction type="commitment">
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>UNDP will publish project level budgets.</notes>
+    </transaction>
+    <transaction type="disbursement">
+      <status category="fc"/>
+      <publication-date>2011-11-01</publication-date>
+      <notes>Annual expenditure at the project level for 2010.</notes>
+    </transaction>
+    <transaction type="reimbursement">
+      <status category="na"/>
+      <notes>Not applicable to organisation</notes>
+    </transaction>
+    <transaction type="incoming">
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>implemented after IPSAS implementation in 2012</notes>
+    </transaction>
+    <transaction type="repayment">
+      <status category="na"/>
+      <notes>Not applicable to organisation</notes>
+    </transaction>
+    <document-link>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>UNDP already publishes all documents; however these are spread across global, regional and Country Offices websites.  Consolidated document publishing is introduced through open.undp.org from Nov 2012</notes>
+    </document-link>
+    <activity-website>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>This will be availbale in most cases via the corresponding country office website. The links for these sites are published. </notes>
+    </activity-website>
+    <related-activity>
+      <status category="fc"/>
+      <publication-date>2012-11-01</publication-date>
+      <notes>On the November 2011 publication, activities were reported at level 2 - output level. In succeeding publications, activity at the project level, level 1, are included (please refer to UNDP's 'Definition of an activity and multi-level activities' above).</notes>
+    </related-activity>
+    <conditions type="attached">
+      <status category="fc"/>
+      <notes>No. By default UNDP does not attach policy conditions to its assistance. Operational conditions are published as part of SBAA.</notes>
+    </conditions>
+    <conditions type="text">
+      <status/>
+    </conditions>
+    <result>
+      <status category="fp"/>
+      <notes>Under development. The suggested format for results data is a model to allow those that already publish results as data to do so in an internationally comparable format, should they so wish. Should future international agreements elsewhere on results data supersede the suggested data format, this will be updated accordingly.</notes>
+    </result>
+  </activity>
+</implementation>

@@ -184,6 +184,14 @@ properties = {
         'type': 'text'
     }
 }
+status = {    'fc': 'Fully compliant',
+              'fp': 'Future publication',
+              'pc': 'Partially compliant',
+              'up': 'Unable to publish',
+              'uc': 'Under consideration',
+              'na': 'Not applicable'
+         }
+
 codes = {   
     # Data quality
     'quality': {   'u': 'Unverified', 'v': 'Verified'},
@@ -238,3 +246,10 @@ codes = {
                   'n': 'No',
                   'u': 'Under consideration',
                   'y': 'Yes'}}
+change_reasons = {
+    'no_date': 'No date provided',
+    'initial_date': 'Initial date later',
+    'parse_error': 'Not parsed properly',
+    'typo': 'Fix typo',
+    'missing': 'Information missing'
+}

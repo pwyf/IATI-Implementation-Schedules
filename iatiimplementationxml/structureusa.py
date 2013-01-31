@@ -3,7 +3,7 @@
 
 identification = {
     'name': "IATI Implementation Schedule",
-    'code': 'iati'
+    'code': 'iatiusa'
 }
 
 # Which sheets information can be found in
@@ -40,16 +40,18 @@ header = ['','','', 'status', 'publication-date', 'exclusions', '', 'provider-de
 header_docs = ['', '', '', 'Status', 'Publication Date', 'Exclusion', '', 'Provider Definition', 'Notes']
 
 # Map each row in the organisation table to a named XML element
-organisation_rows = ['','','','','','','', 'total-budget', 'recipient-org-budget', 'recipient-country-budget', 'document-link'] 
+organisation_rows = ['','','','','','', 'total-budget', 'recipient-org-budget', 'recipient-country-budget', 'document-link'] 
 
 # Documentation for each of these elements
-organisation_docs = ['', '', '', '', '', '', '', 'Annual forward planning budget data for agency', 'Annual forward planning budget for funded institutions', 'Annual forward planning budget data for countries', 'Organisation documents']
+organisation_docs = ['', '', '', '', '', '', 'Annual forward planning budget data for agency', 'Annual forward planning budget for funded institutions', 'Annual forward planning budget data for countries', 'Organisation documents']
 
 
 # Map each row in the activity table to a named XML element
 # Either elementname, or (elementname, UNUSED, type)
 # Where type is the value that the type attribute will have
 activity_rows = [
+    '',
+    '',
     '',
     '',
     '',
@@ -124,6 +126,8 @@ publishing_rows = [
     (),
     (),
     (),
+    (),
+    (),
     ('', 'scope', 'value', '', 'narrative'), #SCOPE
     (),
     (),
@@ -148,12 +152,13 @@ publishing_rows = [
     (),
     (),
     (),
+    (),
+    (),
     ('', 'thresholds', '', '', ''), #THRESH
     (),
     ('', 'exclusions', '', '', ''), #EXCLUSIONS
     (),
     ('', 'constraints-other', '', '', ''), #OTHER
-    (),
     (),
     (),
     (),
@@ -281,7 +286,8 @@ codes = {
     # Data quality
     'quality': {   'Unverified': 'u', 'Verified': 'v'},
     # Frequency
-    'frequency': {   'Annually': 'a',
+    'frequency': {   'Initially, annually with a move to quarterly reporting by 2015.': 'q',
+                     'Annually': 'a',
                      'Bi-annually': 'b',
                      'Fortnightly': 'f',
                      'Monthly': 'm',

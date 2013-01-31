@@ -22,7 +22,6 @@ import xlrd
 from lxml.builder import ElementMaker
 import lxml.etree as etree
 import datetime
-import parsedatetime.parsedatetime as pdt
 import string
 
 # Multiple structures are supported, and are imported as "structure".
@@ -104,7 +103,8 @@ def use_code(heading, text, codes=None):
         try:
             return codes[heading][text]
         except KeyError:
-            raise Exception("Error finding code " + text + " under " + header + " in your structure. You may be using a different version of the template.")
+            raise Exception("Error finding code " + text + " under " + heading + " in your structure. You may be using a different version of the template.")
+            pass
     else:
         return text
 
@@ -162,7 +162,7 @@ def parse_data(root, sheet, rows):
     return root
 
 
-def parse_information(root, sheet, rows):
+def parse_information(root, sheet, rows, schedule_date):
     """ Parse the Publisher Information sheet
 
         root -- an xml element to append to
@@ -202,7 +202,10 @@ def parse_information(root, sheet, rows):
                     if row[2] in structure.date_tags:
                         el.attrib[row[2]] = get_date(row_data[row[0]].value)
                     else:
-                        el.attrib[row[2]] = row_data[row[0]].value
+                        if (row[2] != ''):
+                            el.attrib[row[2]] = row_data[row[0]].value
+                        else:
+                            narrative_el.text = row_data[row[0]].value
             except IndexError:
                 pass
             # This is to work with CS implementation schedules. "Split" allows attributes to be provided across multiple rows.
@@ -218,7 +221,48 @@ def parse_information(root, sheet, rows):
                             if ((which_row[param["col"]+cell].value) != ("" or "no" or "NO")):
                                 el.attrib[attribute] = use_code(attribute, values)
                                 break
-                    
+
+                if (row[0] == 'split-pub'):
+                    dataa = row_data[2].value
+                    datab = row_data[10].value
+                    if ((dataa != "") and (dataa !="no") and (dataa != "NO")):
+                        # return schedule date, if the box looks like it's probably ticked
+                        el.attrib[row[2]] = schedule_date
+                    else:
+                        el.attrib[row[2]] = get_date(row_data[10].value)          
+
+                if (row[0] == 'split-pub2'):
+                    el.attrib[row[2]] = get_date(row_data[10].value)  
+
+
+                if (row[0] == 'split-scope'):
+                    el.attrib['scope'] = ''
+                    narrative = ''
+                    for attribute, param in row[2].items():
+                        narrative = narrative + (attribute.capitalize()) + ": "
+                        # attribute is current or future
+                        # set starting row
+                        if param.has_key("row"):
+                            which_row = param["row"]+rowx
+                        else:
+                            which_row = rowx-1 # not sure why -1, but it works
+                        for i in range(0,3):
+                            row = which_row + i
+                            col = param["col"]
+                            the_row = sheet.row(row)
+                            if (the_row[col].value == ''):
+                                break
+                            elif (i>0):
+                                narrative = narrative + "; "
+                            narrative = narrative + the_row[col].value + " (" + str(int(the_row[col+6].value*100)) + "%)"
+                            if ((attribute == 'future') and (the_row[col+5].value!='')):
+                                narrative = narrative + " by " + get_date(the_row[col+5].value)
+                        if (attribute == 'current'):
+                            if (narrative == 'Current: '):
+                                narrative = ""
+                            else:
+                                narrative = narrative + "; "
+                    narrative_el.text = narrative
             except IndexError:
                 pass
     return root
@@ -258,10 +302,8 @@ def full_xml(spreadsheet, s):
 
     # TODO Add handling of proper excel dates
 
-    pdt_cal = pdt.Calendar()
     try:
         datestring = get_date(sheet.cell_value(rowx=structure.metadata["date"]["row"], colx=structure.metadata["date"]["col"]))
-        #datestring = '-'.join([str(x).zfill(2) for x in date_tuple[0][0:3]])
     except TypeError:
         print "type error!"
         datestring = ""
@@ -277,12 +319,17 @@ def full_xml(spreadsheet, s):
                 code=silent_value(sheet, rowx=structure.metadata["code"]["row"], colx=structure.metadata["code"]["col"])
             ),
             E.version(silent_value(sheet, rowx=structure.metadata["version"]["row"], colx=structure.metadata["version"]["col"])),
-            E.date(datestring) 
+            E.date(datestring),
+            E.schedule_type(
+                structure.identification["name"],
+                code= structure.identification["code"]
+            )
         ),
         parse_information(
             E.publishing(),
             book.sheet_by_index(structure.structure["publishing"]),
-            structure.publishing_rows
+            structure.publishing_rows,
+            datestring # provide date of implementation schedule; some answers can be e.g. "already published" which means the date of schedule.
         ),
         parse_data(
             E.organisation(),
