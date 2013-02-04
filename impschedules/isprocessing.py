@@ -30,7 +30,7 @@ def score2(publisher_data, element_data):
                     ok_group = ok_group+1.0
                 else:
                     nook_group = nook_group + 1.0
-        s['calculations'] += "Total score for group <b>" + elementgroupvalues["description"] + "</b>: " + str(int(ok_group)) + "/" + str(int(nook_group)) + "<br />"
+        s['calculations'] += "Total score for group <b>" + elementgroupvalues["description"] + "</b>: " + str(int(ok_group)) + "/" + str(int(ok_group+nook_group)) + "<br />"
         ok = (ok + (ok_group/num_groups))
         nook = (nook + (nook_group/num_groups))
 

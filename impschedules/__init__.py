@@ -354,7 +354,7 @@ def publisher(id=None):
         """
 
 
-        publisher = models.ImpSchedule.query.filter_by(id=id).first()
+        publisher = models.ImpSchedule.query.filter_by(id=id).first_or_404()
         publisher_data = db.session.query(models.ImpScheduleData
                 ).filter(models.ImpSchedule.id==id
                 ).join(models.ImpSchedule
