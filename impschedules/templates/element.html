@@ -12,23 +12,23 @@
     </thead>
     <tbody>
     {% for d in data %}
-    <tr{%if (d[0].status=='uc') %} class="error"{%elif (d[0].status=='fp') %} class="info"{%endif%}><td><a href="{{url_for('publisher', id=d[1].id)}}">{{d[1].publisher}}</a></td><td>
+    <tr{%if (d[0].status=='uc') %} class="error"{%elif (d[0].status=='fp') %} class="info"{%endif%}><td><a href="{{url_for('publisher', id=d[1].id)}}">{{d[1].publisher_actual}}</a></td><td>
 {%
-                    if (d[0].status=="fc")
+                    if (d[0].status_actual=="fc")
                     %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-                    elif (d[0].status=="uc")
+                    elif (d[0].status_actual=="uc")
                     %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
-                    elif (d[0].status=="pc")
+                    elif (d[0].status_actual=="pc")
                     %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-                    elif (d[0].status=="up")
+                    elif (d[0].status_actual=="up")
                     %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-                    elif (d[0].status=="fp")
+                    elif (d[0].status_actual=="fp")
                     %}<i class="icon-wrench" title="Future publication"></i><br />Future
                     {% else %}
-                    {{ d[0].status }}
+                    {{ d[0].status_actual }}
                     {%endif%}</td>
-		    <td>{{d[0].publication_date}}</td>
-            <td>{{d[0].notes}}</td>
+		    <td>{{d[0].date_actual}}</td>
+            <td>{{d[0].notes_actual}}</td>
             <td>{{d[0].exclusions}}</td>
 
 </tr>

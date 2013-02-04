@@ -328,7 +328,7 @@ def element(id=None, type=None):
                 ).join(models.Property
                 ).join(models.Element
                 ).join(models.ImpSchedule
-                ).order_by(models.ImpSchedule.publisher
+                ).order_by(models.ImpSchedule.publisher_actual
                 ).all()
         else:
             element = models.Element.query.filter_by(id=id).first()
@@ -337,7 +337,7 @@ def element(id=None, type=None):
                 ).join(models.Property
                 ).join(models.Element
                 ).join(models.ImpSchedule
-                ).order_by(models.ImpSchedule.publisher
+                ).order_by(models.ImpSchedule.publisher_actual
                 ).all()
         return render_template("element.html", element=element, data=data)
     else:
