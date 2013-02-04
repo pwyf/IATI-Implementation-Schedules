@@ -276,7 +276,11 @@ def parse_information(root, sheet, rows, schedule_date):
                                 break
                             elif (i>0):
                                 narrative = narrative + "; "
-                            narrative = narrative + the_row[col].value + " (" + str(int(the_row[col+6].value*100)) + "%)"
+                            try:
+                                scope_value = int(the_row[col+6].value*100)
+                            except ValueError:
+                                scope_value = ""
+                            narrative = narrative + the_row[col].value + " (" + str(scope_value) + "%)"
                             if ((attribute == 'future') and (the_row[col+5].value!='')):
                                 narrative = narrative + " by " + get_date(the_row[col+5].value)
                         if (attribute == 'current'):
