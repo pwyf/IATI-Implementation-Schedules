@@ -64,33 +64,36 @@
                 <th>Exclusions</th>
             </thead>
             <tbody>
-            {% for d in data %}
-            {% if d["data"][0] %}
-                <tr{%if (d["data"][0].data=='uc') %} class="error"{%elif (d["data"][0].data=='fp') %} class="info"{%endif%}>
-                        <td>{{d["element"].level|capitalize}}</td>
-                        <td><a href="{{url_for('element', id=d["element"].id, type=d["property"].defining_attribute_value)}}">{{d["element"].description}}{% if d["property"].defining_attribute_value %}
-                            ({{d["property"].defining_attribute_value}})
-                        {%endif%}</a></td>
-                        <td>{%
-                        if (d["data"][0].status_actual=="fc")
-                        %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-                        elif (d["data"][0].status_actual=="uc")
-                        %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
-                        elif (d["data"][0].status_actual=="pc")
-                        %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-                        elif (d["data"][0].status_actual=="up")
-                        %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-                        elif (d["data"][0].status_actual=="fp")
-                        %}<i class="icon-wrench" title="Future publication"></i><br />Future
-                        {% else %}
-                        {{ d["data"][0].status }}
-                        {%endif%}</td>
-                        <td>{{d["data"][0].date_actual}}</td>
-                        <td>{{d["data"][0].notes_actual}}</td>
-                        <td>{% if d["data"][0].exclusions is not none %}{{d["data"][0].exclusions}}{%endif%}</td>
-                </tr>
-                {%endif%}
+            {% for groupid, groupvalues in data.items() %}
+                <tr class="info"><td colspan="6"><a href="{{url_for('elementgroup', id=groupid)}}">{{groupvalues.description}}</a></tr>
+                {% for elementid, elementvalues in groupvalues.elements.items() %}
+                   {% for propertyid, propertyvalues in elementvalues.properties.items() %}
+                        {% set status = propertyvalues.data.status_actual%}
+                        <tr>
+                            <td>{{elementvalues.level|capitalize}}</td>
+                            <td>{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_value}}){%endif%}</td>
+                            <td>{%
+                                if (status=="fc")
+                                %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
+                                elif (status=="uc")
+                                %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
+                                elif (status=="pc")
+                                %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
+                                elif (status=="up")
+                                %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
+                                elif (status=="fp")
+                                %}<i class="icon-wrench" title="Future publication"></i><br />Future
+                                {% else %}
+                                {{ status }}
+                                {%endif%}
+                            </td>
+                            <td>{{propertyvalues.data.date_actual}}</td>
+                            <td>{{propertyvalues.data.notes_actual}}</td>
+                            <td>{% if propertyvalues.data.exclusions is not none %}{{propertyvalues.data.exclusions}}{%endif%}</td>
+                        </tr>
+                   {%endfor%}
                 {% endfor %}
+            {% endfor %}
             </tbody>
             </table>
         </div>

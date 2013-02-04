@@ -20,8 +20,14 @@ class ImpSchedule(db.Model):
     schedule_type_actual = Column(UnicodeText)
     schedule_type_code_original = Column(UnicodeText)
     schedule_type_code_actual = Column(UnicodeText)
+    publisher_change = Column(UnicodeText)
+    publisher_code_change = Column(UnicodeText)
+    schedule_version_change = Column(UnicodeText)
+    schedule_date_change = Column(UnicodeText)
+    schedule_type_change = Column(UnicodeText)
+    schedule_type_code_change = Column(UnicodeText)
 
-    def __init__(self, publisher_original=None, publisher_code_original=None, schedule_version_original=None, schedule_date_original=None, publisher_actual=None, publisher_code_actual=None, schedule_version_actual=None, schedule_date_actual=None, last_updated_date=None, source_file=None, schedule_type_original=None, schedule_type_actual=None, schedule_type_code_original=None, schedule_type_code_actual=None):
+    def __init__(self, publisher_original=None, publisher_code_original=None, schedule_version_original=None, schedule_date_original=None, publisher_actual=None, publisher_code_actual=None, schedule_version_actual=None, schedule_date_actual=None, last_updated_date=None, source_file=None, schedule_type_original=None, schedule_type_actual=None, schedule_type_code_original=None, schedule_type_code_actual=None,publisher_change=None, publisher_code_change=None,schedule_version_change=None, schedule_date_change=None, schedule_type_change=None, schedule_type_code_change=None):
         self.publisher_original = publisher_original
         self.publisher_code_original = publisher_code_original
         self.schedule_version_original = schedule_version_original
@@ -36,6 +42,12 @@ class ImpSchedule(db.Model):
         self.schedule_type_actual = schedule_type_actual
         self.schedule_type_code_original = schedule_type_code_original
         self.schedule_type_code_actual = schedule_type_code_actual
+        self.publisher_change = publisher_change
+        self.publisher_code_change = publisher_code_change
+        self.schedule_version_change = schedule_version_change
+        self.schedule_date_change = schedule_date_change
+        self.schedule_type_change = schedule_type_change
+        self.schedule_type_code_change = schedule_type_code_change
 
     def __repr__(self):
         return self.publisher, self.id
@@ -132,17 +144,37 @@ class Property(db.Model):
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+class ElementGroup(db.Model):
+    __tablename__ = 'elementgroup'
+    id = Column(Integer, primary_key=True)
+    name = Column(UnicodeText)
+    description = Column(UnicodeText)
+    weight = Column(UnicodeText)
+
+    def __init__(self, name=None, description=None, weight=None):
+        self.name = name
+        self.description = description
+        self.weight = weight
+
+    def __repr__(self):
+        return self.id, self.name, self.description
+
+
 class Element(db.Model):
     __tablename__ = 'element'
     id = Column(Integer, primary_key=True)
     level = Column(UnicodeText)
     name = Column(UnicodeText)
     description = Column(UnicodeText)
+    elementgroup = Column(Integer, ForeignKey('elementgroup.id'))
+    weight = Column(UnicodeText)
 
-    def __init__(self, level=None, name=None, description=None):
+    def __init__(self, level=None, name=None, description=None, elementgroup=None, weight=None):
         self.level = level
         self.name = name
         self.description = description
+        self.elementgroup = elementgroup
+        self.weight = weight
 
     def __repr__(self):
         return self.id, self.level, self.name, self.description

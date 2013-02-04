@@ -8,6 +8,68 @@ from lxml import etree
 import datetime
 import properties
 
+def score2(publisher_data, element_data):
+
+    s = {}
+    s['calculations'] = ""
+    s['value'] = 0.0
+    properties = dict(map(lambda x: ((x.segment),(x.segment_value_actual)), publisher_data))
+
+    num_groups = len(element_data)
+    ok = 0.0
+    nook = 0.0
+    for elementgroup, elementgroupvalues in element_data.items():
+        ok_group = 0.0
+        nook_group = 0.0
+        for element, elementvalues in elementgroupvalues["elements"].items():
+            for prop, propvalues in elementvalues["properties"].items():
+                status = propvalues["data"].status_actual
+                if (status == 'fc'):
+                    ok_group = ok_group+1.0
+                elif ((status=='fp') and (propvalues["data"].date_actual != '')):
+                    ok_group = ok_group+1.0
+                else:
+                    nook_group = nook_group + 1.0
+        s['calculations'] += "Total score for group <b>" + elementgroupvalues["description"] + "</b>: " + str(int(ok_group)) + "/" + str(int(nook_group)) + "<br />"
+        ok = (ok + (ok_group/num_groups))
+        nook = (nook + (nook_group/num_groups))
+
+    
+    if (properties['publishing_timetable_date_initial'] != ''):
+        willpublish = 1.0
+        s['calculations'] += "Planning to publish to IATI<br />"
+    else:
+        willpublish = 0.0
+    if ((properties['publishing_frequency_frequency'] == 'm') or (properties['publishing_frequency_frequency'] == 'q')):
+        frequent = 1.0
+    else:
+        frequent = 0.0
+    try:
+        if ((properties['publishing_license'] == 'p') or (properties['publishing_license'] == 'a')):
+            license = 1.0
+        else:
+            license = 0.0
+    except KeyError:
+        license = 0.0
+
+    if ((license==1.0) and (frequent==1.0)):
+        s['calculations'] += "Planning to publish at least quarterly under an open license (100% score)<br />"
+    elif (license==1.0):
+        s['calculations'] += "Planning to publish under an open license, but not planning to publish at least quarterly (50% score)<br />"
+    elif (frequent==1.0):
+        s['calculations'] += "Planning to publish at least quarterly, but planning to publish under an open license (50% score)<br />"
+    
+    s['calculations'] += "Elements publishing: " + str(int(ok)) + "<br />"
+    s['calculations'] += "Elements not publishing: " + str(int(nook)) + "<br />"
+    s['calculations'] += "Elements score: " + str(int(round(((ok/(ok+nook))*100),0))) + "%<br />"
+
+    s['calculations'] += "<br />"
+    s['calculations'] += str(int(willpublish*100)) + "% (plan to publish) x " + str(int(((frequent+license)/2)*100)) + "% (publishing approach) x " + str((round(((ok/(ok+nook))*100),0))) + "% (elements score)"
+   
+    s['value'] = round((willpublish*(ok/(ok+nook))*((frequent+license)/2))*100)
+    return s
+
+
 def score(publisher_data, element_data):
     properties = dict(map(lambda x: ((x.segment),(x.segment_value_actual)), publisher_data))
     data = map(lambda x: ((x["data"][0].status_actual),(str(x["data"][0].date_actual), str(x["data"][0].property_id))), element_data)

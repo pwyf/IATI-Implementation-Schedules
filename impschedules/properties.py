@@ -1,3 +1,212 @@
+elementgroups = {
+            'org': {
+                'description': 'Organisation level'
+            },
+            'identification': {
+                'description': 'Identification'
+            },
+            'basic-activity-information': {
+                'description': 'Basic activity information'
+            },
+            'geopolitical-information': {
+                'description': 'Geopolitical information'
+            },
+            'classifications': {
+                'description': 'Classifications'
+            },
+            'financial': {
+                'description': 'Financial'
+            },
+            'financial-transaction': {
+                'description': 'Financial transaction'
+            },
+            'related-documents': {
+                'description': 'Related documents'
+            },
+            'performance': {
+                'description': 'Performance'
+            }
+}
+
+elements = {
+        'organisation': {
+            'total-budget': {
+                'description': 'Organisation budget',
+                'group': 'org'
+            },
+            'recipient-org-budget': {
+                'description': 'Funded institution budgets',
+                'group': 'org'
+            }, 
+            'recipient-country-budget': {
+                'description': 'Recipient country budgets',
+                'group': 'org'
+            },
+            'document-link': {
+                'description': 'Organisation documents',
+                'group': 'org'
+            }
+        },
+        'activity': {
+            'reporting-org': { 
+                'description': 'Reporting organisation',
+                'group': 'identification'
+            }, 
+            'iati-identifier': { 
+                'description': 'IATI Identifier',
+                'group': 'identification'
+            }, 
+            'other-identifier': { 
+                'description': 'Other Identifier',
+                'group': 'identification'
+            },
+            'title': { 
+                'description': 'Title',
+                'defining_attribute': 'type', 
+                'defining_attribute_values': {
+                    'agency': {},
+                    'recipient': {}
+                },
+                'group': 'basic-activity-information'
+            }, 
+            'description': { 
+                'description': 'Description',
+                'defining_attribute': 'type', 
+                'defining_attribute_values': {
+                    'agency': {},
+                    'recipient': {}
+                },
+                'group': 'basic-activity-information'
+            },
+            'activity-status': {
+                'description': 'Activity status',
+                'group': 'basic-activity-information'
+            },
+            'activity-date': { 
+                'description': 'Activity dates',
+                'defining_attribute': 'type', 
+                'defining_attribute_values': {
+                    'start': {},
+                    'end': {}
+                },
+                'group': 'basic-activity-information'
+            },
+            'contact-info': {
+                'description': 'Contact information',
+                'group': 'basic-activity-information'
+            },
+            'participating-org': {
+                'description': 'Participating organisation',
+                'defining_attribute': 'type',
+                'defining_attribute_values': {
+                    'funding': {},
+                    'extending': {},
+                    'accountable': {},
+                    'implementing': {}
+                },
+                'group': 'basic-activity-information'
+            },
+            'recipient-region': {
+                'description': 'Recipient region',
+                'group': 'geopolitical-information'
+            },
+            'recipient-country': {
+                'description': 'Recipient country',
+                'group': 'geopolitical-information'
+            },
+            'location': {
+                'description': 'Sub-national geographic location',
+                'group': 'geopolitical-information'
+            },
+            'sector': {
+                'description': 'Sector',
+                'defining_attribute': 'type',
+                'defining_attribute_values': {
+                    'crs': {},
+                    'agency': {}
+                },
+                'group': 'classifications'
+            },
+            'policy-marker': {
+                'description': 'Policy marker',
+                'group': 'classifications'
+            },
+            'collaboration-type': {
+                'description': 'Collaboration type',
+                'group': 'classifications'
+            },
+            'default-flow-type': {
+                'description': 'Flow type',
+                'group': 'classifications'
+            },
+            'default-finance-type': {
+                'description': 'Finance type',
+                'group': 'classifications'
+            },
+            'default-aid-type': {
+                'description': 'Aid type',
+                'group': 'classifications'
+            },
+            'default-tied-status': {
+                'description': 'Tied aid status',
+                'group': 'classifications'
+            },
+            'budget': {
+                'description': 'Budget',
+                'group': 'financial'
+            },
+            'planned-disbursement': {
+                'description': 'Planned disbursement',
+                'group': 'financial'
+            },
+            'budget-identifier': {
+                'description': 'Budget identifier',
+                'defining_attribute': 'type',
+                'defining_attribute_values': {
+                    'economic': {},
+                    'administrative-functional': {}
+                },
+                'group': 'financial'
+            },
+            'transaction': {
+                'description': 'Transactions',
+                'defining_attribute': 'type',
+                'defining_attribute_values': {
+                    'commitment': {},
+                    'disbursement': {},
+                    'reimbursement': {},
+                    'incoming': {},
+                    'repayment': {}
+                },
+                'group': 'financial-transaction'
+            },
+            'document-link': {
+                'description': 'Activity documents',
+                'group': 'related-documents'
+            },
+            'activity-website': {
+                'description': 'Activity website',
+                'group': 'related-documents'
+            },
+            'related-activity': {
+                'description': 'Related activity',
+                'group': 'related-documents'
+            },
+            'conditions': {
+                'description': 'Conditions',
+                'defining_attribute': 'type',
+                'defining_attribute_values': {
+                    'attached': {},
+                    'text': {}
+                },
+                'group': 'performance'
+            },
+            'result': {
+                'description': 'Results',
+                'group': 'performance'
+            }
+        }
+    }
 properties = {
     'publishing_scope_value': { 
         'name': 'Scope',

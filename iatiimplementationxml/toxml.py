@@ -119,66 +119,68 @@ def parse_data(root, sheet, rows):
         
     """
     for rowx,rowname in enumerate(rows):
-        """
-        try:
-            if (rows[1] == 'notpresent'):
-                rowxml = etree.SubElement(root, rowname[0])
-                rowxml.attrib['type'] = rowname[2]
-                el = etree.SubElement(rowxml, 'status')
-                el.attrib['category'] = 'np'
-                el = etree.SubElement(rowxml, 'publication-date')
-                el.text = ""
 
-                rowxml = etree.SubElement(root, rowname[0])
-                rowxml.attrib['type'] = rowname[3]
-                el = etree.SubElement(rowxml, 'status')
-                el.attrib['category'] = 'np'
-                el = etree.SubElement(rowxml, 'publication-date')
-                el.text = ""
-                continue
-        except:
-            pass
-        """
         if rowname == '':
             continue
-        if isinstance(rowname, tuple):
-            rowxml = etree.SubElement(root, rowname[0])
-            rowxml.attrib['type'] = rowname[2]
-        else:
-            rowxml = etree.SubElement(root, rowname)
+
+        createelements = []
         
-        for colx, heading in enumerate(structure.header):
-            if heading == '':
-                continue
-            try:
-                cell = sheet.cell_value(rowx=rowx, colx=colx)
-            except IndexError:
-                continue
-            if heading in structure.codes_activity:
-                el = etree.SubElement(rowxml, heading)
-                if heading == 'exclusions':
-                    narrative_el = etree.SubElement(el, 'narrative')
-                    narrative_el.text = unicode(cell)
-                    try:
-                        attrib_cell = unicode(sheet.cell_value(rowx=rowx, colx=colx+1))
-                    except IndexError:
-                        continue
-                else:
-                    attrib_cell = cell
-                if attrib_cell == '':
+        # this is to work with elements that are divided in later versions of the schedule: create 2 identical elements based on values provided in schedule.
+        if (rowname[1] == '2-type'):
+            xelement = {'element': rowname[0],
+                        'type': rowname[2]}
+            createelements.append(xelement)
+
+            xelement = {'element': rowname[0],
+                        'type': rowname[3]}
+            createelements.append(xelement)
+
+        elif isinstance(rowname, tuple):
+            xelement = {'element': rowname[0],
+                        'type': rowname[2]}
+            createelements.append(xelement)
+        else:
+            xelement = {'element': rowname}
+            createelements.append(xelement)
+
+        for theelement in createelements:
+            rowxml = etree.SubElement(root, theelement["element"])
+            if theelement.has_key("type"):
+                rowxml.attrib['type'] = theelement["type"]
+            
+        
+            for colx, heading in enumerate(structure.header):
+                if heading == '':
                     continue
-                else:
-                    el.attrib['category'] = use_code(heading,
-                                        unicode(attrib_cell),
-                                        codes=structure.codes_activity)
-            else:
-                if heading in structure.date_tags:
-                    cell = get_date(cell)
-                else:
-                    cell = unicode(cell)
-                if cell != '':
+                try:
+                    cell = sheet.cell_value(rowx=rowx, colx=colx)
+                except IndexError:
+                    continue
+                if heading in structure.codes_activity:
                     el = etree.SubElement(rowxml, heading)
-                    el.text = cell
+                    if heading == 'exclusions':
+                        narrative_el = etree.SubElement(el, 'narrative')
+                        narrative_el.text = unicode(cell)
+                        try:
+                            attrib_cell = unicode(sheet.cell_value(rowx=rowx, colx=colx+1))
+                        except IndexError:
+                            continue
+                    else:
+                        attrib_cell = cell
+                    if attrib_cell == '':
+                        continue
+                    else:
+                        el.attrib['category'] = use_code(heading,
+                                            unicode(attrib_cell),
+                                            codes=structure.codes_activity)
+                else:
+                    if heading in structure.date_tags:
+                        cell = get_date(cell)
+                    else:
+                        cell = unicode(cell)
+                    if cell != '':
+                        el = etree.SubElement(rowxml, heading)
+                        el.text = cell
     return root
 
 

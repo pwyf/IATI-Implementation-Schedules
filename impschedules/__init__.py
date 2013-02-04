@@ -31,105 +31,28 @@ def setup():
     db.create_all()
     # create properties
     attributes = {'notes': {}, 'status_category': {}, 'publication_date': {}, 'exclusions': {}}
-    elements = {
-        'organisation': {'total-budget': {'description': 'Organisation budget'}, 'recipient-org-budget': {'description': 'Funded institution budgets'}, 'recipient-country-budget': {'description': 'Recipient country budgets'},'document-link': {'description': 'Organisation documents'}},
-        'activity': {
-            'reporting-org': { 'description': 'Reporting organisation' }, 
-            'iati-identifier': { 'description': 'IATI Identifier' }, 
-            'other-identifier': { 'description': 'Other Identifier' },
-            'title': { 
-                'description': 'Title',
-                'defining_attribute': 'type', 
-                'defining_attribute_values': {
-                    'agency': {},
-                    'recipient': {}
-                }
-            }, 
-            'description': { 
-                'description': 'Description',
-                'defining_attribute': 'type', 
-                'defining_attribute_values': {
-                    'agency': {},
-                    'recipient': {}
-                }
-            },
-            'activity-status': {'description': 'Activity status'},
-            'activity-date': { 
-                'description': 'Activity dates',
-                'defining_attribute': 'type', 
-                'defining_attribute_values': {
-                    'start': {},
-                    'end': {}
-                }
-            },
-            'contact-info': {'description': 'Contact information'},
-            'participating-org': {
-                'description': 'Participating organisation',
-                'defining_attribute': 'type',
-                'defining_attribute_values': {
-                    'funding': {},
-                    'extending': {},
-                    'accountable': {},
-                    'implementing': {}
-                }
-            },
-            'recipient-region': {'description': 'Recipient region'},
-            'recipient-country': {'description': 'Recipient country'},
-            'location': {'description': 'Sub-national geographic location'},
-            'sector': {
-                'description': 'Sector',
-                'defining_attribute': 'type',
-                'defining_attribute_values': {
-                    'crs': {},
-                    'agency': {}
-                }
-            },
-            'policy-marker': {'description': 'Policy marker'},
-            'collaboration-type': {'description': 'Collaboration type'},
-            'default-flow-type': {'description': 'Flow type'},
-            'default-finance-type': {'description': 'Finance type'},
-            'default-aid-type': {'description': 'Aid type'},
-            'default-tied-status': {'description': 'Tied aid status'},
-            'budget': {'description': 'Budget'},
-            'planned-disbursement': {'description': 'Planned disbursement'},
-            'transaction': {
-                'description': 'Transactions',
-                'defining_attribute': 'type',
-                'defining_attribute_values': {
-                    'commitment': {},
-                    'disbursement': {},
-                    'reimbursement': {},
-                    'incoming': {},
-                    'repayment': {}
-                }
-            },
-            'document-link': {'description': 'Activity documents'},
-            'activity-website': {'description': 'Activity website'},
-            'related-activity': {'description': 'Related activity'},
-            'conditions': {
-                'description': 'Conditions',
-                'defining_attribute': 'type',
-                'defining_attribute_values': {
-                    'attached': {},
-                    'text': {}
-                }
-            },
-            'budget-identifier': {
-                'description': 'Budget identifier',
-                'defining_attribute': 'type',
-                'defining_attribute_values': {
-                    'economic': {},
-                    'administrative-functional': {}
-                }
-            },
-            'result': {}
-        }
-    }
+    elementgroups = properties.elementgroups
+    
+    for elementgroup, values in elementgroups.items():
+        eg = models.ElementGroup()
+        eg.name = elementgroup
+        eg.description = values["description"]
+        db.session.add(eg)
+    db.session.commit()
+
+    elementgroups = db.session.query(
+                    models.ElementGroup.id,
+                    models.ElementGroup.name
+                    ).all()
+    elementgroups = dict(map(lambda x: (x[1],x[0]), elementgroups))
+
+    elements = properties.elements
     for level, values in elements.items():
         for element, elvalue in values.items():
             e = models.Element()
             e.name = element
             e.level = level
+            e.elementgroup = elementgroups[elvalue["group"]]
             if (elvalue.has_key("description")):
                 e.description = elvalue["description"]
             db.session.add(e)
@@ -176,8 +99,10 @@ def import_schedule():
                 #a[0] is level
                 #a[1] is field name, perhaps including a type (separated by @)
                 #a[2] is field part (e.g. status_original, status_actual, etc.)
-
-                if field.startswith('metadata'):
+                if field.startswith('data'):
+                    p = a[1]
+                    s[p] = values
+                elif field.startswith('metadata'):
                     p = a[1] + "_" + a[2]
                     s[p] = values
 
@@ -283,36 +208,79 @@ def import_schedule():
                 url = request.form['url']
                 structure = request.form['structure']
                 local_file_name = app.config["TEMP_FILES_DIR"] + "/" + ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range (5))
+                #try:
                 try:
-                    try:
-                        f = urllib.urlretrieve(url, local_file_name)
-                    except IOError:
-                        raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
-                    # Pass to implementation schedule converter
-                    xml = toxml.convert_schedule(local_file_name, structure)
-                    doc = etree.fromstring(xml)
-                    context = {}
-                    context['source_file'] = url
-                    schedules = doc.findall("metadata")
-                    # Parse, manual check, and then import
-                    """try:"""
-                    #parse_implementation_schedule(doc, context.copy(), url, True)
+                    f = urllib.urlretrieve(url, local_file_name)
+                except IOError:
+                    raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
+                # Pass to implementation schedule converter
+                xml = toxml.convert_schedule(local_file_name, structure)
+                doc = etree.fromstring(xml)
+                context = {}
+                context['source_file'] = url
+                schedules = doc.findall("metadata")
+                # Parse, manual check, and then import
+                """try:"""
+                #parse_implementation_schedule(doc, context.copy(), url, True)
 
-                    flash ("Successfully parsed your implementation schedule.", "success")
-                    return render_template("import_schedule_steps.html", doc=doc, properties=properties)
-                except Exception, e:
+                flash ("Successfully parsed your implementation schedule.", "success")
+                return render_template("import_schedule_steps.html", doc=doc, properties=properties, source_file=url)
+                """except Exception, e:
                     msg = "There was an unknown error importing your schedule. The error was: " + str(e)
                     flash (msg, "error")
                     return redirect(url_for('import_schedule'))
                 except Exception, e:
                     msg = "There was an unknown error importing your schedule. The error was: " + str(e)
                     flash (msg, "error")
-                    return redirect(url_for('import_schedule'))
+                    return redirect(url_for('import_schedule'))"""
             else:
                 flash("Wrong password", "error")
                 return redirect(url_for('import_schedule'))
     else:
         return render_template("import.html")
+
+@app.route("/elementgroups")
+@app.route("/elementgroups/<id>", methods=['GET', 'POST'])
+def elementgroup(id=None):
+    if (request.method == 'POST'):
+        # handle post
+        if (request.form['password'] == app.config["SECRET_PASSWORD"]):
+            elementgroup = models.ElementGroup.query.filter_by(id=id).first()
+            elementgroup.description = request.form['description']
+            db.session.add(elementgroup)
+            db.session.commit()
+            flash('Updated element group', "success")
+            return render_template("elementgroup.html", elementgroup=elementgroup)
+        else:
+            flash('Wrong password', "error")
+            elementgroup = db.session.query(
+                        models.ElementGroup.id,
+                        models.ElementGroup.name,
+                        models.ElementGroup.description,
+                        models.ElementGroup.weight
+                        ).filter(
+                        models.ElementGroup.id==id
+                        ).first()
+            return render_template("elementgroup.html", elementgroup=elementgroup)
+    else:
+        if (id is not None):
+            elementgroup = db.session.query(
+                        models.ElementGroup.id,
+                        models.ElementGroup.name,
+                        models.ElementGroup.description,
+                        models.ElementGroup.weight
+                        ).filter(
+                        models.ElementGroup.id==id
+                        ).first()
+            return render_template("elementgroup.html", elementgroup=elementgroup)
+        else:
+            elementgroups = db.session.query(
+                        models.ElementGroup.id,
+                        models.ElementGroup.name,
+                        models.ElementGroup.description,
+                        models.ElementGroup.weight
+                        ).all()
+            return render_template("elementgroups.html", elementgroups=elementgroups)
 
 @app.route("/elements")
 @app.route("/elements/<id>")
@@ -369,31 +337,72 @@ def element(id=None, type=None):
 @app.route("/publishers/<id>")
 def publisher(id=None):
     if (id is not None):
+        """ need to return:
+            # publisher information
+            # publisher data
+            # elementgroups 
+                # element-property
+                    # element-property data
+                    # data
+
+            Query: publisher for ImpSchedule
+                   publisher data
+                   all data where impschedule = id
+                            + property
+                            + element
+                            + parent element
+        """
+
+
         publisher = models.ImpSchedule.query.filter_by(id=id).first()
         publisher_data = db.session.query(models.ImpScheduleData
                 ).filter(models.ImpSchedule.id==id
                 ).join(models.ImpSchedule
                 ).all()
-        
-        data = []
-        elements = db.session.query(models.Property.parent_element, models.Property.defining_attribute_value
-                ).order_by(models.Property.parent_element, models.Property.defining_attribute_value
-                ).join(models.Element
-                ).distinct()
-        
-        for element in elements:
-            d={}
-            d["element"] = models.Element.query.filter_by(id=element.parent_element).first()
-            d["property"] = models.Property.query.filter_by(parent_element=element.parent_element, defining_attribute_value=element.defining_attribute_value).first()
-            d["data"] = db.session.query(models.Data
-                ).filter(models.Element.id==element.parent_element, models.Property.defining_attribute_value==element.defining_attribute_value, models.Data.impschedule_id==publisher.id
-                ).join(models.Property
-                ).join(models.Element
-                ).all()
-            data.append(d)
 
+
+        elementdata = db.session.query(models.Data,
+                                       models.Property.id,
+                                       models.Property.parent_element,
+                                       models.Property.defining_attribute_value,
+                                       models.Element.id,#4
+                                       models.Element.name,
+                                       models.Element.description,
+                                       models.ElementGroup.id, #7
+                                       models.ElementGroup.name,
+                                       models.ElementGroup.description,
+                                       models.Element.level
+                                      ).filter(models.Data.impschedule_id == id
+                                      ).join(models.Property
+                                      ).join(models.Element
+                                      ).join(models.ElementGroup
+                                      ).all()
+    
+        
+        data = {}
+        elementdata = map(lambda x: {x[7] : {
+                                               'name': x[8],
+                                               'description': x[9],
+                                               'elements': {
+                                                  x[4]: {
+                                                      'name': x[5],
+                                                      'description': x[6],
+                                                      'level': x[10],
+                                                      'properties': {
+                                                        x[1]: {
+                                                            'parent_element': x[2],
+                                                            'defining_attribute_value': x[3],
+                                                            'data': x[0]
+                                                        }
+                                                  }
+                                                }
+                                    }}}, elementdata)
+
+        for d in elementdata:
+            merge_dict(data, d)
+      
         try:
-            s = score(publisher_data, data)
+            s = score2(publisher_data, data)
         except IndexError:
             s = {}
             s['value'] = 0
@@ -408,6 +417,21 @@ def publisher(id=None):
 
         totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
         return render_template("publishers.html", orgs=orgs, totalnum=totalnum.number)
+
+def merge_dict(d1, d2):
+    # from here: http://stackoverflow.com/questions/10703858/python-merge-multi-level-dictionaries
+    """
+    Modifies d1 in-place to contain values from d2.  If any value
+    in d1 is a dictionary (or dict-like), *and* the corresponding
+    value in d2 is also a dictionary, then merge them in-place.
+    """
+    for k,v2 in d2.items():
+        v1 = d1.get(k) # returns None if v1 has no value for this key
+        if ( isinstance(v1, collections.Mapping) and 
+             isinstance(v2, collections.Mapping) ):
+            merge_dict(v1, v2)
+        else:
+            d1[k] = v2
 
 @app.route("/publishers/<id>/edit", methods=['GET', 'POST'])
 def publisher_edit(id=id):

@@ -1,0 +1,27 @@
+{% set active_page='elementgroups'%}{% extends "base.html" %}
+{% block content %}
+    <script src="static/jquery.tablesorter.min.js"></script>
+    <script >
+    $(function() {
+    $("table#elementgroups").tablesorter({ sortList: [[0,1]] });
+    });
+
+    </script>
+
+    <h1>Select an element group</h1>
+	<table class="table" id="elementgroups">
+    <thead>
+    <th>Group</th>
+    <th>Description</th>
+    </thead>
+    <tbody>
+	{% for elementgroup in elementgroups %}
+    <tr>
+    <td><a href="{{url_for('elementgroup', id=elementgroup.id)}}">{{elementgroup.name}}</a></td>
+    <td>{{elementgroup.description}}</td>
+    </tr>
+	{% endfor %}
+	</tbody>
+    </table>
+
+{% endblock %}

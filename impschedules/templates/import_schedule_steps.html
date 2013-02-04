@@ -9,6 +9,7 @@
 
     <form action="" method="post">
     <h1>Edit and import schedule</h1>
+    <input type="hidden" name="data#source_file" value="{{source_file}}" />
     <input type="hidden" name="metadata#schedule_type#actual" value="{{doc.find("metadata").find("schedule_type").text}}" />
     <input type="hidden" name="metadata#schedule_type_code#actual" value="{{doc.find("metadata").find("schedule_type").get("code")}}" />
 
