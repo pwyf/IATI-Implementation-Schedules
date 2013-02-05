@@ -8,9 +8,9 @@ import models
 def publisher_implementation_data(publisher_code):
     publisher = models.ImpSchedule.query.filter_by(publisher_code=publisher_code).first()
    
-    data = db.session.query(models.Data.status,
-                            models.Data.publication_date,
-                            models.Data.notes,
+    data = db.session.query(models.Data.status_actual,
+                            models.Data.date_actual,
+                            models.Data.notes_actual,
                             models.Element.name,
                             models.Element.level,
                             models.Property.defining_attribute,
@@ -25,9 +25,9 @@ def publisher_implementation_data(publisher_code):
                        "element_level": str(x[4]), 
                        "element_attribute": str(x[5]), 
                        "element_attribute_part": str(x[6]),
-                       "status": x[0], 
-                       "publication_date": str(x[1]), 
-                       "notes": str(x[2])}, data)
+                       "status_actual": x[0], 
+                       "date_actual": str(x[1]), 
+                       "notes_actual": str(x[2])}, data)
     
     return jsonify({"publisher": publisher.as_dict(), "data": d})
 
@@ -39,9 +39,9 @@ def element_dates_groups():
                             models.Element.id, 
                             models.Element.name, 
                             models.Element.level,
-                            models.Data.publication_date,
+                            models.Data.date_actual,
                             func.count(models.Data.id)
-        ).group_by(models.Property.id, models.Data.publication_date
+        ).group_by(models.Property.id, models.Data.date_actual
         ).join(models.Element).join(models.Data).all()
 
     compliance = publication_dates_groups(compliance_data, True)
@@ -55,9 +55,9 @@ def element_dates():
                             models.Element.id, 
                             models.Element.name, 
                             models.Element.level,
-                            models.Data.publication_date,
+                            models.Data.date_actual,
                             func.count(models.Data.id)
-        ).group_by(models.Data.status, models.Property
+        ).group_by(models.Data.status_actual, models.Property
         ).join(models.Element).join(models.Data).all()
 
     compliance = publication_timeline(compliance_data, True)

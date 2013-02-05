@@ -76,7 +76,7 @@ def publication_dates_groups(data, cumulative=False, group=6, provide={7,2}, lab
         newdata["date"] = p
         for e in elements:
             try:
-                print prev_values[e]
+                prev_values[e]
             except KeyError:
                 prev_values[e] = 0
             newdata[e] = 0
