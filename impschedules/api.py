@@ -27,7 +27,7 @@ def publisher_implementation_data(publisher_code):
                        "element_attribute_part": str(x[6]),
                        "status_actual": x[0], 
                        "date_actual": str(x[1]), 
-                       "notes_actual": str(x[2])}, data)
+                       "notes_actual": x[2]}, data)
     
     return jsonify({"publisher": publisher.as_dict(), "data": d})
 
