@@ -6,7 +6,7 @@ import models
 
 @app.route("/api/publishers/<publisher_code>")
 def publisher_implementation_data(publisher_code):
-    publisher = models.ImpSchedule.query.filter_by(publisher_code=publisher_code).first()
+    publisher = models.ImpSchedule.query.filter_by(publisher_code_actual=publisher_code).first()
    
     data = db.session.query(models.Data.status_actual,
                             models.Data.date_actual,
@@ -15,7 +15,7 @@ def publisher_implementation_data(publisher_code):
                             models.Element.level,
                             models.Property.defining_attribute,
                             models.Property.defining_attribute_value
-                        ).filter(models.ImpSchedule.publisher_code==publisher_code
+                        ).filter(models.ImpSchedule.publisher_code_actual==publisher_code
                         ).join(models.Property
                         ).join(models.Element
                         ).join(models.ImpSchedule
