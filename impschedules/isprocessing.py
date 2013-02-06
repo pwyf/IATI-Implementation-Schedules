@@ -62,7 +62,7 @@ def score_all(data, publishers, elements, org_data):
         elif (out[publisher]["score"]["will_publish"] ==0):
             out[publisher]["score"]["group"] = "No publication"
             out[publisher]["score"]["group_code"] = "alert-black"
-        elif (out[publisher]["score"]["total"] <=30):
+        elif (out[publisher]["score"]["total"] <=40):
             out[publisher]["score"]["group"] = "Unambitious"
             out[publisher]["score"]["group_code"] = "alert-error"
         elif (out[publisher]["score"]["total"] <=60):
@@ -140,7 +140,7 @@ def score2(publisher_data, element_data):
     if (s["will_publish"] ==0):
         s["group"] = "No publication"
         s["group_code"] = "alert-black"
-    elif (s["total"] <=30):
+    elif (s["total"] <=40):
         s["group"] = "Unambitious"
         s["group_code"] = "alert-error"
     elif (s["total"] <=60):
