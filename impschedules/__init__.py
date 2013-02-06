@@ -410,11 +410,49 @@ def publisher(id=None):
 
         return render_template("publisher.html", publisher=publisher, data=data, segments=publisher_data, properties=properties, score=s["value"], score_calculations=Markup(s["calculations"]))
     else:
-        orgs = db.session.query(models.ImpSchedule, models.ImpScheduleData.segment_value_actual
-                ).filter(models.ImpScheduleData.segment=="publishing_timetable_date_initial"
+        orgs = db.session.query(models.ImpSchedule, 
+                                models.ImpScheduleData
                 ).join(models.ImpScheduleData
                 ).order_by(models.ImpSchedule.publisher_actual).all()
 
+        # get impschedule id, # results for this score, the score, the elementgroup id
+        org_data = db.session.query(models.Data.impschedule_id,
+                                    func.count(models.Data.id),
+                                    models.Data.score,
+                                    models.ElementGroup.id
+                ).join(models.Property
+                ).join(models.Element
+                ).join(models.ElementGroup
+                ).group_by(models.Data.impschedule_id
+                ).group_by(models.ElementGroup
+                ).group_by(models.Data.score
+                ).filter(models.Element.weight == None
+                ).all()
+
+        publishers = set(map(lambda x: x[0], org_data))
+        elementgroups = set(map(lambda x: x[3], org_data))
+        org_data = dict(map(lambda x: ((x[0],x[3],x[2]),(x[1])), org_data))
+        scores=score_all(org_data, publishers, elementgroups)
+        
+        org_pdata = map(lambda x: {x[0].id: {
+                                    'impschedule': x[0],
+                                    'properties': {
+                                        x[1].segment: x[1].segment_value_actual
+                                    },
+                                    'score': scores[x[0].id]["totalscore"]
+                                }}, orgs)
+        
+        orgs = {}
+        for o in org_pdata:
+            merge_dict(orgs, o)
+
+        #scores = score_all(org_data)
+        #print xx
+
+        # need to get:
+        # publisher data (not just publishing timetable date initial)
+        # total scores per group where weight is not 0
+        
         totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
         return render_template("publishers.html", orgs=orgs, totalnum=totalnum.number)
 

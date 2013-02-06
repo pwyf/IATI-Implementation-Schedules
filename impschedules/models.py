@@ -16,6 +16,7 @@ class ImpSchedule(db.Model):
     schedule_date_actual = Column(UnicodeText)
     last_updated_date = Column(UnicodeText)
     source_file = Column(UnicodeText)
+    under_consideration = Column(UnicodeText)
     schedule_type_original = Column(UnicodeText)
     schedule_type_actual = Column(UnicodeText)
     schedule_type_code_original = Column(UnicodeText)
@@ -27,7 +28,7 @@ class ImpSchedule(db.Model):
     schedule_type_change = Column(UnicodeText)
     schedule_type_code_change = Column(UnicodeText)
 
-    def __init__(self, publisher_original=None, publisher_code_original=None, schedule_version_original=None, schedule_date_original=None, publisher_actual=None, publisher_code_actual=None, schedule_version_actual=None, schedule_date_actual=None, last_updated_date=None, source_file=None, schedule_type_original=None, schedule_type_actual=None, schedule_type_code_original=None, schedule_type_code_actual=None,publisher_change=None, publisher_code_change=None,schedule_version_change=None, schedule_date_change=None, schedule_type_change=None, schedule_type_code_change=None):
+    def __init__(self, publisher_original=None, publisher_code_original=None, schedule_version_original=None, schedule_date_original=None, publisher_actual=None, publisher_code_actual=None, schedule_version_actual=None, schedule_date_actual=None, last_updated_date=None, source_file=None, schedule_type_original=None, schedule_type_actual=None, schedule_type_code_original=None, schedule_type_code_actual=None,publisher_change=None, publisher_code_change=None,schedule_version_change=None, schedule_date_change=None, schedule_type_change=None, schedule_type_code_change=None,under_consideration=None):
         self.publisher_original = publisher_original
         self.publisher_code_original = publisher_code_original
         self.schedule_version_original = schedule_version_original
@@ -48,9 +49,10 @@ class ImpSchedule(db.Model):
         self.schedule_date_change = schedule_date_change
         self.schedule_type_change = schedule_type_change
         self.schedule_type_code_change = schedule_type_code_change
+        self.under_consideration = under_consideration
 
     def __repr__(self):
-        return self.publisher, self.id
+        return self.publisher_actual, self.id
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -99,9 +101,10 @@ class Data(db.Model):
     status_change = Column(UnicodeText)
     date_change = Column(UnicodeText)
     notes_change = Column(UnicodeText)
+    score = Column(Boolean)
     exclusions = Column(UnicodeText)
 
-    def __init__(self, property_id=None, impschedule_id=None, date_recorded=None, status_original=None, date_original=None, notes_original=None, status_actual=None, date_actual=None, notes_actual=None, status_change=None, date_change=None, notes_change=None):
+    def __init__(self, property_id=None, impschedule_id=None, date_recorded=None, status_original=None, date_original=None, notes_original=None, status_actual=None, date_actual=None, notes_actual=None, status_change=None, date_change=None, notes_change=None,score=None):
         self.property_id = property_id
         self.impschedule_id = impschedule_id
         self.date_recorded = date_recorded
@@ -114,6 +117,7 @@ class Data(db.Model):
         self.status_change = status_change
         self.date_change = date_change
         self.notes_change = notes_change
+        self.score = score
 
     
     def __repr__(self):

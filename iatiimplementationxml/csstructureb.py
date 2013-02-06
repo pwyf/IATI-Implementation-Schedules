@@ -373,10 +373,14 @@ codes_activity = {
     # Status
     'status': {     'Fully Compliant': 'fc',
                    'Fully compliant': 'fc',
+                   'Fully compliant\n': 'fc',
                    'Future publication': 'fp',
                    'Partially compliant': 'pc',
                    'Partially Compliant': 'pc',
                    'Not publishing now': 'up',
+                   'Not publishing now\n': 'up',
+                   'Unable to publish': 'up',
+                   'Under consideration': 'uc',
                    'Not applicable': 'na' },
     # Exclusions
     'exclusions': { 'a) Not applicable to organisation': 'a',

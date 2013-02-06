@@ -11,12 +11,14 @@
 	<h1>Select a publisher</h1>
     <table class="table" id="publishers">
     <thead>
-    <th>Publisher</th><th>Initial implementation</th>
+    <th>Publisher</th><th>Initial implementation</th><th>Total score</th>
     </thead>
     <tbody>
-	{% for org in orgs %}
+	{% for org,org_data in orgs.items() %}
     <tr>
-	<td><a href="{{url_for('publisher', id=org[0].id)}}">{{ org[0].publisher_actual }}</a></td><td>{{org[1]}}</td><!--<td></td>-->
+	<td><a href="{{url_for('publisher', id=org_data.impschedule.id)}}">{{ org_data.impschedule.publisher_actual }}</a></td>
+    <td>{{org_data.properties.publishing_timetable_date_initial}}</td>
+    <td>{{org_data.score}}</td>
     </tr>
 	{% endfor %}
     </tbody>

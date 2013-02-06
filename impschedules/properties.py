@@ -208,6 +208,14 @@ elements = {
         }
     }
 properties = {
+    'under_consideration': { 
+        'name': 'Under consideration',
+        'group': 'publishing_timetable',
+        'description': '',
+        'data' : '',
+        'type': 'code',
+        'code': 'under_consideration'
+        },
     'publishing_scope_value': { 
         'name': 'Scope',
         'group': 'publishing_scope',
@@ -468,7 +476,12 @@ codes = {
     'status': {   'i': 'In development',
                   'n': 'No',
                   'u': 'Under consideration',
-                  'y': 'Yes'}}
+                  'y': 'Yes'},
+
+    # Under consideration
+    'under_consideration': {   'on': 'Yes',
+                       '': ''},
+}
 change_reasons = {
     'no_date': 'No date provided',
     'initial_date': 'Initial date later',

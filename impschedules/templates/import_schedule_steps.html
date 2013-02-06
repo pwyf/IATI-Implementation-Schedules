@@ -13,7 +13,7 @@
     <input type="hidden" name="metadata#schedule_type#actual" value="{{doc.find("metadata").find("schedule_type").text}}" />
     <input type="hidden" name="metadata#schedule_type_code#actual" value="{{doc.find("metadata").find("schedule_type").get("code")}}" />
 
-    <p class="lead">{{doc.find("metadata").find("publisher").text}}: {{doc.find("metadata").find("schedule_type").text}} <code>{{doc.find("metadata").find("schedule_type").get("code")}}</code></p>
+    <p class="lead">{{doc.find("metadata").find("publisher").text}}: {{doc.find("metadata").find("schedule_type").text}} <code>{{doc.find("metadata").find("schedule_type").get("code")}}</code> <a href="{{source_file}}" title="{{source_file}}" class="btn btn-small pull-right"><i class="icon icon-download"></i> source file</a></p>
     <div class="alert alert-info">Some schedules are messy and the importing tool can only handle so much. Where there are mistakes, please correct them. Some assumptions have been made to help, but check that you're happy with them.</div>
 
     <div class="tab-content">
@@ -75,10 +75,10 @@
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
                         </tr>
-                        <tr>
+                        <tr class="info">
                             <td>Initial implementation date</td>
                             <td><input type="text" name="publishing#publishing_timetable_date_initial#original" class="publishing_timetable_date_initial original" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" readonly/></td>
-                            <td><input type="text" name="publishing#publishing_timetable_date_initial#actual" class="publishing_timetable_date_initial actual" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" name="publishing_timetable_date_initial" id="publishing_timetable_date_initial" /></td>
+                            <td><input type="text" name="publishing#publishing_timetable_date_initial#actual" class="publishing_timetable_date_initial actual" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" id="publishing_timetable_date_initial" /><br /><label for="under_consideration"><input type="checkbox" name="data#under_consideration" id="under_consideration" /> Under consideration</label></td>
                             <td><div class="control-group"><select name="publishing#publishing_timetable_date_initial#change" class="publishing_timetable_date_initial change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
@@ -186,7 +186,7 @@
                         </tr>
                         {% for element in doc.find(level) %}
                         <tr>
-                            <td rowspan="3">{{element.tag}}{% if element.get("type") %} ({{element.get("type")}}){%endif%}</td>
+                            <td rowspan="4">{{element.tag}}{% if element.get("type") %} ({{element.get("type")}}){%endif%}</td>
                             <td>Status</td>
                             <td><input type="text" value="{{element.find("status").get("category")}}" class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_original" name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#status_original" readonly/></td>
                             <td><select
@@ -247,6 +247,13 @@
                                 {%endfor%}
                             </select></div></td>
                         </tr>
+                        <tr><td colspan="4"><label for="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#score">
+                            <input 
+                            type="checkbox"
+                            id="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%}#score" 
+                            class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} score" 
+                            name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#score"
+                            value="1" /> Score for this element</label></td></tr>
                         {% endfor %}
                         {% endfor %}
                     </tbody>
@@ -264,18 +271,22 @@
      });
      function doSetupForm() {
         initial_date = $("#publishing_timetable_date_initial").val();
-        if (initial_date == '') {
-            $("#third .status_actual").each(function() {
-                element = $(this).attr('class');
-                element = element.replace(" status_actual", "");
-                
-                $("." + element + ".status_actual").attr('value', "");
-                $("." + element + ".date_actual").attr('value', "");
-                $("." + element + ".date_change").removeAttr('disabled').val('no_date');
-                $("." + element + ".status_change").removeAttr('disabled').val('no_date');
-            });
-        } else {
-            ensureInitial();
+        under_consideration = $("#under_consideration").attr('checked');
+        // under_consideration checkbox stops this form validation from occurring
+        if (under_consideration==undefined) {
+            if (initial_date == '') {
+                $("#third .status_actual").each(function() {
+                    element = $(this).attr('class');
+                    element = element.replace(" status_actual", "");
+                    
+                    $("." + element + ".status_actual").attr('value', "");
+                    $("." + element + ".date_actual").attr('value', "");
+                    $("." + element + ".date_change").removeAttr('disabled').val('no_date');
+                    $("." + element + ".status_change").removeAttr('disabled').val('no_date');
+                });
+            } else {
+                ensureInitial();
+            }
         }
      }
      $(function () {
@@ -335,16 +346,38 @@
             element = $(this).attr('class');
             element = element.replace(" status_original", "");
             status = $(this).attr('value');
-            if ((status == 'fc') && ($("." + element + ".date_actual").val() == "")) {
-                $("." + element + ".date_actual").attr('value', initial_date);
-                $("." + element + ".date_change").removeAttr('disabled').val('no_date');
-            } else if ((status == 'fc') && ($("." + element + ".date_actual").val() < initial_date)) {
+
+            // if there's a date, make sure it's not earlier than the initial date
+            if (($("." + element + ".date_actual").val() != "") && ($("." + element + ".date_actual").val() < initial_date)) {
                 $("." + element + ".date_actual").attr('value', initial_date);
                 $("." + element + ".date_change").removeAttr('disabled').val('initial_date');
             }
-            if (((status == 'fp') || (status == 'pc')) && ($("." + element + ".date_actual").val() != '') && ($("." + element + ".date_actual").val() < initial_date)) {
-                $("." + element + ".date_actual").attr('value', initial_date);
-                $("." + element + ".date_change").removeAttr('disabled').val('initial_date');
+            // fully compliant
+            if (status == 'fc') {
+                // if there's no date, then make it the same as the initial date
+                if ($("." + element + ".date_actual").val() == "") {
+                    $("." + element + ".date_actual").attr('value', initial_date);
+                    $("." + element + ".date_change").removeAttr('disabled').val('no_date');
+                }
+                // give the score
+                $("." + element + ".score").attr('checked', 'checked');
+            }
+            // future publication
+            if (status == 'fp') {
+                // if the date exists
+                if ($("." + element + ".date_actual").val() != "") {
+                    // if it's earlier than the initial date, correct it
+                    if ($("." + element + ".date_actual").val() < initial_date) {
+                        $("." + element + ".date_actual").attr('value', initial_date);
+                        $("." + element + ".date_change").removeAttr('disabled').val('initial_date');
+                    }
+                    // give the score
+                    $("." + element + ".score").attr('checked', 'checked');
+                }
+            }
+            // partially compliant: enable score checkbox to allow user to decide if it's sufficiently compliant
+            if (status == 'pc') {
+                $("." + element + ".score").removeAttr('disabled').closest("tr").addClass("info");
             }
         });
     }

@@ -8,6 +8,34 @@ from lxml import etree
 import datetime
 import properties
 
+def score_all(data, publishers, elements):
+    out = {}
+    for publisher in publishers:
+        out[publisher] = {}
+        numelements = float(len(elements))
+        out[publisher]["totalscore"] = 0.0
+        for element in elements:
+            out[publisher][element] = {}
+            try:
+                yes = float(data[(publisher,element,True)])
+            except KeyError:
+                yes = 0.0
+            try:
+                no = float(data[(publisher,element,None)])
+            except KeyError:
+                no = 0.0
+            try:
+                total = (yes/(yes+no))
+            except ZeroDivisionError:
+                total = 0.0
+            out[publisher][element]["total"] = total
+            out[publisher][element]["num"] = yes+no
+            out[publisher][element]["yes"] = yes
+            out[publisher][element]["no"] = no
+            out[publisher]["totalscore"] += total/numelements
+        out[publisher]["totalscore"] = round((out[publisher]["totalscore"]*100), 0)
+    return out
+
 def score2(publisher_data, element_data):
 
     s = {}
@@ -23,17 +51,13 @@ def score2(publisher_data, element_data):
         nook_group = 0.0
         for element, elementvalues in elementgroupvalues["elements"].items():
             for prop, propvalues in elementvalues["properties"].items():
-                status = propvalues["data"].status_actual
-                if (status == 'fc'):
-                    ok_group = ok_group+1.0
-                elif ((status=='fp') and (propvalues["data"].date_actual != '')):
+                score = propvalues["data"].score
+                if (score == 1):
                     ok_group = ok_group+1.0
                 else:
                     nook_group = nook_group + 1.0
         s['calculations'] += "Total score for group <b>" + elementgroupvalues["description"] + "</b>: " + str(int(ok_group)) + "/" + str(int(ok_group+nook_group)) + "<br />"
-        ok = (ok + (ok_group/num_groups))
-        nook = (nook + (nook_group/num_groups))
-
+        ok = (ok + ((ok_group/(ok_group+nook_group))/num_groups))
     
     if (properties['publishing_timetable_date_initial'] != ''):
         willpublish = 1.0
@@ -61,63 +85,12 @@ def score2(publisher_data, element_data):
     
     s['calculations'] += "Elements publishing: " + str(int(ok)) + "<br />"
     s['calculations'] += "Elements not publishing: " + str(int(nook)) + "<br />"
-    s['calculations'] += "Elements score: " + str(int(round(((ok/(ok+nook))*100),0))) + "%<br />"
+    s['calculations'] += "Elements score: " + str(int(round((ok*100),0))) + "%<br />"
 
     s['calculations'] += "<br />"
-    s['calculations'] += str(int(willpublish*100)) + "% (plan to publish) x " + str(int(((frequent+license)/2)*100)) + "% (publishing approach) x " + str((round(((ok/(ok+nook))*100),0))) + "% (elements score)"
+    s['calculations'] += str(int(willpublish*100)) + "% (plan to publish) x " + str(int(((frequent+license)/2)*100)) + "% (publishing approach) x " + str((round(((ok)*100),0))) + "% (elements score)"
    
-    s['value'] = round((willpublish*(ok/(ok+nook))*((frequent+license)/2))*100)
-    return s
-
-
-def score(publisher_data, element_data):
-    properties = dict(map(lambda x: ((x.segment),(x.segment_value_actual)), publisher_data))
-    data = map(lambda x: ((x["data"][0].status_actual),(str(x["data"][0].date_actual), str(x["data"][0].property_id))), element_data)
-    ok = 0.0
-    nook = 0.0
-    s = {}
-    s['calculations'] = ""
-    s['value'] = 0.0
-    for d, values in data:
-        if (d=='fc'):
-            ok=ok+1.0
-        elif ((d=='fp') and (values[0]!='')):
-            ok=ok+1.0
-        else:
-            nook = nook+1.0
-    
-    if (properties['publishing_timetable_date_initial'] != ''):
-        willpublish = 1.0
-        s['calculations'] += "Planning to publish to IATI<br />"
-    else:
-        willpublish = 0.0
-    if ((properties['publishing_frequency_frequency'] == 'm') or (properties['publishing_frequency_frequency'] == 'q')):
-        frequent = 1.0
-    else:
-        frequent = 0.0
-    try:
-        if ((properties['publishing_license'] == 'p') or (properties['publishing_license'] == 'a')):
-            license = 1.0
-        else:
-            license = 0.0
-    except KeyError:
-        license = 0.0
-
-    if ((license==1.0) and (frequent==1.0)):
-        s['calculations'] += "Planning to publish at least quarterly under an open license (100% score)<br />"
-    elif (license==1.0):
-        s['calculations'] += "Planning to publish under an open license, but not planning to publish at least quarterly (50% score)<br />"
-    elif (frequent==1.0):
-        s['calculations'] += "Planning to publish at least quarterly, but planning to publish under an open license (50% score)<br />"
-    
-    s['calculations'] += "Elements publishing: " + str(int(ok)) + "<br />"
-    s['calculations'] += "Elements not publishing: " + str(int(nook)) + "<br />"
-    s['calculations'] += "Elements score: " + str(int(round(((ok/(ok+nook))*100),0))) + "%<br />"
-
-    s['calculations'] += "<br />"
-    s['calculations'] += str(int(willpublish*100)) + "% (plan to publish) x " + str(int(((frequent+license)/2)*100)) + "% (publishing approach) x " + str((round(((ok/(ok+nook))*100),0))) + "% (elements score)"
-   
-    s['value'] = round((willpublish*(ok/(ok+nook))*((frequent+license)/2))*100)
+    s['value'] = round((willpublish*(ok)*((frequent+license)/2))*100)
     return s
 
 def parse_implementation_schedule(schedule, out, package_filename):

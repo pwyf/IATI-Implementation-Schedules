@@ -4,12 +4,12 @@
     <script >
     $(function() {
     $("table#tablebasic").tablesorter({ sortList: [[0,0]] });
-    $("table#tabledetailed").tablesorter({ sortList: [[0,1],[1,0]] });
     });
 
     </script>
     <a class="btn btn-success pull-right" href="{{url_for('publisher_edit', id=publisher.id)}}">Edit</a>
     <h1>{{publisher.publisher_actual}}</h1>
+    {% if publisher.under_consideration%}<div class="alert">This publisher is still considering IATI implementation.</div>{%endif%}
     <p class="lead">Score: {{score|int}}%</p>
     <p><b>Calculation:</b><br />{{score_calculations}}</p>
     <ul class="nav nav-tabs" id="pageTab">
@@ -61,7 +61,7 @@
                 <th>Compliance</th>
                 <th>Publication date</th>
                 <th>Notes</th>
-                <th>Exclusions</th>
+                <th>Score?</th>
             </thead>
             <tbody>
             {% for groupid, groupvalues in data.items() %}
@@ -89,7 +89,7 @@
                             </td>
                             <td>{{propertyvalues.data.date_actual}}</td>
                             <td>{{propertyvalues.data.notes_actual}}</td>
-                            <td>{% if propertyvalues.data.exclusions is not none %}{{propertyvalues.data.exclusions}}{%endif%}</td>
+                            <td>{% if propertyvalues.data.score is not none %}<i class="icon-ok"></i>{%endif%}</td>
                         </tr>
                    {%endfor%}
                 {% endfor %}
