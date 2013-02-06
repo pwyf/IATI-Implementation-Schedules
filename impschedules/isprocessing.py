@@ -8,12 +8,13 @@ from lxml import etree
 import datetime
 import properties
 
-def score_all(data, publishers, elements):
+def score_all(data, publishers, elements, org_data):
     out = {}
     for publisher in publishers:
         out[publisher] = {}
         numelements = float(len(elements))
-        out[publisher]["totalscore"] = 0.0
+        out[publisher]["score"] = {}
+        out[publisher]["score"]["total"] = 0.0
         for element in elements:
             out[publisher][element] = {}
             try:
@@ -32,8 +33,45 @@ def score_all(data, publishers, elements):
             out[publisher][element]["num"] = yes+no
             out[publisher][element]["yes"] = yes
             out[publisher][element]["no"] = no
-            out[publisher]["totalscore"] += total/numelements
-        out[publisher]["totalscore"] = round((out[publisher]["totalscore"]*100), 0)
+            out[publisher]["score"]["total"] += total/numelements
+        out[publisher]["score"]["total"] = round((out[publisher]["score"]["total"]*100), 0)
+
+        if (org_data[publisher]["properties"]["publishing_timetable_date_initial"] != ""):
+            will_publish = 1.0
+        else:
+            will_publish = 0.0
+        
+        if (org_data[publisher]["properties"]["publishing_license"] != ""):
+            license = 1.0
+        else:
+            license = 0.0
+        
+        if ((org_data[publisher]["properties"]["publishing_frequency_frequency"] == "m") or (org_data[publisher]["properties"]["publishing_frequency_frequency"] == "q")):
+            frequency = 1.0
+        else:
+            frequency = 0.0
+
+        
+        out[publisher]["score"]["total"] = out[publisher]["score"]["total"] * will_publish * ((license + frequency)/2)
+        out[publisher]["score"]["will_publish"] = will_publish*100
+        out[publisher]["score"]["approach"] = ((license + frequency)/2)*100
+
+        if (org_data[publisher]["impschedule"].under_consideration):
+            out[publisher]["score"]["group"] = "Under consideration"
+            out[publisher]["score"]["group_code"] = "alert-info"
+        elif (out[publisher]["score"]["will_publish"] ==0):
+            out[publisher]["score"]["group"] = "No publication"
+            out[publisher]["score"]["group_code"] = "alert-black"
+        elif (out[publisher]["score"]["total"] <=30):
+            out[publisher]["score"]["group"] = "Unambitious"
+            out[publisher]["score"]["group_code"] = "alert-error"
+        elif (out[publisher]["score"]["total"] <=60):
+            out[publisher]["score"]["group"] = "Moderately ambitious"
+            out[publisher]["score"]["group_code"] = "alert"
+        elif (out[publisher]["score"]["total"] <=100):
+            out[publisher]["score"]["group"] = "Ambitious"
+            out[publisher]["score"]["group_code"] = "alert-success"
+
     return out
 
 def score2(publisher_data, element_data):
@@ -41,6 +79,7 @@ def score2(publisher_data, element_data):
     s = {}
     s['calculations'] = ""
     s['value'] = 0.0
+    s['groups'] = {}
     properties = dict(map(lambda x: ((x.segment),(x.segment_value_actual)), publisher_data))
 
     num_groups = len(element_data)
@@ -56,6 +95,10 @@ def score2(publisher_data, element_data):
                     ok_group = ok_group+1.0
                 else:
                     nook_group = nook_group + 1.0
+        s['groups'][elementgroup] = {}
+        s['groups'][elementgroup]['yes'] = ok_group
+        s['groups'][elementgroup]['no'] = nook_group
+        s['groups'][elementgroup]['total'] = (ok_group/(ok_group+nook_group))*100
         s['calculations'] += "Total score for group <b>" + elementgroupvalues["description"] + "</b>: " + str(int(ok_group)) + "/" + str(int(ok_group+nook_group)) + "<br />"
         ok = (ok + ((ok_group/(ok_group+nook_group))/num_groups))
     
@@ -90,7 +133,22 @@ def score2(publisher_data, element_data):
     s['calculations'] += "<br />"
     s['calculations'] += str(int(willpublish*100)) + "% (plan to publish) x " + str(int(((frequent+license)/2)*100)) + "% (publishing approach) x " + str((round(((ok)*100),0))) + "% (elements score)"
    
-    s['value'] = round((willpublish*(ok)*((frequent+license)/2))*100)
+    s['total'] = round((willpublish*(ok)*((frequent+license)/2))*100)
+    s['will_publish'] = willpublish
+    s['approach'] = (((frequent+license)/2)*100)
+
+    if (s["will_publish"] ==0):
+        s["group"] = "No publication"
+        s["group_code"] = "alert-black"
+    elif (s["total"] <=30):
+        s["group"] = "Unambitious"
+        s["group_code"] = "alert-error"
+    elif (s["total"] <=60):
+        s["group"] = "Moderately ambitious"
+        s["group_code"] = "alert"
+    elif (s["total"] <=100):
+        s["group"] = "Ambitious"
+        s["group_code"] = "alert-success"
     return s
 
 def parse_implementation_schedule(schedule, out, package_filename):

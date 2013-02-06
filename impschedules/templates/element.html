@@ -1,6 +1,6 @@
 {% set active_page='elements'%}{% extends "base.html" %}
 {% block content %}
-    <h1>{% if element[0] %}{{element[0].name}} {% if element[1].defining_attribute_value %}({{element[1].defining_attribute_value}}){%endif%}{% else %}{{element.name}}{%endif %}</h1>
+    <h1>{{element.element.description}} {% if element.properties%}({{element.properties.defining_attribute_value}}){%endif%}</h1>
     <h3>Implementation Schedule Information</h3>
     <table class="table">
     <thead>
@@ -8,7 +8,7 @@
         <th>Compliance</th>
         <th>Publication date</th>
         <th>Notes</th>
-        <th>Exclusions</th>
+        <th>Score</th>
     </thead>
     <tbody>
     {% for d in data %}
@@ -28,8 +28,8 @@
                     {{ d[0].status_actual }}
                     {%endif%}</td>
 		    <td>{{d[0].date_actual}}</td>
-            <td>{{d[0].notes_actual}}</td>
-            <td>{{d[0].exclusions}}</td>
+            <td>{{d[0].notes_actual}} {%if d[0].exclusions%}{{d[0].exclusions}}{%endif%}</td>
+            <td>{%if d[0].score%}<i class="icon-ok" title="Fully compliant"></i>{%endif%}</td>
 
 </tr>
     {% endfor %}

@@ -12,37 +12,17 @@
 	<table class="table" id="elements">
     <thead>
     <th>Element</th>
-    <th>Compliant</th>
-    <th>Partial</th>
-    <th>Uncompliant</th>
-    <th>Future</th>
-    <th>Unable</th>
     <th>Compliant %</th>
     </thead>
     <tbody>
 	{% for element in elements %}
     {% if compliance[element.propertyid] is defined %}
     {% set cd = compliance[element.propertyid] %}
-    {% set pct_compliant = (cd['fc']/totalnum*100)|int %}
+    {% set pct_compliant = (cd[True]/totalnum*100)|int %}
     {%endif%}
     <tr{%if (pct_compliant<30) %} class="error"{%elif (pct_compliant>70) %} class="success"{%endif%}>
-	<td>{% if element.defining_attribute_value %}<a href="{{url_for('element', id=element.id, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.name }} ({{ element.defining_attribute_value }})</a>{% else %}<a href="{{url_for('element', id=element.id)}}">{{element.level|capitalize}} - {{ element.name }}</a>{%endif%} </td>
+	<td>{% if element.defining_attribute_value %}<a href="{{url_for('element', id=element.name, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.description }} ({{ element.defining_attribute_value }})</a>{% else %}<a href="{{url_for('element', id=element.name)}}">{{element.level|capitalize}} - {{ element.description }}</a>{%endif%} </td>
 
-    <td>
-    {{cd['fc']}}
-    </td>
-    <td>
-    {{cd['pc']}}
-    </td>
-    <td>
-    {{cd['uc']}}
-    </td>
-    <td>
-    {{cd['fp']}}
-    </td>
-    <td>
-    {{cd['up']}}
-    </td>
     <td><span class="pct">{{ pct_compliant }}</pct></td>
     </tr>
 	{% endfor %}

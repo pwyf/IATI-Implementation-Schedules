@@ -7,16 +7,36 @@
     });
 
     </script>
+
     <a class="btn btn-success pull-right" href="{{url_for('publisher_edit', id=publisher.id)}}">Edit</a>
     <h1>{{publisher.publisher_actual}}</h1>
-    {% if publisher.under_consideration%}<div class="alert">This publisher is still considering IATI implementation.</div>{%endif%}
-    <p class="lead">Score: {{score|int}}%</p>
-    <p><b>Calculation:</b><br />{{score_calculations}}</p>
+    <p class="lead"><span class="{{score.group_code}} well-small">{{score.group}}</a></p>
+    {% if not publisher.under_consideration %}
+    <table class="table">
+    <thead>
+        <th>Group</th>
+        <th>Compliant</th>
+        <th>Uncompliant</th>
+        <th>%</th>
+    </thead>
+    <tbody>
+    {% for groupid, groupvalues in data.items() %}
+        <tr>
+        <td><a href="#elementgroup{{groupid}}">{{groupvalues.description}}</a></td>
+        <td>{{score.groups[groupid].yes|int}}</td>
+        <td>{{score.groups[groupid].no|int}}</td>
+        <td class="pct">{{score.groups[groupid].total|int}}</td>
+        </tr>
+    {% endfor%}
+    </tbody>
+    </table>
+    {% endif%}
     <ul class="nav nav-tabs" id="pageTab">
         <li><a href="#basic" data-toggle="tab" class="firsttab">Basic information</a></li>
         <li><a href="#detailed" data-toggle="tab" class="secondtab">Detailed information</a></li>
     </ul>
     <div class="tab-content">
+
         <div class="tab-pane" id="basic">
             <h3>Basic information</h3>
             <table class="table" id="tablebasic">
@@ -62,16 +82,17 @@
                 <th>Publication date</th>
                 <th>Notes</th>
                 <th>Score?</th>
+                <th>Changes?</th>
             </thead>
             <tbody>
             {% for groupid, groupvalues in data.items() %}
-                <tr class="info"><td colspan="6"><a href="{{url_for('elementgroup', id=groupid)}}">{{groupvalues.description}}</a></tr>
+                <tr class="info"><td colspan="7"><a id="elementgroup{{groupid}}"></a><a href="{{url_for('elementgroup', id=groupid)}}">{{groupvalues.description}}</a></tr>
                 {% for elementid, elementvalues in groupvalues.elements.items() %}
                    {% for propertyid, propertyvalues in elementvalues.properties.items() %}
                         {% set status = propertyvalues.data.status_actual%}
                         <tr>
                             <td>{{elementvalues.level|capitalize}}</td>
-                            <td><a href="{{url_for('element', id=elementid, type=propertyvalues.id)}}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_value}}){%endif%}</a></td>
+                            <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_value}}){%endif%}</a></td>
                             <td>{%
                                 if (status=="fc")
                                 %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
@@ -92,6 +113,36 @@
                             <td>{{propertyvalues.data.date_actual}}</td>
                             <td>{{propertyvalues.data.notes_actual}}</td>
                             <td>{% if propertyvalues.data.score is not none %}<i class="icon-ok"></i>{%endif%}</td>
+                            <td>{% if (propertyvalues.data.status_change or propertyvalues.data.date_change or propertyvalues.data.notes_change)  %}
+                            <a href="#change{{propertyvalues.data.id}}" role="button" class="btn" data-toggle="modal"><i class="icon-star"></i></a>
+
+                            <div id="change{{propertyvalues.data.id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h3 id="myModalLabel">Change log</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                    <p>Implementation schedules sometimes have to be adjusted when the information has been interpreted in a different way.</p>
+                                    <table class="table">
+                                    <thead><th>Component</th><th>Initial</th><th>Corrected</th><th>Change reason</th></thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Status</td><td>{{properties.status[propertyvalues.data.status_original]}}</td><td>{{properties.status[propertyvalues.data.status_actual]}}</td>{% if propertyvalues.data.status_change %}<td>{{properties.change_reasons[propertyvalues.data.status_change]}}</td>{%else%}<td class="muted">No change</td>{%endif%}
+                                        </tr>
+                                        <tr>
+                                            <td>Date</td><td>{{propertyvalues.data.date_original}}</td><td>{{propertyvalues.data.date_actual}}</td>{%if propertyvalues.data.date_change%}<td>{{properties.change_reasons[propertyvalues.data.date_change]}}</td>{%else%}<td class="muted">No change</td>{%endif%}
+                                        </tr>
+                                        <tr>
+                                            <td>Notes</td><td>{{propertyvalues.data.notes_original}}</td><td>{{propertyvalues.data.notes_actual}}</td>{% if propertyvalues.data.notes_change %}<td>{{properties.change_reasons[propertyvalues.data.notes_change]}}</td>{%else%}<td class="muted">No change</td>{%endif%}
+                                        </tr>
+                                    </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                    </div>
+                            </div>
+                            {%endif%}
+                            </td>
                         </tr>
                    {%endfor%}
                 {% endfor %}

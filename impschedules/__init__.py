@@ -2,7 +2,6 @@ from flask import Flask, render_template, flash, request, Markup, session, redir
 import sys, os
 from lxml import etree
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask import render_template
 from sqlalchemy import func
 import datetime
 import re
@@ -289,24 +288,28 @@ def element(id=None, type=None):
     if (id is not None):
         if (type):
             element = db.session.query(models.Element, models.Property
-                ).filter(models.Element.id==id, models.Property.defining_attribute_value==type
+                ).filter(models.Element.name==id, models.Property.defining_attribute_value==type
                 ).join(models.Property).first()
             data = db.session.query(models.Data, models.ImpSchedule
-                ).filter(models.Element.id==id, models.Property.defining_attribute_value==type
+                ).filter(models.Element.name==id, models.Property.defining_attribute_value==type
                 ).join(models.Property
                 ).join(models.Element
                 ).join(models.ImpSchedule
                 ).order_by(models.ImpSchedule.publisher_actual
                 ).all()
+
+            element = {'element': element[0],
+                       'properties': element[1]}
         else:
             element = models.Element.query.filter_by(id=id).first()
             data = db.session.query(models.Data, models.ImpSchedule
-                ).filter(models.Element.id==id
+                ).filter(models.Element.name==id
                 ).join(models.Property
                 ).join(models.Element
                 ).join(models.ImpSchedule
                 ).order_by(models.ImpSchedule.publisher_actual
                 ).all()
+            element = {'element': element}
         return render_template("element.html", element=element, data=data)
     else:
         elements = db.session.query(models.Property.parent_element, 
@@ -314,6 +317,7 @@ def element(id=None, type=None):
                                     models.Element.id, 
                                     models.Element.name, 
                                     models.Element.level,
+                                    models.Element.description,
                                     models.Property.id.label("propertyid")
                 ).distinct(
                 ).join(models.Element).all()
@@ -324,12 +328,12 @@ def element(id=None, type=None):
                                     models.Element.id, 
                                     models.Element.name, 
                                     models.Element.level,
-                                    models.Data.status_actual,
+                                    models.Data.score,
                                     func.count(models.Data.id)
                 ).group_by(models.Data.status_actual, models.Property
                 ).join(models.Element).join(models.Data).all()
 
-        compliance = nest_compliance_results(compliance_data)
+        compliance = nest_compliance_scores(compliance_data)
         totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
         return render_template("elements.html", elements=elements, compliance=compliance, totalnum=totalnum.number)
 
@@ -407,8 +411,10 @@ def publisher(id=None):
             s = {}
             s['value'] = 0
             s['calculations'] = "Not able to calculate score"
-
-        return render_template("publisher.html", publisher=publisher, data=data, segments=publisher_data, properties=properties, score=s["value"], score_calculations=Markup(s["calculations"]))
+        if publisher.under_consideration:
+            s['group'] = "Under consideration"
+            s['group_code'] = "alert-info"
+        return render_template("publisher.html", publisher=publisher, data=data, segments=publisher_data, properties=properties, score=s, score_calculations=Markup(s["calculations"]))
     else:
         orgs = db.session.query(models.ImpSchedule, 
                                 models.ImpScheduleData
@@ -432,20 +438,18 @@ def publisher(id=None):
         publishers = set(map(lambda x: x[0], org_data))
         elementgroups = set(map(lambda x: x[3], org_data))
         org_data = dict(map(lambda x: ((x[0],x[3],x[2]),(x[1])), org_data))
-        scores=score_all(org_data, publishers, elementgroups)
-        
         org_pdata = map(lambda x: {x[0].id: {
                                     'impschedule': x[0],
                                     'properties': {
                                         x[1].segment: x[1].segment_value_actual
-                                    },
-                                    'score': scores[x[0].id]["totalscore"]
+                                    }
                                 }}, orgs)
-        
         orgs = {}
         for o in org_pdata:
             merge_dict(orgs, o)
 
+        scores=score_all(org_data, publishers, elementgroups, orgs)
+        
         #scores = score_all(org_data)
         #print xx
 
@@ -454,7 +458,7 @@ def publisher(id=None):
         # total scores per group where weight is not 0
         
         totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
-        return render_template("publishers.html", orgs=orgs, totalnum=totalnum.number)
+        return render_template("publishers.html", orgs=orgs, totalnum=totalnum.number, scores=scores)
 
 def merge_dict(d1, d2):
     # from here: http://stackoverflow.com/questions/10703858/python-merge-multi-level-dictionaries
