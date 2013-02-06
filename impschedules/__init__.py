@@ -301,7 +301,7 @@ def element(id=None, type=None):
             element = {'element': element[0],
                        'properties': element[1]}
         else:
-            element = models.Element.query.filter_by(id=id).first()
+            element = models.Element.query.filter_by(name=id).first()
             data = db.session.query(models.Data, models.ImpSchedule
                 ).filter(models.Element.name==id
                 ).join(models.Property
