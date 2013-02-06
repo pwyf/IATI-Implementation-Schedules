@@ -71,18 +71,20 @@
                         {% set status = propertyvalues.data.status_actual%}
                         <tr>
                             <td>{{elementvalues.level|capitalize}}</td>
-                            <td>{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_value}}){%endif%}</td>
+                            <td><a href="{{url_for('element', id=elementid, type=propertyvalues.id)}}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_value}}){%endif%}</a></td>
                             <td>{%
                                 if (status=="fc")
                                 %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
                                 elif (status=="uc")
-                                %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
+                                %}<i class="icon-refresh" title="Under consideration"></i><br />Under consideration{%
                                 elif (status=="pc")
                                 %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
                                 elif (status=="up")
                                 %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
                                 elif (status=="fp")
-                                %}<i class="icon-wrench" title="Future publication"></i><br />Future
+                                %}<i class="icon-wrench" title="Future publication"></i><br />Future{%
+                                elif (status=="na")
+                                %}<i class="icon-remove" title="Not applicable"></i><br />Not applicable
                                 {% else %}
                                 {{ status }}
                                 {%endif%}
