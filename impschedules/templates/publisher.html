@@ -92,7 +92,7 @@
                         {% set status = propertyvalues.data.status_actual%}
                         <tr>
                             <td>{{elementvalues.level|capitalize}}</td>
-                            <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_value}}){%endif%}</a></td>
+                            <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', level=elementvalues.level, id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', level=elementvalues.level, id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_value}}){%endif%}</a></td>
                             <td>{%
                                 if (status=="fc")
                                 %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%

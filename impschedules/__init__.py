@@ -25,7 +25,7 @@ from isprocessing import *
 
 db.create_all()
 
-@app.route('/setup')
+@app.route('/setup/')
 def setup():
     db.create_all()
     # create properties
@@ -82,7 +82,7 @@ def setup():
 def index():
     return render_template("dashboard.html")
 
-@app.route("/import", methods=['GET', 'POST'])
+@app.route("/import/", methods=['GET', 'POST'])
 def import_schedule():
     if (request.method == 'POST'):
         if ("do_import" in request.form):
@@ -238,8 +238,8 @@ def import_schedule():
     else:
         return render_template("import.html")
 
-@app.route("/elementgroups")
-@app.route("/elementgroups/<id>", methods=['GET', 'POST'])
+@app.route("/elementgroups/")
+@app.route("/elementgroups/<id>/", methods=['GET', 'POST'])
 def elementgroup(id=None):
     if (request.method == 'POST'):
         # handle post
@@ -281,36 +281,45 @@ def elementgroup(id=None):
                         ).all()
             return render_template("elementgroups.html", elementgroups=elementgroups)
 
-@app.route("/elements")
-@app.route("/elements/<id>")
-@app.route("/elements/<id>/<type>")
-def element(id=None, type=None):
-    if (id is not None):
+@app.route("/elements/")
+@app.route("/elements/<level>/<id>/")
+@app.route("/elements/<level>/<id>/<type>/")
+def element(level=None, id=None, type=None):
+    if ((level is not None) and (id is not None)):
         if (type):
             element = db.session.query(models.Element, models.Property
-                ).filter(models.Element.name==id, models.Property.defining_attribute_value==type
+                ).filter(models.Element.name==id, models.Property.defining_attribute_value==type, models.Element.level==level
                 ).join(models.Property).first()
             data = db.session.query(models.Data, models.ImpSchedule
-                ).filter(models.Element.name==id, models.Property.defining_attribute_value==type
+                ).filter(models.Element.name==id, models.Property.defining_attribute_value==type, models.Element.level==level
                 ).join(models.Property
                 ).join(models.Element
                 ).join(models.ImpSchedule
                 ).order_by(models.ImpSchedule.publisher_actual
                 ).all()
 
-            element = {'element': element[0],
+            elements = {'element': element[0],
                        'properties': element[1]}
         else:
-            element = models.Element.query.filter_by(name=id).first()
-            data = db.session.query(models.Data, models.ImpSchedule
+            element = db.session.query(models.Element, models.Property
                 ).filter(models.Element.name==id
+                ).join(models.Property).first()
+            data = db.session.query(models.Data, models.ImpSchedule
+                ).filter(models.Element.name==id, models.Element.level==level
                 ).join(models.Property
                 ).join(models.Element
                 ).join(models.ImpSchedule
                 ).order_by(models.ImpSchedule.publisher_actual
                 ).all()
-            element = {'element': element}
-        return render_template("element.html", element=element, data=data)
+            elements = {'element': element[0]}
+            if (element[1].defining_attribute_value):
+                prop = db.session.query(models.Property
+                ).filter(models.Element.name==id
+                ).join(models.Element).all()
+                elements = {'element': element[0],
+                            'properties':prop}
+                return render_template("element_with_properties.html", element=elements)
+        return render_template("element.html", element=elements, data=data)
     else:
         elements = db.session.query(models.Property.parent_element, 
                                     models.Property.defining_attribute_value, 
@@ -337,8 +346,8 @@ def element(id=None, type=None):
         totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
         return render_template("elements.html", elements=elements, compliance=compliance, totalnum=totalnum.number)
 
-@app.route("/publishers")
-@app.route("/publishers/<id>")
+@app.route("/publishers/")
+@app.route("/publishers/<id>/")
 def publisher(id=None):
     if (id is not None):
         """ need to return:
@@ -475,7 +484,7 @@ def merge_dict(d1, d2):
         else:
             d1[k] = v2
 
-@app.route("/publishers/<id>/edit", methods=['GET', 'POST'])
+@app.route("/publishers/<id>/edit/", methods=['GET', 'POST'])
 def publisher_edit(id=id):
     if (request.method == 'POST'):
         if (request.form['password'] == app.config["SECRET_PASSWORD"]):
@@ -496,7 +505,7 @@ def publisher_edit(id=id):
         publisher = models.ImpSchedule.query.filter_by(id=id).first()
         return render_template("publisher_editor.html", publisher=publisher)
 
-@app.route("/timeline")
+@app.route("/timeline/")
 def timeline(id=id):
     elements = db.session.query(models.Property.parent_element, 
                             models.Property.defining_attribute_value, 
@@ -508,13 +517,13 @@ def timeline(id=id):
         ).join(models.Element).all()
     return render_template("timeline.html", elements=elements)
 
-@app.route("/flush")
+@app.route("/flush/")
 def flush():
     db.session.remove()
     db.drop_all()
     return 'Deleted. <a href="/setup">Setup</a> again?'
 
-@app.route("/parse")
+@app.route("/parse/")
 def parse():
     #try:
         return load_package() + '<br />Parsed successfully. <a href="/">Go to front page</a>?'

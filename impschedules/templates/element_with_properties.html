@@ -1,0 +1,18 @@
+{% set active_page='elements'%}{% extends "base.html" %}
+{% block content %}
+    <h1>{{element.element.description}}</h1>
+    <h3>Multiple versions of {{element.element.name}}</h3>
+    <table class="table">
+    <thead>
+        <th>Item</th>
+    </thead>
+    <tbody>
+    {% for p in element.properties %}
+    <tr>
+        <td><a href="{{url_for('element', level=element.element.level, id=element.element.name, type=p.defining_attribute_value)}}">{{p.defining_attribute_value}}</a></td>
+        <td>Description goes here...</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>        
+{% endblock %}

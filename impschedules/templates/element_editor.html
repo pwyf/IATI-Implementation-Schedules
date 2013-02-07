@@ -1,0 +1,36 @@
+{% set active_page='elements'%}{% extends "base.html" %}
+{% block content %}
+    <form action="" method="post">
+    <h1>{{element.description}}</h1>
+    <h3>Edit this element</h3>
+    <table class="table">
+    <thead>
+        <th>Item</th>
+        <th>Value</th>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Element name</td>
+        <td><input type="text" value="{{element.name}}" name="name" disabled /></td>
+    </tr>
+    <tr>
+        <td>Element description</td>
+        <td><input type="text" value="{{element.description}}" name="description" /></td>
+    </tr>
+    <tr>
+        <td>Element weight</td>
+        <td><label for="weight"><input id="weight" type="checkbox" value="0" name="weight" /> Zero weight</label></td>
+    </tr>
+    <tr>
+        <td>Secret password</td>
+        <td><input type="password" value="" name="password" /></td>
+    </tr>
+    <tr>
+    <td colspan="2">
+    <input type="submit" value="Update" class="btn" />
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </form>  
+{% endblock %}
