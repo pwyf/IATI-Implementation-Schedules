@@ -240,9 +240,12 @@ def parse_information(root, sheet, rows, schedule_date):
                         else:
                             which_row = row_data
                         for cell, values in param["opts"].items():
-                            if ((which_row[param["col"]+cell].value) != ("" or "no" or "NO")):
+                            notpresent = ["", "no", "NO"]
+                            if ((which_row[param["col"]+cell].value.strip()) not in notpresent):
                                 el.attrib[attribute] = use_code(attribute, values)
                                 break
+                            else:
+                                el.attrib[attribute] = ""
 
                 if (row[0] == 'split-pub'):
                     dataa = row_data[2].value
@@ -736,13 +739,37 @@ def full_schema(s):
     publishingschema(root)
     return root
 
+# This function opens the sheet, looks for a defining pattern of the structure, and returns a structure
+def detect_structure(filename):
+    from iatiimplementationxml.structures import patterns
+    # open workbook
+
+    book = xlrd.open_workbook(filename)
+
+    # look for distinct pattern
+    for s,p in patterns.structures.items():
+        try:
+            sheet = book.sheet_by_index(p["sheet"])
+            value = sheet.cell_value(rowx=(p["row"]-1), colx=(p["col"]-1))
+            if (value.strip() == p["value"]):
+                structure = s
+                break
+        except IndexError:
+            pass
+    try:
+        return structure
+    except UnboundLocalError:
+        raise Exception("Sorry, your schedule does not appear to conform to any known structure.")
+
 # This function can be used to convert a schedule when this is 
 # used as a module, e.g.:
 #   import toxml
 #   toxml.convert_schedule(PATH_TO_THE_SCHEDULE, STRUCTURE_OF_THE_SCHEDULE)
 
 def convert_schedule(filename, s):
-    xml = full_xml(filename, "iatiimplementationxml." + s)
+    if (s == "detect"):
+        s = detect_structure(filename)
+    xml = full_xml(filename, "iatiimplementationxml.structures." + s)
     return etree.tostring(xml,
         xml_declaration=True,
         encoding="utf-8")
@@ -763,6 +790,7 @@ if __name__ == "__main__":
             s = "structure"
     else:
         s = "structure"
+    s = "structures."+s
     if len(sys.argv) > 1:
         if sys.argv[1] == "--schema":
             xml = full_schema(s)

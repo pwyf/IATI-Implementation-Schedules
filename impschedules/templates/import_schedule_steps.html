@@ -87,7 +87,7 @@
                             <td>Frequency</td>
                             <td><input name="publishing#publishing_frequency_frequency#original" class="publishing_timetable_frequency original" type="text" value="{{doc.find("publishing").find("publication-frequency").get("frequency")}}" readonly/></td>
                             <td>
-                            <select name="publishing#publishing_frequency_frequency#actual" class="publishing_timetable_frequency actual">
+                            <select name="publishing#publishing_frequency_frequency#actual" class="publishing_timetable_frequency actual"><option></option> 
                                 {% for key, value in properties.codes[properties.properties['publishing_frequency_frequency']["code"]].items() %}
                                 <option value="{{key}}" {% if key == (doc.find("publishing").find("publication-frequency").get("frequency")) %}selected {%endif%}>{{value}}</option>
                                 {%endfor%}
@@ -101,7 +101,7 @@
                             <td>Timeliness</td>
                             <td><input type="text" name="publishing#publishing_frequency_timeliness#original" class="publishing_timetable_timeliness original" value="{{doc.find("publishing").find("publication-frequency").get("timeliness")}}" readonly/></td>
                             <td>
-                            <select name="publishing#publishing_frequency_timeliness#actual" class="publishing_timetable_timeliness actual">
+                            <select name="publishing#publishing_frequency_timeliness#actual" class="publishing_timetable_timeliness actual"><option></option> 
                                 {% for key, value in properties.codes[properties.properties['publishing_frequency_timeliness']["code"]].items() %}
                                 <option value="{{key}}" {% if key == (doc.find("publishing").find("publication-frequency").get("timeliness")) %}selected {%endif%}>{{value}}</option>
                                 {%endfor%}
@@ -137,7 +137,7 @@
                         <tr>
                             <td>License</td>
                             <td><input name="publishing#publishing_license#original" class="publishing_license original" type="text" value="{{doc.find("publishing").find("license").get("license")}}" readonly/></td>
-                            <td><select name="publishing#publishing_license#actual" class="publishing_license actual">
+                            <td><select name="publishing#publishing_license#actual" class="publishing_license actual"><option></option> 
                                 {% for key, value in properties.codes[properties.properties['publishing_license']["code"]].items() %}
                                 <option value="{{key}}" {% if key == (doc.find("publishing").find("license").get("license")) %}selected {%endif%}>{{value}}</option>
                                 {%endfor%}

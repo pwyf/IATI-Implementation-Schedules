@@ -1,15 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-    
+    <h1>Import schedule</h1>
+    <div class="alert alert-info">
+        <p><b>Problems importing?</b></p>
+        <p>Please check your template conforms to the requirements below. Consult the OECD/DAC's <b><a href="http://www.oecd.org/dac/aidarchitecture/acommonstandard.htm">common standard website</a></b> for more schedules.</p>
+        <ul>
+            <li><b>Excel files only</b>: .XLS or .XLSX file</li>
+            <li><b>One agency per schedule</b>: If your schedule contains multiple agency sheets, please separate the agency sheets into separate files, while retaining all other sheets (e.g. the "organisation" sheet) in each one.</li>
+            <li><b>Conform to known template</b>: Your schedule match a known template. 8 versions of the common standard template are supported in addition to the IATI template.</li>
+        </ul>
+    </div>
     <form action="" method="post">
     <fieldset>
         <legend>Import a new schedule</legend>
         <p><label for="url">URL:</label><input type="text" value="http://www.oecd.org/dac/aidarchitecture/Norway_Implementation%20Schedule%20for%20the%20common%20standard.xls" name="url" /></p>
         <p><label for="structure">Structure:</label><select name="structure">
-            <option value="structure">IATI Standard</option>
-            <option value="structureusa">IATI Standard (USA format)</option>
-            <option value="csstructure">Common Standard (format A)</option>
-            <option value="csstructureb">Common Standard (format B)</option>
+            <option value="detect">Automatically detect</option>
+            <option value="iati">IATI Standard</option>
+            <option value="iatiusa">IATI Standard (USA format)</option>
+            <option value="commonstandard">Common Standard (version 1 - Norway)</option>
+            <option value="commonstandard2">Common Standard (version 2 - DfID)</option>
+            <option value="commonstandard3">Common Standard (version 3 - Netherlands)</option>
+            <option value="commonstandard4">Common Standard (version 4 - Korea, Luxembourg, Italy, etc.)</option>
+            <option value="commonstandard5">Common Standard (version 5 - Sweden)</option>
+            <option value="commonstandard6">Common Standard (version 6 - Slovenia)</option>
+            <option value="commonstandard7">Common Standard (version 7 - Poland)</option>
+            <option value="commonstandard8">Common Standard (version 8 - France)</option>
            </select>
         </p>
         <p><label for="password">Password:</label><input type="password" value="" name="password" /></p>

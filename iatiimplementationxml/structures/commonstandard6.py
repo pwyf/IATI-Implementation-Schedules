@@ -2,7 +2,7 @@
 
 identification = {
     'name': "Common Standard Implementation Schedule",
-    'code': 'csstructure'
+    'code': 'commonstandard6'
 }
 
 # Which sheets information can be found in
@@ -164,21 +164,21 @@ publishing_rows = [
     (),
     (),
     (),
-    (2, 'thresholds', ''), 
-    (),
+    (), 
+    (2, 'thresholds', '', ''), # row 27 in reality
     (),
     (), #30
-    (2, 'exclusions', ''),
+    (2, 'exclusions', '', ''), # row 30 in reality
     (),
     (),
     (),
     (),
-    ('split-scope', 'scope', {'current': {'col': 2}, 'future': {'row': 7, 'col': 2}}),
+    (),
     (),
     (),
     (),
     (), #40
-    (),
+    ('split-scope', 'scope', {'future': {'col': 2}}), # row 40 in reality
     (),
     (),
     (),
@@ -212,18 +212,18 @@ publishing_rows = [
     (),
     (),
     (),
-    (),
+    ('split', 'publication-frequency', {'frequency': {'col': 3, 'opts': {0: 'Monthly', 1: 'Quarterly', 2: 'Annually'}}, 'timeliness': {'row': 4, 'col': 2, 'opts': {0: '1 month in arrears', 1: '1 quarter in arrears', 2: '1 year in arrears'}}}), # row 75 in reality
     (),
     (),
     (),
     (), #80
     (),
-    (),
     # Common Standard schedules are not formatted the same as IATI schedules, so need to look for information 
     # across several rows. "split" allows you to do this. First option should be in the same row as the 
     # point in this publishing row (-1); second option should be 'row':N rows below. So the below should
     # start at row 82.
-    ('split', 'publication-frequency', {'frequency': {'col': 3, 'opts': {0: 'Monthly', 1: 'Quarterly', 2: 'Annually'}}, 'timeliness': {'row': 4, 'col': 2, 'opts': {0: '1 month in arrears', 1: '1 quarter in arrears', 2: '1 year in arrears'}}}),
+    (),
+    (),
     (),
     (),
     (),
@@ -276,20 +276,20 @@ publishing_rows = [
     (),
     (),
     (),
-    (),
+    ('split-pub','publication-timetable', 'date-initial'), # row 135 in reality
     (),
     (),
     (),
     (), #140
     (),
-    ('split-pub','publication-timetable', 'date-initial'), # row 141 in reality
+    (), 
+    ('split', 'license', {'license': {'col': 2, 'opts': {0: 'Public domain', 3: 'Attribution-only'}}}), # row 142 in reality
     (),
     (),
     (),
     (),
     (),
     (),
-    ('split-pub2', 'license', 'license'),
     (), #150
     (),
     (),
@@ -300,6 +300,7 @@ publishing_rows = [
     (),
     (),
     (),
+    ()
 ]
 
 # Documentation for each of the publishing rows
@@ -373,10 +374,14 @@ codes_activity = {
     # Status
     'status': {     'Fully Compliant': 'fc',
                    'Fully compliant': 'fc',
+                   'Fully compliant\n': 'fc',
                    'Future publication': 'fp',
                    'Partially compliant': 'pc',
                    'Partially Compliant': 'pc',
                    'Not publishing now': 'up',
+                   'Not publishing now\n': 'up',
+                   'Unable to publish': 'up',
+                   'Under consideration': 'uc',
                    'Not applicable': 'na' },
     # Exclusions
     'exclusions': { 'a) Not applicable to organisation': 'a',
@@ -438,7 +443,7 @@ codes = {
                       '2 months in arrears': '2m',
                       '2 weeks in arrears': '2w',
                       '> 1 quarter in arrears': 'gt',
-                      '1 year in arrears': '1y',
+                      '1 year in arrears': 'gt',
                       'Other': 'o',
                       'Real time': 'r'},
     # User interface

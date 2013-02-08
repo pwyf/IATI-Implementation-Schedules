@@ -2,7 +2,7 @@
 
 identification = {
     'name': "Common Standard Implementation Schedule",
-    'code': 'csstructureb'
+    'code': 'commonstandard8'
 }
 
 # Which sheets information can be found in
@@ -163,17 +163,17 @@ publishing_rows = [
     (),
     (),
     (),
-    (),
+    (), 
     (2, 'thresholds', '', ''), 
     (),
-    (),
+    (), 
     (2, 'exclusions', '', ''), #30
     (),
     (),
     (),
     (),
-    (),
-    ('split-scope', 'scope', {'current': {'col': 2}, 'future': {'row': 7, 'col': 2}}), #row 35 in reality
+    ('split-scope', 'scope', {'current': {'col': 2}, 'future': {'row': 8, 'col': 2}}),
+    (), #row 35 in reality
     (),
     (),
     (),
@@ -222,10 +222,10 @@ publishing_rows = [
     # across several rows. "split" allows you to do this. First option should be in the same row as the 
     # point in this publishing row (-1); second option should be 'row':N rows below. So the below should
     # start at row 82.
+    (),
+    (),
+    (),
     ('split', 'publication-frequency', {'frequency': {'col': 3, 'opts': {0: 'Monthly', 1: 'Quarterly', 2: 'Annually'}}, 'timeliness': {'row': 4, 'col': 2, 'opts': {0: '1 month in arrears', 1: '1 quarter in arrears', 2: '1 year in arrears'}}}),
-    (),
-    (),
-    (),
     (),
     (),
     (),
@@ -281,18 +281,18 @@ publishing_rows = [
     (),
     (),
     (), #140
-    ('split-pub','publication-timetable', 'date-initial'), # row 140 in reality
     (),
     (),
     (),
     (),
+    ('split-pub','publication-timetable', 'date-initial'), # row 144 in reality
     (),
     (),
-    ('split', 'license', {'license': {'col': 2, 'opts': {0: 'Public domain', 3: 'Attribution-only'}}}),
+    (),
     (),
     (), #150
     (),
-    (),
+    ('split', 'license', {'license': {'col': 2, 'opts': {0: 'Public domain', 3: 'Attribution-only'}}}), # row 151 in reality
     (),
     (),
     (),
@@ -442,7 +442,7 @@ codes = {
                       '2 months in arrears': '2m',
                       '2 weeks in arrears': '2w',
                       '> 1 quarter in arrears': 'gt',
-                      '1 year in arrears': '1y',
+                      '1 year in arrears': 'gt',
                       'Other': 'o',
                       'Real time': 'r'},
     # User interface

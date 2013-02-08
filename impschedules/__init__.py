@@ -207,31 +207,34 @@ def import_schedule():
                 url = request.form['url']
                 structure = request.form['structure']
                 local_file_name = app.config["TEMP_FILES_DIR"] + "/" + ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range (5))
-                #try:
                 try:
-                    f = urllib.urlretrieve(url, local_file_name)
-                except IOError:
-                    raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
-                # Pass to implementation schedule converter
-                xml = toxml.convert_schedule(local_file_name, structure)
-                doc = etree.fromstring(xml)
-                context = {}
-                context['source_file'] = url
-                schedules = doc.findall("metadata")
-                # Parse, manual check, and then import
-                """try:"""
-                #parse_implementation_schedule(doc, context.copy(), url, True)
+                    try:
+                        f = urllib.urlretrieve(url, local_file_name)
+                    except IOError:
+                        raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
 
-                flash ("Successfully parsed your implementation schedule.", "success")
-                return render_template("import_schedule_steps.html", doc=doc, properties=properties, source_file=url)
-                """except Exception, e:
-                    msg = "There was an unknown error importing your schedule. The error was: " + str(e)
-                    flash (msg, "error")
-                    return redirect(url_for('import_schedule'))
+                    # Pass to implementation schedule converter
+                    try:
+                        xml = toxml.convert_schedule(local_file_name, structure)
+                    except Exception, e:
+                        msg = "Could not convert your schedule: " + str(e)
+                        flash (msg, "error")
+                        return render_template('import.html')
+                    doc = etree.fromstring(xml)
+                    context = {}
+                    context['source_file'] = url
+                    schedules = doc.findall("metadata")
+                    try:
+                        flash ("Successfully parsed your implementation schedule.", "success")
+                        return render_template("import_schedule_steps.html", doc=doc, properties=properties, source_file=url)
+                    except Exception, e:
+                        msg = "There was an unknown error importing your schedule. The error was: " + str(e)
+                        flash (msg, "error")
+                        return render_template('import.html')
                 except Exception, e:
                     msg = "There was an unknown error importing your schedule. The error was: " + str(e)
                     flash (msg, "error")
-                    return redirect(url_for('import_schedule'))"""
+                    return render_template('import.html')
             else:
                 flash("Wrong password", "error")
                 return redirect(url_for('import_schedule'))
