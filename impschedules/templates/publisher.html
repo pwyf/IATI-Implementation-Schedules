@@ -110,7 +110,7 @@
                                 {{ status }}
                                 {%endif%}
                             </td>
-                            <td>{{propertyvalues.data.date_actual}}</td>
+                            <td>{% if propertyvalues.data.date_actual is not none %}{{propertyvalues.data.date_actual}}{%endif%}</td>
                             <td>{{propertyvalues.data.notes_actual}}</td>
                             <td>{% if propertyvalues.data.score is not none %}<i class="icon-ok"></i>{%endif%}</td>
                             <td>{% if (propertyvalues.data.status_change or propertyvalues.data.date_change or propertyvalues.data.notes_change)  %}
