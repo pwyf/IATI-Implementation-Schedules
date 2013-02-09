@@ -125,43 +125,28 @@ class Data(db.Model):
     
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
-class Property(db.Model):
-    __tablename__ = 'property'
-    id = Column(Integer, primary_key=True)
-    parent_element = Column(Integer, ForeignKey('element.id'))
-    attribute = Column(UnicodeText)
-    defining_attribute = Column(UnicodeText)
-    defining_attribute_value = Column(UnicodeText)
-    description = Column(UnicodeText)
 
-    def __init__(self, parent_element=None, attribute=None, description=None, defining_attribute=None, defining_attribute_value=None):
-        self.parent_element = parent_element
-        self.attribute = attribute
-        self.description = description
-        self.defining_attribute = defining_attribute
-        self.defining_attribute_value = defining_attribute_value
-
-    def __repr__(self):
-        return self.id, self.parent_element, self.defining_attribute_value, self.description
-
-    def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class ElementGroup(db.Model):
     __tablename__ = 'elementgroup'
     id = Column(Integer, primary_key=True)
     name = Column(UnicodeText)
     description = Column(UnicodeText)
-    weight = Column(UnicodeText)
+    longdescription = Column(UnicodeText)
+    weight = Column(Integer)
 
-    def __init__(self, name=None, description=None, weight=None):
+    def __init__(self, name=None, description=None, weight=None, longdescription=None, order=None):
         self.name = name
         self.description = description
+        self.longdescription = longdescription
         self.weight = weight
+        self.order = order
 
     def __repr__(self):
         return self.id, self.name, self.description
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class Element(db.Model):
@@ -170,18 +155,51 @@ class Element(db.Model):
     level = Column(UnicodeText)
     name = Column(UnicodeText)
     description = Column(UnicodeText)
+    longdescription = Column(UnicodeText)
     elementgroup = Column(Integer, ForeignKey('elementgroup.id'))
-    weight = Column(UnicodeText)
+    weight = Column(Integer)
+    order = Column(Integer)
 
-    def __init__(self, level=None, name=None, description=None, elementgroup=None, weight=None):
+    def __init__(self, level=None, name=None, description=None, longdescription=None, elementgroup=None, weight=None, order=None):
         self.level = level
         self.name = name
         self.description = description
+        self.longdescription = longdescription
         self.elementgroup = elementgroup
         self.weight = weight
+        self.order = order
 
     def __repr__(self):
         return self.id, self.level, self.name, self.description
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    
+class Property(db.Model):
+    __tablename__ = 'property'
+    id = Column(Integer, primary_key=True)
+    parent_element = Column(Integer, ForeignKey('element.id'))
+    attribute = Column(UnicodeText)
+    defining_attribute = Column(UnicodeText)
+    defining_attribute_value = Column(UnicodeText)
+    defining_attribute_description = Column(UnicodeText)
+    weight = Column(Integer)
+    longdescription = Column(UnicodeText)
+    order = Column(Integer)
+
+    def __init__(self, parent_element=None, attribute=None, defining_attribute_description=None, defining_attribute=None, defining_attribute_value=None, longdescription=None, weight=None, order=None):
+        self.parent_element = parent_element
+        self.attribute = attribute
+        self.defining_attribute_description = defining_attribute_description
+        self.defining_attribute = defining_attribute
+        self.defining_attribute_value = defining_attribute_value
+        self.longdescription=longdescription
+        self.weight=weight
+        self.order=order
+
+    def __repr__(self):
+        return self.id, self.parent_element, self.defining_attribute_value, self.defining_attribute_description
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

@@ -41,7 +41,7 @@ var dataset = new recline.Model.Dataset({
   fields: [
       {id: 'date', type: 'date', label:"Date"}
       {% for element in elements %},
-      {id: '{{element.propertyid}}', label: "{{element.level|capitalize}} - {{element.name}}{% if element.defining_attribute_value %} ({{element.defining_attribute_value}}){%endif%}", type: "string"}
+      {id: '{{element.propertyid}}', label: "{{element.level|capitalize}} - {{element.description}}{% if element.defining_attribute_value %} ({{element.defining_attribute_value}}){%endif%}", type: "string"}
       {%endfor%}
     ],
   backend:'json'

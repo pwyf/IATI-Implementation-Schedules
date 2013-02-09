@@ -1,7 +1,7 @@
 {% set active_page='elements'%}{% extends "base.html" %}
 {% block content %}
     <form action="" method="post">
-    <h1>{{element.description}}</h1>
+    <h1>{{element.element.description}}</h1>
     <h3>Edit this element</h3>
     <table class="table">
     <thead>
@@ -11,16 +11,39 @@
     <tbody>
     <tr>
         <td>Element name</td>
-        <td><input type="text" value="{{element.name}}" name="name" disabled /></td>
+        <td><input type="text" value="{{element.element.name}}" name="element#name" disabled /></td>
     </tr>
     <tr>
         <td>Element description</td>
-        <td><input type="text" value="{{element.description}}" name="description" /></td>
+        <td><input type="text" value="{{element.element.description}}" name="element#description" /></td>
+    </tr>
+    <tr>
+        <td>Element long description</td>
+        <td><textarea name="element#longdescription" rows="4">{% if element.element.longdescription%}{{element.element.longdescription}}{%endif%}</textarea></td>
     </tr>
     <tr>
         <td>Element weight</td>
-        <td><label for="weight"><input id="weight" type="checkbox" value="0" name="weight" /> Zero weight</label></td>
+        <td><label for="weight"><input id="weight" type="checkbox" value="0" name="element#weight" {% if element.element.weight is not none %}checked{%endif%} /> Zero weight</label></td>
     </tr>
+    {% if element.properties %}
+    <tr class="info"><td colspan="2">Property: <b>{{element.properties.defining_attribute_value}}</b></td></tr>
+    <tr>
+        <td>Property name</td>
+        <td><input type="text" value="{{element.properties.defining_attribute_value}}" name="property#defining_attribute_value" disabled /></td>
+    </tr>
+    <tr>
+        <td>Property description</td>
+        <td><input type="text" value="{{element.properties.defining_attribute_description}}" name="property#defining_attribute_description" /></td>
+    </tr>
+    <tr>
+        <td>Property long description</td>
+        <td><textarea name="property#longdescription" rows="4">{% if element.properties.longdescription%}{{element.properties.longdescription}}{%endif%}</textarea></td>
+    </tr>
+    <tr>
+        <td>Property weight</td>
+        <td><label for="propertyweight"><input id="propertyweight" type="checkbox" value="0" name="property#weight"{% if element.properties.weight is not none %} checked{%endif%} /> Zero weight</label></td>
+    </tr>
+    {%endif%}
     <tr>
         <td>Secret password</td>
         <td><input type="password" value="" name="password" /></td>

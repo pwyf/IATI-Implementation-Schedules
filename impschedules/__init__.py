@@ -36,6 +36,7 @@ def setup():
         eg = models.ElementGroup()
         eg.name = elementgroup
         eg.description = values["description"]
+        eg.order = values["order"]
         db.session.add(eg)
     db.session.commit()
 
@@ -54,6 +55,7 @@ def setup():
             e.elementgroup = elementgroups[elvalue["group"]]
             if (elvalue.has_key("description")):
                 e.description = elvalue["description"]
+                e.order = elvalue["order"]
             db.session.add(e)
             db.session.commit()
             element_id = e.id
@@ -76,7 +78,7 @@ def setup():
                 #p.attribute = attribute
                 db.session.add(p)
     db.session.commit()
-    return 'Setup. <a href="/parse">Parse</a> XML files?'
+    return 'Setup. <a href="/import">Import</a> XML files?'
 
 @app.route("/")
 def index():
@@ -283,6 +285,63 @@ def elementgroup(id=None):
                         models.ElementGroup.weight
                         ).all()
             return render_template("elementgroups.html", elementgroups=elementgroups)
+
+@app.route("/elements/<level>/<id>/edit/", methods=['GET', 'POST'])
+@app.route("/elements/<level>/<id>/<type>/edit/", methods=['GET', 'POST'])
+def edit_element(level=None,id=None,type=None):
+    if (level is not None and id is not None):
+        if (request.method == 'POST'):
+            # handle post
+            if (request.form['password'] == app.config["SECRET_PASSWORD"]):
+                element = models.Element.query.filter_by(name=id, level=level).first()
+                element.description = request.form['element#description']
+                element.longdescription = request.form['element#longdescription']
+                if "element#weight" in request.form:
+                    ew = 0
+                else:
+                    ew=None
+                element.weight = ew
+                db.session.add(element)
+                elements = {'element': element}
+
+                if (type):
+                    p = models.Property.query.filter_by(defining_attribute_value=type, parent_element=element.id).first()
+                    p.defining_attribute_value = request.form['property#defining_attribute_value']
+                    p.defining_attribute_description = request.form['property#defining_attribute_description']
+                    p.longdescription = request.form['property#longdescription']
+                    if "property#weight" in request.form:
+                        prw = 0
+                    else:
+                        prw=None
+                    p.weight = prw
+                    db.session.add(p)
+
+                    elements = {'element': element,
+                                'properties': p}
+
+                db.session.commit()
+                flash('Updated element', "success")
+                return render_template("element_editor.html", element=elements)
+            else:
+                flash('Wrong password', "error")
+                return redirect(url_for('edit_element', level=level, id=id, type=type))
+        else:
+            if (type):
+                element = db.session.query(models.Element, models.Property
+                    ).filter(models.Element.name==id, models.Property.defining_attribute_value==type, models.Element.level==level
+                    ).join(models.Property).first()
+
+                elements = {'element': element[0],
+                           'properties': element[1]}
+            else:
+                element = db.session.query(models.Element, models.Property
+                    ).filter(models.Element.name==id
+                    ).join(models.Property).first()
+                elements = {'element': element[0]}
+
+            return render_template("element_editor.html", element=elements)
+    else:
+        abort(404)
 
 @app.route("/elements/")
 @app.route("/elements/<level>/<id>/")
@@ -513,7 +572,7 @@ def timeline(id=id):
     elements = db.session.query(models.Property.parent_element, 
                             models.Property.defining_attribute_value, 
                             models.Element.id, 
-                            models.Element.name, 
+                            models.Element.description, 
                             models.Element.level,
                             models.Property.id.label("propertyid")
         ).distinct(
@@ -532,3 +591,12 @@ def parse():
         return load_package() + '<br />Parsed successfully. <a href="/">Go to front page</a>?'
     #except Exception, e:
     #    return "Failed"
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html', error=e), 500
+

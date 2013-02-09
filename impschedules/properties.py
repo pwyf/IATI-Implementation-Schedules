@@ -1,30 +1,39 @@
 elementgroups = {
             'org': {
-                'description': 'Organisation level'
+                'description': 'Organisation level',
+                'order': 1
             },
             'identification': {
-                'description': 'Identification'
+                'description': 'Identification',
+                'order': 2
             },
             'basic-activity-information': {
-                'description': 'Basic activity information'
+                'description': 'Basic activity information',
+                'order': 2
             },
             'geopolitical-information': {
-                'description': 'Geopolitical information'
+                'description': 'Geopolitical information',
+                'order': 3
             },
             'classifications': {
-                'description': 'Classifications'
+                'description': 'Classifications',
+                'order': 4
             },
             'financial': {
-                'description': 'Financial'
+                'description': 'Financial',
+                'order': 5
             },
             'financial-transaction': {
-                'description': 'Financial transaction'
+                'description': 'Financial transaction',
+                'order': 6
             },
             'related-documents': {
-                'description': 'Related documents'
+                'description': 'Related documents',
+                'order': 7
             },
             'performance': {
-                'description': 'Performance'
+                'description': 'Performance',
+                'order': 8
             }
 }
 
@@ -32,132 +41,181 @@ elements = {
         'organisation': {
             'total-budget': {
                 'description': 'Organisation budget',
-                'group': 'org'
+                'group': 'org',
+                'order': 1
             },
             'recipient-org-budget': {
                 'description': 'Funded institution budgets',
-                'group': 'org'
+                'group': 'org',
+                'order': 2
             }, 
             'recipient-country-budget': {
                 'description': 'Recipient country budgets',
-                'group': 'org'
+                'group': 'org',
+                'order': 3
             },
             'document-link': {
                 'description': 'Organisation documents',
-                'group': 'org'
+                'group': 'org',
+                'order': 4
             }
         },
         'activity': {
             'reporting-org': { 
                 'description': 'Reporting organisation',
-                'group': 'identification'
+                'group': 'identification',
+                'order': 5
             }, 
             'iati-identifier': { 
                 'description': 'IATI Identifier',
-                'group': 'identification'
+                'group': 'identification',
+                'order': 6
             }, 
             'other-identifier': { 
                 'description': 'Other Identifier',
-                'group': 'identification'
+                'group': 'identification',
+                'order': 7
             },
             'title': { 
                 'description': 'Title',
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
-                    'agency': {},
-                    'recipient': {}
+                    'agency': {
+                        'order': 1
+                    },
+                    'recipient': {
+                        'order': 2
+                    }
                 },
+                'order': 8,
                 'group': 'basic-activity-information'
             }, 
             'description': { 
                 'description': 'Description',
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
-                    'agency': {},
-                    'recipient': {}
+                    'agency': {
+                        'order': 1
+                    },
+                    'recipient': {
+                        'order': 2
+                    }
                 },
+                'order': 9,
                 'group': 'basic-activity-information'
             },
             'activity-status': {
                 'description': 'Activity status',
-                'group': 'basic-activity-information'
+                'group': 'basic-activity-information',
+                'order': 10
             },
             'activity-date': { 
                 'description': 'Activity dates',
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
-                    'start': {},
-                    'end': {}
+                    'start': {
+                        'order': 1
+                    },
+                    'end': {
+                        'order': 2
+                    }
                 },
-                'group': 'basic-activity-information'
+                'group': 'basic-activity-information',
+                'order': 11
             },
             'contact-info': {
                 'description': 'Contact information',
-                'group': 'basic-activity-information'
+                'group': 'basic-activity-information',
+                'order': 12
             },
             'participating-org': {
                 'description': 'Participating organisation',
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
-                    'funding': {},
-                    'extending': {},
-                    'accountable': {},
-                    'implementing': {}
+                    'funding': {
+                        'order': 1
+                    },
+                    'extending': {
+                        'order': 2
+                    },
+                    'accountable': {
+                        'order': 3
+                    },
+                    'implementing': {
+                        'order': 4
+                    }
                 },
+                'order': 13,
                 'group': 'basic-activity-information'
             },
             'recipient-region': {
                 'description': 'Recipient region',
-                'group': 'geopolitical-information'
+                'group': 'geopolitical-information',
+                'order': 14
             },
             'recipient-country': {
                 'description': 'Recipient country',
-                'group': 'geopolitical-information'
+                'group': 'geopolitical-information',
+                'order': 15
             },
             'location': {
                 'description': 'Sub-national geographic location',
-                'group': 'geopolitical-information'
+                'group': 'geopolitical-information',
+                'order': 16
             },
             'sector': {
                 'description': 'Sector',
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
-                    'crs': {},
-                    'agency': {}
+                    'crs': {
+                        'order': 1
+                    },
+                    'agency': {
+                        'order': 2
+                    }
                 },
-                'group': 'classifications'
+                'group': 'classifications',
+                'order': 17
             },
             'policy-marker': {
                 'description': 'Policy marker',
-                'group': 'classifications'
+                'group': 'classifications',
+                'order': 18
             },
             'collaboration-type': {
                 'description': 'Collaboration type',
-                'group': 'classifications'
+                'group': 'classifications',
+                'order': 19
             },
             'default-flow-type': {
                 'description': 'Flow type',
-                'group': 'classifications'
+                'group': 'classifications',
+                'order': 20
             },
             'default-finance-type': {
                 'description': 'Finance type',
-                'group': 'classifications'
+                'group': 'classifications',
+                'order': 21
             },
             'default-aid-type': {
                 'description': 'Aid type',
-                'group': 'classifications'
+                'group': 'classifications',
+                'order': 22
             },
             'default-tied-status': {
                 'description': 'Tied aid status',
-                'group': 'classifications'
+                'group': 'classifications',
+                'order': 23
             },
             'budget': {
                 'description': 'Budget',
-                'group': 'financial'
+                'group': 'financial',
+                'order': 24
             },
             'planned-disbursement': {
                 'description': 'Planned disbursement',
-                'group': 'financial'
+                'group': 'financial',
+                'order': 25
             },
             'budget-identifier': {
                 'description': 'Budget identifier',
@@ -166,44 +224,65 @@ elements = {
                     'economic': {},
                     'administrative-functional': {}
                 },
-                'group': 'financial'
+                'group': 'financial',
+                'order': 26
             },
             'transaction': {
                 'description': 'Transactions',
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
-                    'commitment': {},
-                    'disbursement': {},
-                    'reimbursement': {},
-                    'incoming': {},
-                    'repayment': {}
+                    'commitment': {
+                        'order': 1
+                    },
+                    'disbursement': {
+                        'order': 2
+                    },
+                    'reimbursement': {
+                        'order': 3
+                    },
+                    'incoming': {
+                        'order': 4
+                    },
+                    'repayment': {
+                        'order': 5
+                    }
                 },
-                'group': 'financial-transaction'
+                'group': 'financial-transaction',
+                'order': 27
             },
             'document-link': {
                 'description': 'Activity documents',
-                'group': 'related-documents'
+                'group': 'related-documents',
+                'order': 28
             },
             'activity-website': {
                 'description': 'Activity website',
-                'group': 'related-documents'
+                'group': 'related-documents',
+                'order': 29
             },
             'related-activity': {
                 'description': 'Related activity',
-                'group': 'related-documents'
+                'group': 'related-documents',
+                'order': 30
             },
             'conditions': {
                 'description': 'Conditions',
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
-                    'attached': {},
-                    'text': {}
+                    'attached': {
+                        'order': 1
+                    },
+                    'text': {
+                        'order': 2
+                    }
                 },
-                'group': 'performance'
+                'group': 'performance',
+                'order': 31
             },
             'result': {
                 'description': 'Results',
-                'group': 'performance'
+                'group': 'performance',
+                'order': 32
             }
         }
     }
