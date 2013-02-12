@@ -1,14 +1,53 @@
 from sqlalchemy import *
 from impschedules import app
 from impschedules import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
-class ImpSchedule(db.Model):
-    __tablename__ = 'impschedule'
+class User(db.Model):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    username = Column(UnicodeText)
+    admin = Column(Integer)
+    pw_hash = db.Column(db.String())
+
+    def __init__(self, username, password, admin=None):
+        self.username = username
+        self.admin = admin
+        self.pw_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.pw_hash, password)
+
+    def __repr__(self):
+        return self.username, self.id, self.password
+
+class Publisher(db.Model):
+    __tablename__ = 'publisher'
     id = Column(Integer, primary_key=True)
     publisher_original = Column(UnicodeText)
     publisher_code_original = Column(UnicodeText)
     publisher_actual = Column(UnicodeText)
     publisher_code_actual = Column(UnicodeText)
+    publisher_change = Column(UnicodeText)
+
+    def __init__(self, publisher_original=None, publisher_code_original=None, publisher_actual=None, publisher_code_actual=None, publisher_change=None):
+
+        self.publisher_original = publisher_original
+        self.publisher_code_original = publisher_code_original
+        self.publisher_actual = publisher_actual
+        self.publisher_code_actual = publisher_code_actual
+        self.publisher_change = publisher_change
+
+    def __repr__(self):
+        return self.publisher_actual, self.id
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+class ImpSchedule(db.Model):
+    __tablename__ = 'impschedule'
+    id = Column(Integer, primary_key=True)
+    publisher_id = Column(Integer, ForeignKey('publisher.id'))
     schedule_version_original = Column(UnicodeText)
     schedule_date_original = Column(UnicodeText)
     last_updated_date_original = Column(UnicodeText)
@@ -21,20 +60,16 @@ class ImpSchedule(db.Model):
     schedule_type_actual = Column(UnicodeText)
     schedule_type_code_original = Column(UnicodeText)
     schedule_type_code_actual = Column(UnicodeText)
-    publisher_change = Column(UnicodeText)
-    publisher_code_change = Column(UnicodeText)
     schedule_version_change = Column(UnicodeText)
     schedule_date_change = Column(UnicodeText)
     schedule_type_change = Column(UnicodeText)
     schedule_type_code_change = Column(UnicodeText)
+    analysis = Column(UnicodeText)
 
-    def __init__(self, publisher_original=None, publisher_code_original=None, schedule_version_original=None, schedule_date_original=None, publisher_actual=None, publisher_code_actual=None, schedule_version_actual=None, schedule_date_actual=None, last_updated_date=None, source_file=None, schedule_type_original=None, schedule_type_actual=None, schedule_type_code_original=None, schedule_type_code_actual=None,publisher_change=None, publisher_code_change=None,schedule_version_change=None, schedule_date_change=None, schedule_type_change=None, schedule_type_code_change=None,under_consideration=None):
-        self.publisher_original = publisher_original
-        self.publisher_code_original = publisher_code_original
+    def __init__(self, publisher_id=None, schedule_version_original=None, schedule_date_original=None, schedule_version_actual=None, schedule_date_actual=None, last_updated_date=None, source_file=None, schedule_type_original=None, schedule_type_actual=None, schedule_type_code_original=None, schedule_type_code_actual=None,schedule_version_change=None, schedule_date_change=None, schedule_type_change=None, schedule_type_code_change=None,under_consideration=None,analysis=None):
+        self.publisher_id=publisher_id
         self.schedule_version_original = schedule_version_original
         self.schedule_date_original = schedule_date_original
-        self.publisher_actual = publisher_actual
-        self.publisher_code_actual = publisher_code_actual
         self.schedule_version_actual = schedule_version_actual
         self.schedule_date_actual = schedule_date_actual
         self.last_updated_date = last_updated_date
@@ -43,16 +78,15 @@ class ImpSchedule(db.Model):
         self.schedule_type_actual = schedule_type_actual
         self.schedule_type_code_original = schedule_type_code_original
         self.schedule_type_code_actual = schedule_type_code_actual
-        self.publisher_change = publisher_change
-        self.publisher_code_change = publisher_code_change
         self.schedule_version_change = schedule_version_change
         self.schedule_date_change = schedule_date_change
         self.schedule_type_change = schedule_type_change
         self.schedule_type_code_change = schedule_type_code_change
         self.under_consideration = under_consideration
+        self.analysis = analysis
 
     def __repr__(self):
-        return self.publisher_actual, self.id
+        return self.id, self.publisher_id
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -134,6 +168,7 @@ class ElementGroup(db.Model):
     description = Column(UnicodeText)
     longdescription = Column(UnicodeText)
     weight = Column(Integer)
+    order = Column(Integer)
 
     def __init__(self, name=None, description=None, weight=None, longdescription=None, order=None):
         self.name = name

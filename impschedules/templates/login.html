@@ -1,0 +1,26 @@
+{% set active_page='login'%}{% extends "base.html" %}
+{% block content %}
+    <h1>Login</h1>
+    <p>Please enter your username and password below.</p>
+    <form method="post" action="" class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="username">Username</label>
+        <div class="controls">
+        <input type="text" id="username" placeholder="Username" name="username">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label" for="password">Password</label>
+        <div class="controls">
+        <input type="password" id="password" placeholder="Password" name="password">
+        </div>
+      </div>
+     <div class="control-group">
+        <div class="controls">
+        <button type="submit" class="btn">Sign in</button>
+        </div>
+    </div>
+
+    </form>
+{% endblock %}

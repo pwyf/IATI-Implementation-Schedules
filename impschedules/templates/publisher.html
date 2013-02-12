@@ -7,73 +7,118 @@
     });
 
     </script>
-
-    <a class="btn btn-success pull-right" href="{{url_for('publisher_edit', id=publisher.id)}}">Edit</a>
-    <h1>{{publisher.publisher_actual}}</h1>
-    <p class="lead"><span class="{{score.group_code}} well-small">{{score.group}}</a></p>
-    {% if not publisher.under_consideration %}
+    <style>
+    .progress {
+        margin-bottom: 0px;
+    }
+    .label, .badge {
+        line-height: 18px;
+        font-size: 16px;
+    }
+    </style>
+    {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('publisher_edit', id=publisher.publisher_code_actual)}}">Edit</a>{%endif%}
+    <h1>{{publisher.publisher_actual}} <span class="{{score.group_code}} label label-important lead" >{{score.group}}</span></h1>
+    <p> </p>
+    {% if not schedule.under_consideration %}
+        {% if schedule.analysis %}
+            <div class="alert alert-info">
+            <h3>Summary</h3>
+            <p>{{schedule.analysis}}</p>
+            </div>
+            <hr />
+        {% endif%}
+    <h3>Overview</h3>
+    <table class="table">
+    <thead class="info">
+        <th width="35%"><b>Publication approach</b></th>
+        <th width="35%">Compliance</th>
+        <th width="30%">Status</th>
+    </thead>
+    <tbody>
+            <tr>
+                <td>Frequency</td><td>
+                <div class="progress">
+                    <div class="bar" style="width: {{score.frequency*100|int}}%;"></div>
+                </div></td><td>{% if score.frequency ==1 %}At least quarterly{%else %}Less than quarterly{%endif%}</td>
+            </tr>
+            <tr>
+                <td>License</td><td><div class="progress">
+                    <div class="bar" style="width: {{score.license*100|int}}%;"></div>
+                </div></td><td>{% if score.license ==1 %}Open license{%else %}No license{%endif%}</td>
+            </tr>
+            <tr><td></td><td></td>
+                <td> <a href="#basicinfo" class="btn" role="button" data-toggle="modal">Details &raquo;</a></td>
+            </tr>
+    </tbody>
+    </table>
     <table class="table">
     <thead>
-        <th>Group</th>
-        <th>Compliant</th>
-        <th>Uncompliant</th>
-        <th>%</th>
+        <th width="35%"><b>Section</b></th>
+        <th width="35%">Compliance</th>
+        <th width="15%"></th>
+        <th width="15%">Total</th>
     </thead>
     <tbody>
     {% for groupid, groupvalues in data.items() %}
         <tr>
-        <td><a href="#elementgroup{{groupid}}">{{groupvalues.description}}</a></td>
-        <td>{{score.groups[groupid].yes|int}}</td>
-        <td>{{score.groups[groupid].no|int}}</td>
-        <td class="pct">{{score.groups[groupid].total|int}}</td>
+        <td><a href="#{{groupvalues.name}}" class="scrollto">{{groupvalues.description}}</a></td>
+        <td><div class="progress">
+                <div class="bar" style="width: {{score.groups[groupid].total|int}}%;"></div>
+            </div>
+        </td>
+        <td>{{score.groups[groupid].total|int}}%</td>
+        <td>{{score.groups[groupid].yes|int}} of {{(score.groups[groupid].no+score.groups[groupid].yes)|int}}</td>
         </tr>
     {% endfor%}
     </tbody>
     </table>
     {% endif%}
-    <ul class="nav nav-tabs" id="pageTab">
-        <li><a href="#basic" data-toggle="tab" class="firsttab">Basic information</a></li>
-        <li><a href="#detailed" data-toggle="tab" class="secondtab">Detailed information</a></li>
-    </ul>
-    <div class="tab-content">
 
-        <div class="tab-pane" id="basic">
-            <h3>Basic information</h3>
-            <table class="table" id="tablebasic">
-            <thead>
-                <th>Item</th>
-                <th>Value</th>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Publisher name</td>
-                <td>{{publisher.publisher_actual}}</td>
-            </tr>
-            <tr>
-                <td>Publisher code</td>
-                <td>{{publisher.publisher_code_actual}}</td>
-            </tr>
-            <tr>
-                <td>Schedule version</td>
-                <td>{{publisher.schedule_version_actual}}</td>
-            </tr>
-            <tr>
-                <td>Schedule date</td>
-                <td>{{publisher.schedule_date_actual}}</td>
-            </tr>
-            {% for segment in segments %}
-            <tr>
-                <td>{{properties.properties[segment.segment]["name"]}}</td>
-                <td>{% if properties.properties[segment.segment]["type"] == "text" %}{% if segment.segment_value_actual is not none %}{{segment.segment_value_actual}}{%endif%}{%else%}
-                {{properties.codes[properties.properties[segment.segment]["code"]][segment.segment_value_actual]}}
-                {% endif%}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-            </table>
-        </div>
-        <div class="tab-pane active" id="detailed">
-            <h3>Detailed information</h3>
+    <div id="basicinfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Publication approach: detailed information</h3>
+            </div>
+            <div class="modal-body">
+           <table class="table">
+                <thead>
+                    <th width="50%">Item</th>
+                    <th width="50%">Value</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Publisher name</td>
+                    <td>{{publisher.publisher_actual}}</td>
+                </tr>
+                <tr>
+                    <td>Publisher code</td>
+                    <td>{{publisher.publisher_code_actual}}</td>
+                </tr>
+                <tr>
+                    <td>Schedule version</td>
+                    <td>{{schedule.schedule_version_actual}}</td>
+                </tr>
+                <tr>
+                    <td>Schedule date</td>
+                    <td>{{schedule.schedule_date_actual}}</td>
+                </tr>
+                {% for segment in segments %}
+                <tr>
+                    <td>{{properties.properties[segment.segment]["name"]}}</td>
+                    <td>{% if properties.properties[segment.segment]["type"] == "text" %}{% if segment.segment_value_actual is not none %}{{segment.segment_value_actual}}{%endif%}{%else%}
+                    {{properties.codes[properties.properties[segment.segment]["code"]][segment.segment_value_actual]}}
+                    {% endif%}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+    </div>
+    <hr />
+            <h3>Detailed results</h3>
             <table class="table" id="tabledetailed">
             <thead>
                 <th>Level</th>
@@ -86,11 +131,11 @@
             </thead>
             <tbody>
             {% for groupid, groupvalues in data.items() %}
-                <tr class="info"><td colspan="7"><a id="elementgroup{{groupid}}"></a><a href="{{url_for('elementgroup', id=groupid)}}">{{groupvalues.description}}</a></tr>
+                <tr class="info"><td colspan="7"><a id="{{groupvalues.name}}"></a><a href="{{url_for('elementgroup', id=groupid)}}">{{groupvalues.description}}</a></tr>
                 {% for elementid, elementvalues in groupvalues.elements.items() %}
                    {% for propertyid, propertyvalues in elementvalues.properties.items() %}
                         {% set status = propertyvalues.data.status_actual%}
-                        <tr>
+                        <tr{% if ((elementvalues.weight == 0) or (propertyvalues.weight==0)) %} class="hidden"{%endif%}>
                             <td>{{elementvalues.level|capitalize}}</td>
                             <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', level=elementvalues.level, id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', level=elementvalues.level, id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_value}}){%endif%}</a></td>
                             <td>{%
@@ -114,7 +159,7 @@
                             <td>{{propertyvalues.data.notes_actual}}</td>
                             <td>{% if propertyvalues.data.score is not none %}<i class="icon-ok"></i>{%endif%}</td>
                             <td>{% if (propertyvalues.data.status_change or propertyvalues.data.date_change or propertyvalues.data.notes_change)  %}
-                            <a href="#change{{propertyvalues.data.id}}" role="button" class="btn" data-toggle="modal"><i class="icon-star"></i></a>
+                            <a href="#change{{propertyvalues.data.id}}" role="button" class="btn" data-toggle="modal"><i class="icon-info-sign"></i></a>
 
                             <div id="change{{propertyvalues.data.id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-header">
@@ -149,11 +194,12 @@
             {% endfor %}
             </tbody>
             </table>
-        </div>
-    </div>
-    <script>
-     $(function () {
-    $('#pageTab .secondtab').tab('show');
-    })
-    </script>
+<script>
+    $(".scrollto").click(function(e){
+        e.preventDefault();
+        scrollto = $(this).attr('href');
+        $("html").animate({scrollTop: $(scrollto).offset().top},'slow');
+    });
+</script>
+
 {% endblock %}

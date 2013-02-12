@@ -7,21 +7,24 @@
     });
 
     </script>
-    <a class="btn btn-success pull-right" href="{{url_for('import_schedule')}}">Import new schedule</a>
+    {% if auth%}<a class="btn btn-success pull-right" href="{{url_for('import_schedule')}}">Import new schedule</a>{%endif%}
 	<h1>Select a publisher</h1>
     <table class="table" id="publishers">
     <thead>
-    <th>Publisher</th><th>Initial implementation</th><th>Total score</th><th>Will publish</th><th>Approach</th><th>Group</th>
+    <th>Publisher</th><th>Initial implementation</th>{% if auth %}<th>Total score</th><th>Will publish</th><th>Approach</th><th>Elements</th>{%endif%}<th>Group</th>
     </thead>
     <tbody>
 	{% for org,org_data in orgs.items() %}
     <tr>
-	<td><a href="{{url_for('publisher', id=org_data.impschedule.id)}}">{{ org_data.impschedule.publisher_actual }}</a></td>
-    <td>{{org_data.properties.publishing_timetable_date_initial}}</td>
+	<td><a href="{{url_for('publisher', id=org_data.publisher.publisher_code_actual)}}">{{ org_data.publisher.publisher_actual }}</a></td>
+    <td>{{org_data.properties.publishing_timetable_date_initial.value}}</td>
+    {% if auth %}
     <td>{{scores[org].score.total}}</td>
     <td>{{scores[org].score.will_publish}}</td>
     <td>{{scores[org].score.approach}}</td>
-    <td class="{{scores[org].score.group_code}}">{{scores[org].score.group}}</td>
+    <td>{{scores[org].score.elements}}</td>
+    {% endif %}
+    <td><span class="{{scores[org].score.group_code}} label lead" >{{scores[org].score.group}}</span></td>
     </tr>
 	{% endfor %}
     </tbody>

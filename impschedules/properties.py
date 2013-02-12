@@ -1,3 +1,210 @@
+publishers = [
+    {
+    "name": "Australia",
+    "code": "AU"
+    },
+    {
+    "name": "Austria",
+    "code": "AT"
+    },
+    {
+    "name": "Belgium",
+    "code": "BE"
+    },
+    {
+    "name": "Canada",
+    "code": "CA"
+    },
+    {
+    "name": "Denmark",
+    "code": "DK"
+    },
+    {
+    "name": "EU Institutions",
+    "code": "EU"
+    },
+    {
+    "name": "Finland",
+    "code": "FI"
+    },
+    {
+    "name": "France AFD",
+    "code": "FR-3"
+    },
+    {
+    "name": "France MAE",
+    "code": "FR-6"
+    },
+    {
+    "name": "Germany",
+    "code": "DE"
+    },
+    {
+    "name": "Greece",
+    "code": "GR"
+    },
+    {
+    "name": "Ireland",
+    "code": "IE"
+    },
+    {
+    "name": "Italy",
+    "code": "IT"
+    },
+    {
+    "name": "Japan",
+    "code": "JP"
+    },
+    {
+    "name": "Korea",
+    "code": "KR"
+    },
+    {
+    "name": "Luxembourg",
+    "code": "LU"
+    },
+    {
+    "name": "Netherlands",
+    "code": "NL"
+    },
+    {
+    "name": "New Zealand",
+    "code": "NZ"
+    },
+    {
+    "name": "Norway",
+    "code": "NO"
+    },
+    {
+    "name": "Portugal",
+    "code": "PT"
+    },
+    {
+    "name": "Spain",
+    "code": "ES"
+    },
+    {
+    "name": "Sweden",
+    "code": "SE"
+    },
+    {
+    "name": "Switzerland",
+    "code": "CH"
+    },
+    {
+    "name": "United Kingdom, DFID",
+    "code": "GB-1"
+    },
+    {
+    "name": "United States",
+    "code": "US"
+    },
+    {
+    "name": "African Development Bank",
+    "code": "46002"
+    },
+    {
+    "name": "Asian Development Bank",
+    "code": "46004"
+    },
+    {
+    "name": "GAVI Alliance",
+    "code": "47122"
+    },
+    {
+    "name": "Global Fund to Fight Aids, Tuberculosis and Malaria",
+    "code": "47045"
+    },
+    {
+    "name": "Inter-American Development Bank ",
+    "code": "46012"
+    },
+    {
+    "name": "International Fund for Agricultural Development (IFAD)",
+    "code": "41108"
+    },
+    {
+    "name": "World Bank",
+    "code": "44000"
+    },
+    {
+    "name": "Czech Republic",
+    "code": "CZ"
+    },
+    {
+    "name": "Hungary",
+    "code": "HU"
+    },
+    {
+    "name": "Iceland",
+    "code": "IS"
+    },
+    {
+    "name": "Israel",
+    "code": "IL"
+    },
+    {
+    "name": "Poland",
+    "code": "PL"
+    },
+    {
+    "name": "Slovak Republic",
+    "code": "SK"
+    },
+    {
+    "name": "Slovenia",
+    "code": "SI"
+    },
+    {
+    "name": "Turkey",
+    "code": "TR"
+    },
+    {
+    "name": "United Nations Development Group (UNDG)",
+    "code": "UNDG"
+    },
+    {
+    "name": "UN-CDF",
+    "code": "41111"
+    },
+    {
+    "name": "UN-DESA",
+    "code": "UNDESA"
+    },
+    {
+    "name": "UNDP",
+    "code": "41114"
+    },
+    {
+    "name": "UNFPA",
+    "code": "41119"
+    },
+    {
+    "name": "UN-Habitat",
+    "code": "41120"
+    },
+    {
+    "name": "UNICEF",
+    "code": "41122"
+    },
+    {
+    "name": "UNOPS",
+    "code": "41AAA"
+    },
+    {
+    "name": "UN-WOMEN",
+    "code": "41124"
+    },
+    {
+    "name": "WFP",
+    "code": "41140"
+    },
+    {
+    "name": "ILO",
+    "code": "41302"
+    }
+]
+
 elementgroups = {
             'org': {
                 'description': 'Organisation level',

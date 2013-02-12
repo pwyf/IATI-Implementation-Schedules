@@ -41,41 +41,41 @@ def score_all(data, publishers, elements, org_data):
         else:
             will_publish = 0.0
         
-        if (org_data[publisher]["properties"]["publishing_license"] != ""):
+        if (org_data[publisher]["properties"]["publishing_license"]["value"] != ""):
             license = 1.0
         else:
             license = 0.0
         
-        if ((org_data[publisher]["properties"]["publishing_frequency_frequency"] == "m") or (org_data[publisher]["properties"]["publishing_frequency_frequency"] == "q")):
+        if ((org_data[publisher]["properties"]["publishing_frequency_frequency"]["value"] == "m") or (org_data[publisher]["properties"]["publishing_frequency_frequency"]["value"] == "q")):
             frequency = 1.0
         else:
             frequency = 0.0
 
-        
+        out[publisher]["score"]["elements"] = out[publisher]["score"]["total"]
         out[publisher]["score"]["total"] = out[publisher]["score"]["total"] * will_publish * ((license + frequency)/2)
         out[publisher]["score"]["will_publish"] = will_publish*100
+        out[publisher]["score"]["approach"] = ((license + frequency)/2)*100
         out[publisher]["score"]["approach"] = ((license + frequency)/2)*100
 
         if (org_data[publisher]["impschedule"].under_consideration):
             out[publisher]["score"]["group"] = "Under consideration"
-            out[publisher]["score"]["group_code"] = "alert-info"
+            out[publisher]["score"]["group_code"] = ""
         elif (out[publisher]["score"]["will_publish"] ==0):
             out[publisher]["score"]["group"] = "No publication"
-            out[publisher]["score"]["group_code"] = "alert-black"
+            out[publisher]["score"]["group_code"] = "label-inverse"
         elif (out[publisher]["score"]["total"] <=40):
             out[publisher]["score"]["group"] = "Unambitious"
-            out[publisher]["score"]["group_code"] = "alert-error"
+            out[publisher]["score"]["group_code"] = "label-important"
         elif (out[publisher]["score"]["total"] <=60):
             out[publisher]["score"]["group"] = "Moderately ambitious"
-            out[publisher]["score"]["group_code"] = "alert"
+            out[publisher]["score"]["group_code"] = "label-warning"
         elif (out[publisher]["score"]["total"] <=100):
             out[publisher]["score"]["group"] = "Ambitious"
-            out[publisher]["score"]["group_code"] = "alert-success"
+            out[publisher]["score"]["group_code"] = "label-success"
 
     return out
 
 def score2(publisher_data, element_data):
-
     s = {}
     s['calculations'] = ""
     s['value'] = 0.0
@@ -89,12 +89,14 @@ def score2(publisher_data, element_data):
         ok_group = 0.0
         nook_group = 0.0
         for element, elementvalues in elementgroupvalues["elements"].items():
-            for prop, propvalues in elementvalues["properties"].items():
-                score = propvalues["data"].score
-                if (score == 1):
-                    ok_group = ok_group+1.0
-                else:
-                    nook_group = nook_group + 1.0
+            if elementvalues['weight'] == None:
+                for prop, propvalues in elementvalues["properties"].items():
+                    if propvalues['weight'] == None:
+                        score = propvalues["data"].score
+                        if (score == 1):
+                            ok_group = ok_group+1.0
+                        else:
+                            nook_group = nook_group + 1.0
         s['groups'][elementgroup] = {}
         s['groups'][elementgroup]['yes'] = ok_group
         s['groups'][elementgroup]['no'] = nook_group
@@ -136,19 +138,21 @@ def score2(publisher_data, element_data):
     s['total'] = round((willpublish*(ok)*((frequent+license)/2))*100)
     s['will_publish'] = willpublish
     s['approach'] = (((frequent+license)/2)*100)
+    s['license'] = license
+    s['frequency'] = frequent
 
     if (s["will_publish"] ==0):
         s["group"] = "No publication"
-        s["group_code"] = "alert-black"
+        s["group_code"] = "label-inverse"
     elif (s["total"] <=40):
         s["group"] = "Unambitious"
-        s["group_code"] = "alert-error"
+        s["group_code"] = "label-important"
     elif (s["total"] <=60):
         s["group"] = "Moderately ambitious"
-        s["group_code"] = "alert"
+        s["group_code"] = "label-warning"
     elif (s["total"] <=100):
         s["group"] = "Ambitious"
-        s["group_code"] = "alert-success"
+        s["group_code"] = "label-success"
     return s
 
 def parse_implementation_schedule(schedule, out, package_filename):

@@ -1,10 +1,10 @@
 {% set active_page='elements'%}{% extends "base.html" %}
 {% block content %}
-    {% if element.properties%}
+    {% if auth %}{% if element.properties%}
     <a class="btn btn-success pull-right" href="{{url_for('edit_element', id=element.element.name, level=element.element.level, type=element.properties.defining_attribute_value)}}">Edit</a>
     {% else %}
     <a class="btn btn-success pull-right" href="{{url_for('edit_element', id=element.element.name, level=element.element.level)}}">Edit</a>
-    {%endif%}
+    {%endif%}{%endif%}
     <h1>{{element.element.description}} {% if element.properties%}({{element.properties.defining_attribute_value}}){%endif%}</h1>
     <h3>Implementation Schedule Information</h3>
     <table class="table">
@@ -17,24 +17,24 @@
     </thead>
     <tbody>
     {% for d in data %}
-    <tr{%if (d[0].status=='uc') %} class="error"{%elif (d[0].status=='fp') %} class="info"{%endif%}><td><a href="{{url_for('publisher', id=d[1].id)}}">{{d[1].publisher_actual}}</a></td><td>
+    <tr{%if (d.Data.status=='uc') %} class="error"{%elif (d.Data.status=='fp') %} class="info"{%endif%}><td><a href="{{url_for('publisher', id=d.Publisher.publisher_code_actual)}}">{{d.Publisher.publisher_actual}}</a></td><td>
 {%
-                    if (d[0].status_actual=="fc")
+                    if (d.Data.status_actual=="fc")
                     %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-                    elif (d[0].status_actual=="uc")
+                    elif (d.Data.status_actual=="uc")
                     %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
-                    elif (d[0].status_actual=="pc")
+                    elif (d.Data.status_actual=="pc")
                     %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-                    elif (d[0].status_actual=="up")
+                    elif (d.Data.status_actual=="up")
                     %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-                    elif (d[0].status_actual=="fp")
+                    elif (d.Data.status_actual=="fp")
                     %}<i class="icon-wrench" title="Future publication"></i><br />Future
                     {% else %}
-                    {{ d[0].status_actual }}
+                    {{ d.Data.status_actual }}
                     {%endif%}</td>
-		    <td>{% if d[0].date_actual is not none %}{{d[0].date_actual}}{%endif%}</td>
-            <td>{{d[0].notes_actual}} {%if d[0].exclusions%}{{d[0].exclusions}}{%endif%}</td>
-            <td>{%if d[0].score%}<i class="icon-ok" title="Fully compliant"></i>{%endif%}</td>
+		    <td>{% if d.Data.date_actual is not none %}{{d.Data.date_actual}}{%endif%}</td>
+            <td>{{d.Data.notes_actual}} {%if d.Data.exclusions%}{{d.Data.exclusions}}{%endif%}</td>
+            <td>{%if d.Data.score%}<i class="icon-ok" title="Fully compliant"></i>{%endif%}</td>
 
 </tr>
     {% endfor %}
