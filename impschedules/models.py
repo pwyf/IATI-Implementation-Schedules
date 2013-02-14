@@ -8,7 +8,7 @@ class User(db.Model):
     id = Column(Integer, primary_key=True)
     username = Column(UnicodeText)
     admin = Column(Integer)
-    pw_hash = db.Column(db.String())
+    pw_hash = db.Column(String(255))
 
     def __init__(self, username, password, admin=None):
         self.username = username
