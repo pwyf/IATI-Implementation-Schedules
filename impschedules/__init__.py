@@ -120,6 +120,183 @@ def setup():
 def index():
     return render_template("dashboard.html", auth=check_login())
 
+
+@app.route("/publishers/<publisher_id>/<id>/edit", methods=['GET', 'POST'])
+@login_required
+def edit_schedule(publisher_id=None, id=None):
+    if (request.method == 'POST'):
+        if ("do_import" in request.form):
+            out = ""
+            out2 = ""
+            pr = {}
+            data = {}
+            s = {} # schedule
+
+            if (request.form['form#createupdate'] == 'existing'):
+                # use existing publisher
+                publisher_id = request.form['form#existing-publisher']
+                publisher = models.Publisher.query.filter_by(id=publisher_id).first()
+            else:
+                # create new publisher
+                publisher = models.Publisher()
+                publisher.publisher_original = request.form['form#publisher#original']
+                publisher.publisher_actual = request.form['form#publisher#actual']
+                publisher.publisher_code_original = request.form['form#publisher_code#original']
+                publisher.publisher_code_actual = request.form['form#publisher_code#actual']
+                db.session.add(publisher)
+                db.commit()
+                publisher_id = publisher.id
+            s['publisher_id'] = publisher_id
+            for field, values in request.form.items():
+
+                a = field.split('#')
+
+                #a[0] is level
+                #a[1] is field name, perhaps including a type (separated by @)
+                #a[2] is field part (e.g. status_original, status_actual, etc.)
+                if field.startswith('data'):
+                    p = a[1]
+                    s[p] = values
+                elif field.startswith('metadata'):
+                    p = a[1] + "_" + a[2]
+                    s[p] = values
+
+                elif field.startswith('publishing'):
+                    try:
+                        pr[a[1]]
+                    except KeyError:
+                        pr[a[1]] = {}
+
+                    try:
+                        pr[a[1]][a[2]]
+                    except KeyError:
+                        pr[a[1]][a[2]] = {}
+
+                    pr[a[1]][a[2]] = values
+
+                elif (field.startswith('organisation') or (field.startswith('activity'))):
+                    at = a[1].split('@')
+
+                    try:
+                        at[1]
+                    except IndexError:
+                        at.append('')
+
+                    try:
+                        data[a[0]]
+                    except KeyError:
+                        data[a[0]] = {}
+
+                    try:
+                        data[a[0]][at[0]]
+                    except KeyError:
+                        data[a[0]][at[0]] = {}
+
+                    try:
+                        data[a[0]][at[0]][at[1]]
+                    except KeyError:
+                        data[a[0]][at[0]][at[1]] = {}
+
+                    data[a[0]][at[0]][at[1]][a[2]] = values
+
+            # write schedule
+            sched = models.ImpSchedule(**s)
+            db.session.add(sched)
+            db.session.commit()
+            # then write properties
+            for k, v in pr.items():
+                d = {}
+                d["publisher_id"] = sched.id
+                d["segment"] = k
+                for a, b in v.items():
+                    d["segment_value_"+a] = b
+                dd = models.ImpScheduleData(**d)
+                db.session.add(dd)
+
+            # then write data
+            elements = db.session.query(
+                    models.Element.level, 
+                    models.Element.name, 
+                    models.Element.id
+                    ).all()
+            elements = dict(map(lambda x: ((x[0],x[1]),(x[2])), elements))
+
+            element_properties = db.session.query(
+                    models.Property.parent_element, 
+                    models.Property.defining_attribute_value,
+                    models.Property.id
+                    ).all()
+            element_properties = dict(map(lambda x: ((x[0],x[1]),(x[2])), element_properties))
+
+            for level, values in data.items():
+                for element, attributes in values.items():
+                    element_id = elements[(level, element)]
+                    for defining_attribute_value, prs in attributes.items():
+                        # level
+                        # element name
+                        # defining_attribute_value
+                        # properties
+                        if (defining_attribute_value == ''):
+                            defining_attribute_value = None
+                        n = {}
+                        n["property_id"] = element_properties[(element_id, defining_attribute_value)]
+                        n["impschedule_id"] = sched.id
+                        n["date_recorded"] = datetime.datetime.now()
+                        for k, v in prs.items():
+                            n[k] = v
+                            if ((k=='date_original') or (k=='date_actual')):
+                                if (v==''):
+                                    n[k] = None
+                                else:
+                                    n[k] = datetime.datetime.strptime(v, "%Y-%m-%d")
+                        if (n['status_actual'] is None):
+                            n['status_actual'] = 'np'
+                        if (n['status_actual'] is None):
+                            n['status_actual'] = None
+                        ndb = models.Data(**n)
+                        db.session.add(ndb)
+            db.session.commit()
+            flash('Successfully imported your schedule', 'success')
+            return redirect(url_for('publisher', id=publisher.publisher_code_actual))
+    else:
+        publisher = models.Publisher.query.filter_by(publisher_code_actual=publisher_id).first()
+        schedule = models.ImpSchedule.query.filter_by(id=id).first()
+        schedule_data = db.session.query(models.ImpScheduleData
+                ).filter(models.ImpSchedule.id==schedule.id
+                ).join(models.ImpSchedule
+                ).all()
+
+        schedule_data_x = map(lambda x: { x.segment+"_actual": x.segment_value_actual,
+                                          x.segment+"_original": x.segment_value_original }, schedule_data)
+        schedule_data = {}
+        for o in schedule_data_x:
+            merge_dict(schedule_data, o)
+        
+        data = db.session.query(models.Data,
+                                models.Property,
+                                models.Element,
+                                models.ElementGroup
+                                ).join(models.Property
+                                ).join(models.Element
+                                ).join(models.ElementGroup
+                                ).filter(models.ImpSchedule.id==id).all()
+
+        elementdata = map(lambda x: {
+                                      x[2].id: {
+                                          'element': x[2],
+                                          'properties': {
+                                            x[1].id: {
+                                                'property': x[1],
+                                                'data': x[0]
+                                            }
+                                      }
+                                    }
+                                    }, data)
+        data = {}
+        for d in elementdata:
+            merge_dict(data, d)
+        return render_template("edit_schedule.html", auth=check_login(), publisher=publisher, schedule=schedule, schedule_data=schedule_data, data=data, properties=properties)
+
 @app.route("/import/", methods=['GET', 'POST'])
 @login_required
 def import_schedule():

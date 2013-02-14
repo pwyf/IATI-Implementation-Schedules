@@ -118,6 +118,7 @@
             </div>
     </div>
     <hr />
+    {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('edit_schedule', publisher_id=publisher.publisher_code_actual, id=schedule.id)}}">Edit</a>{%endif%}
             <h3>Detailed results</h3>
             <table class="table" id="tabledetailed">
             <thead>

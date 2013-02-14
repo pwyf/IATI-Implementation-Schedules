@@ -60,18 +60,22 @@ def score_all(data, publishers, elements, org_data):
         if (org_data[publisher]["impschedule"].under_consideration):
             out[publisher]["score"]["group"] = "Under consideration"
             out[publisher]["score"]["group_code"] = ""
+        if (out[publisher]["score"]["will_publish"] == 100):
+            if ((out[publisher]["score"]["elements"] >=60)  and (out[publisher]["score"]["approach"]>=100)):
+                out[publisher]["score"]["group"] = "Ambitious"
+                out[publisher]["score"]["group_code"] = "label-success"
+            elif ((out[publisher]["score"]["elements"] >=40) and (out[publisher]["score"]["approach"]>=50)):
+                out[publisher]["score"]["group"] = "Moderately ambitious"
+                out[publisher]["score"]["group_code"] = "label-warning"
+            elif (out[publisher]["score"]["elements"] >=1):
+                out[publisher]["score"]["group"] = "Unambitious"
+                out[publisher]["score"]["group_code"] = "label-important"
+            elif ((out[publisher]["score"]["elements"] == 0) and (out[publisher]["score"]["will_publish"] ==1)):
+                out[publisher]["score"]["group"] = "Incomplete"
+                out[publisher]["score"]["group_code"] = "label-inverse"
         elif (out[publisher]["score"]["will_publish"] ==0):
             out[publisher]["score"]["group"] = "No publication"
             out[publisher]["score"]["group_code"] = "label-inverse"
-        elif (out[publisher]["score"]["total"] <=40):
-            out[publisher]["score"]["group"] = "Unambitious"
-            out[publisher]["score"]["group_code"] = "label-important"
-        elif (out[publisher]["score"]["total"] <=60):
-            out[publisher]["score"]["group"] = "Moderately ambitious"
-            out[publisher]["score"]["group_code"] = "label-warning"
-        elif (out[publisher]["score"]["total"] <=100):
-            out[publisher]["score"]["group"] = "Ambitious"
-            out[publisher]["score"]["group_code"] = "label-success"
 
     return out
 
@@ -101,12 +105,12 @@ def score2(publisher_data, element_data):
         s['groups'][elementgroup]['yes'] = ok_group
         s['groups'][elementgroup]['no'] = nook_group
         s['groups'][elementgroup]['total'] = (ok_group/(ok_group+nook_group))*100
-        s['calculations'] += "Total score for group <b>" + elementgroupvalues["description"] + "</b>: " + str(int(ok_group)) + "/" + str(int(ok_group+nook_group)) + "<br />"
         ok = (ok + ((ok_group/(ok_group+nook_group))/num_groups))
+
+    s['elements'] = ok*100
     
     if (properties['publishing_timetable_date_initial'] != ''):
         willpublish = 1.0
-        s['calculations'] += "Planning to publish to IATI<br />"
     else:
         willpublish = 0.0
     if ((properties['publishing_frequency_frequency'] == 'm') or (properties['publishing_frequency_frequency'] == 'q')):
@@ -120,39 +124,31 @@ def score2(publisher_data, element_data):
             license = 0.0
     except KeyError:
         license = 0.0
-
-    if ((license==1.0) and (frequent==1.0)):
-        s['calculations'] += "Planning to publish at least quarterly under an open license (100% score)<br />"
-    elif (license==1.0):
-        s['calculations'] += "Planning to publish under an open license, but not planning to publish at least quarterly (50% score)<br />"
-    elif (frequent==1.0):
-        s['calculations'] += "Planning to publish at least quarterly, but planning to publish under an open license (50% score)<br />"
-    
-    s['calculations'] += "Elements publishing: " + str(int(ok)) + "<br />"
-    s['calculations'] += "Elements not publishing: " + str(int(nook)) + "<br />"
-    s['calculations'] += "Elements score: " + str(int(round((ok*100),0))) + "%<br />"
-
-    s['calculations'] += "<br />"
-    s['calculations'] += str(int(willpublish*100)) + "% (plan to publish) x " + str(int(((frequent+license)/2)*100)) + "% (publishing approach) x " + str((round(((ok)*100),0))) + "% (elements score)"
    
     s['total'] = round((willpublish*(ok)*((frequent+license)/2))*100)
-    s['will_publish'] = willpublish
+    s['will_publish'] = willpublish*100
     s['approach'] = (((frequent+license)/2)*100)
     s['license'] = license
     s['frequency'] = frequent
 
-    if (s["will_publish"] ==0):
+    if (s["will_publish"] == 100):
+        if ((s["elements"] >=60)  and (s["approach"]>=100)):
+            s["group"] = "Ambitious"
+            s["group_code"] = "label-success"
+        elif ((s["elements"] >=40) and (s["approach"]>=50)):
+            s["group"] = "Moderately ambitious"
+            s["group_code"] = "label-warning"
+        elif (s["elements"] >=1):
+            s["group"] = "Unambitious"
+            s["group_code"] = "label-important"
+        elif ((s["elements"] == 0) and (s["will_publish"] ==1)):
+            s["group"] = "Incomplete"
+            s["group_code"] = "label-inverse"
+    elif (s["will_publish"] ==0):
         s["group"] = "No publication"
         s["group_code"] = "label-inverse"
-    elif (s["total"] <=40):
-        s["group"] = "Unambitious"
-        s["group_code"] = "label-important"
-    elif (s["total"] <=60):
-        s["group"] = "Moderately ambitious"
-        s["group_code"] = "label-warning"
-    elif (s["total"] <=100):
-        s["group"] = "Ambitious"
-        s["group_code"] = "label-success"
+
+
     return s
 
 def parse_implementation_schedule(schedule, out, package_filename):
