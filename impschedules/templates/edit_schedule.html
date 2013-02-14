@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+{% block content %}
+    <style>
+    .bigchoice label {
+        font-weight:bold;
+        font-size:16px;
+    }
+    .bigchoice input[type="radio"], .bigchoice input[type="checkbox"] {
+        margin:0px;
+    }   
+    </style>
+    <ul class="nav nav-tabs hidden" id="pageTab">
+        <li><a href="#first" data-toggle="tab" class="first">Basic information</a></li>
+        <li><a href="#second" data-toggle="tab" class="second">Detailed information</a></li>
+    </ul>
+
+    <form action="" method="post">
+    <h1>Edit schedule</h1>
+
+    <p class="lead">{{publisher.publisher_actual}}: {{schedule.schedule_type_actual}} <code>{{schedule.schedule_type_code_actual}}</code> <a href="{{schedule.source_file}}" title="{{schedule.source_file}}" class="btn btn-small pull-right"><i class="icon icon-download"></i> source file</a></p>
+
+    <div class="tab-content">
+        <div class="tab-pane" id="first">
+            <fieldset>
+                <legend>Basic information</legend>
+                  <p><a href="#second" data-toggle="tab" class="btn btn-success second">Next &raquo;</a></p>
+                <table class="table">
+                    <thead>
+                        <th>Field</th>
+                        <th>Original</th>
+                        <th>Actual</th>
+                        <th>Reason for change</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Schedule date</td>
+                            <td><input type="text" name="metadata#schedule_date#original" class="schedule_date original" value="{{schedule.schedule_date_original}}" readonly/></td>
+                            <td><input type="text" name="metadata#schedule_date#actual" class="schedule_date actual" value="{{schedule.schedule_date_actual}}"/></td>
+                            <td><div class="control-group"><select name="metadata#schedule_date#change" class="schedule_date change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr>
+                            <td>Schedule version</td>
+                            <td><input type="text" name="metadata#schedule_version#original" class="schedule_version original" value="{{schedule.schedule_version_original}}" readonly/></td>
+                            <td><input type="text" name="metadata#schedule_version#actual" class="schedule_version actual" value="{{schedule.schedule_version_actual}}"/></td>
+                            <td><div class="control-group"><select name="metadata#schedule_version#change" class="schedule_version change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr class="info">
+                            <td>Initial implementation date</td>
+                            <td><input type="text" name="publishing#publishing_timetable_date_initial#original" class="publishing_timetable_date_initial original" value="{{schedule_data.publishing_timetable_date_initial_original}}" readonly/></td>
+                            <td><input type="text" name="publishing#publishing_timetable_date_initial#actual" class="publishing_timetable_date_initial actual" value="{{schedule_data.publishing_timetable_date_initial_actual}}" id="publishing_timetable_date_initial" /><br /><label for="under_consideration"><input type="checkbox" name="data#under_consideration" id="under_consideration" /> Under consideration</label></td>
+                            <td><div class="control-group"><select name="publishing#publishing_timetable_date_initial#change" class="publishing_timetable_date_initial change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr>
+                            <td>Frequency</td>
+                            <td><input name="publishing#publishing_frequency_frequency#original" class="publishing_timetable_frequency original" type="text" value="{{schedule_data.publishing_frequency_frequency_original}}" readonly/></td>
+                            <td>
+                            <select name="publishing#publishing_frequency_frequency#actual" class="publishing_timetable_frequency actual"><option></option> 
+                                {% for key, value in properties.codes[properties.properties['publishing_frequency_frequency']["code"]].items() %}
+                                <option value="{{key}}" {% if key == (schedule_data.publishing_frequency_frequency_actual) %}selected {%endif%}>{{value}}</option>
+                                {%endfor%}
+                            </select>
+                            </td>
+                            <td><div class="control-group"><select name="publishing#publishing_frequency_frequency#change" class="publishing_timetable_frequency change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr>
+                            <td>Timeliness</td>
+                            <td><input type="text" name="publishing#publishing_frequency_timeliness#original" class="publishing_timetable_timeliness original" value="{{schedule_data.publishing_frequency_timeliness_original}}" readonly/></td>
+                            <td>
+                            <select name="publishing#publishing_frequency_timeliness#actual" class="publishing_timetable_timeliness actual"><option></option> 
+                                {% for key, value in properties.codes[properties.properties['publishing_frequency_timeliness']["code"]].items() %}
+                                <option value="{{key}}" {% if key == (schedule_data.publishing_frequency_timeliness_actual) %}selected {%endif%}>{{value}}</option>
+                                {%endfor%}
+                            </select></td>
+                            <td><div class="control-group"><select name="publishing#publishing_frequency_timeliness#change" class="publishing_timetable_timeliness change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr>
+                            <td>Frequency narrative</td>
+                            <td><textarea readonly name="publishing#publishing_frequency_narrative#original" class="publishing_timetable_narrative original" rows="4">{{schedule_data.publishing_frequency_narrative_original}}</textarea></td>
+                            <td><textarea name="publishing#publishing_frequency_narrative#actual" class="publishing_timetable_narrative actual" rows="4">{{schedule_data.publishing_frequency_narrative_actual}}</textarea></td>
+                            <td><div class="control-group"><select name="publishing#publishing_frequency_narrative#change" class="publishing_timetable_narrative change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr>
+                            <td>Thresholds</td>
+                            <td><textarea name="publishing#publishing_thresholds#original" class="publishing_thresholds original" readonly rows="4">{{schedule_data.publishing_thresholds_original}}</textarea></td>
+                            <td><textarea name="publishing#publishing_thresholds#actual" class="publishing_thresholds actual" rows="4">{{schedule_data.publishing_thresholds_actual}}</textarea></td>
+                            <td><div class="control-group"><select name="publishing#publishing_thresholds#change" class="publishing_thresholds change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr>
+                            <td>Exclusions</td>
+                            <td><textarea name="publishing#publishing_exclusions#original" class="publishing_exclusions original" readonly rows="4">{{schedule_data.publishing_exclusions_original}}</textarea></td>
+                            <td><textarea name="publishing#publishing_exclusions#original" class="publishing_exclusions actual" rows="4">{{schedule_data.publishing_exclusions_actual}}</textarea></td>
+                            <td><div class="control-group"><select name="publishing#publishing_thresholds#change" class="publishing_exclusions change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr>
+                            <td>License</td>
+                            <td><input name="publishing#publishing_license#original" class="publishing_license original" type="text" value="{{schedule_data.publishing_license_original}}" readonly/></td>
+                            <td><select name="publishing#publishing_license#actual" class="publishing_license actual"><option></option> 
+                                {% for key, value in properties.codes[properties.properties['publishing_license']["code"]].items() %}
+                                <option value="{{key}}" {% if key == (schedule_data.publishing_license_actual) %}selected {%endif%}>{{value}}</option>
+                                {%endfor%}
+                            </select></td>
+                            <td><div class="control-group"><select name="publishing#publishing_license#change" class="publishing_license change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr>
+                            <td>Scope</td>
+                            <td><input name="publishing#publishing_scope_value#original" class="publishing_scope original" type="text" value="{{schedule_data.publishing_scope_value_original}}" readonly/></td>
+                            <td><input name="publishing#publishing_scope_value#actual" class="publishing_scope actual" type="text" value="{{schedule_data.publishing_scope_value_actual}}"/></td>
+                            <td><div class="control-group"><select name="publishing#publishing_scope_value#change" class="publishing_scope change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                        <tr>
+                            <td>Scope narrative</td>
+                            <td><textarea name="publishing#publishing_scope_narrative#original" class="publishing_scope_narrative original" readonly rows="4">{{schedule_data.publishing_scope_narrative_original}}</textarea></td>
+                            <td><textarea name="publishing#publishing_scope_narrative#actual" class="publishing_scope_narrative actual" rows="4">{{schedule_data.publishing_scope_narrative_actual}}</textarea></td>
+                            <td><div class="control-group"><select name="publishing#publishing_scope_narrative#change" class="publishing_scope_narrative change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
+                                <option value="{{key}}">{{value}}</option>
+                                {%endfor%}</select></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <p><a href="#second" data-toggle="tab" class="btn btn-success second">Next &raquo;</a></p>
+        </div>
+        <div class="tab-pane" id="second">
+            <fieldset>
+                <legend>Detailed information</legend>
+            <p><a href="#first" data-toggle="tab" class="btn first">&laquo; Back</a> <input type="submit" value="Update schedule" class="btn btn-success" name="do_import" /></p>
+                <table class="table">
+                    <thead>
+                        <th>Field</th>
+                        <th>Property</th>
+                        <th>Original</th>
+                        <th>Actual</th>
+                        <th>Reason for change</th>
+                    </thead>
+                    <tbody>
+                        {% for level in ('organisation', 'activity') %}
+                               <tr class="info"><td colspan="5">{{level|capitalize}}</td></tr>
+                            {% for elementid, elementvalues in data.items() %}
+                               {% if elementvalues.element.level == level %}
+                               {% for propertyid, propertyvalues in elementvalues.properties.items() %}
+                                    {% set status = propertyvalues.data.status_actual%}
+                                    <tr>
+                                        <td rowspan="4"><a href="{% if propertyvalues.property.defining_attribute_value %}{{url_for('element', level=elementvalues.element.level, id=elementvalues.element.name, type=propertyvalues.property.defining_attribute_value)}}{%else%}{{url_for('element', level=elementvalues.element.level, id=elementvalues.element.name)}}{%endif%}">{{elementvalues.element.description}}{% if propertyvalues.property.defining_attribute_value%} ({{propertyvalues.property.defining_attribute_value}}){%endif%}</a></td>
+
+                                        {# first do status #}
+                                        
+                                        <td>Status</td>
+
+                                        <td><input type="text" value="{{propertyvalues.data.status_original}}" class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} status_original" name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#status_original" readonly/></td>
+                                        <td><select
+                                             name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#status_actual"
+                                             class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} status_actual" >
+                                            <option value="" {%if propertyvalues.data.status_actual is none %}selected{%endif%} ></option>
+                                            {% for key, value in properties.status.items() %}
+                                                <option value="{{key}}" {% if key == (propertyvalues.data.status_actual) %}selected {%endif%}>{{value}}</option>
+                                            {%endfor%}
+                                        </select></td>
+                                        <td><div class="control-group"><select
+                                         name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#status_change"
+                                         class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} status_change" disabled>
+                                            <option value=""></option>
+                                            {% for key, value in properties.change_reasons.items() %}
+                                                <option value="{{key}}" {% if key == (propertyvalues.data.status_change) %}selected {%endif%}>{{value}}</option>
+                                            {%endfor %}
+                                        </select></div></td>
+
+                                   </tr>
+                                    
+
+                                    {# second, do date #}
+                                <tr>
+                                    <td>Date</td>
+                            <td><input type="text" 
+                            value="{{propertyvalues.data.date_original}}" 
+                            name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#date_original"
+                            class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} date_original"
+                            readonly/></td>
+                            <td><input type="text" 
+                            value="{{propertyvalues.data.date_actual}}" 
+                            name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#date_actual"
+                            class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} date_actual"  /></td>
+                            <td>
+                            <div class="control-group">
+                            <select 
+                            name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#date_change"
+                            class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} date_change" 
+                            disabled>
+                                <option></option>
+                                {% for key, value in properties.change_reasons.items() %}
+                                    <option value="{{key}}" {% if key == (propertyvalues.data.date_change) %}selected {%endif%}>{{value}}</option>
+                                {%endfor%}
+                            </select>
+                            </div>
+                            </td>
+                             </tr>
+                                    {# third, do notes #}
+                                    
+                        <tr>
+                            <td>Notes</td>
+                            <td><textarea 
+                            name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#notes_original"
+                            readonly>{{propertyvalues.data.notes_original}}</textarea></td>
+                            <td><textarea
+                            name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#notes_actual"
+                            >{{propertyvalues.data.notes_actual}}</textarea></td>
+                            <td><div class="control-group"><select 
+                            name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#notes_change"
+                            disabled>
+                                <option></option>
+                                {% for key, value in properties.change_reasons.items() %}
+                                    <option value="{{key}}" {% if key == (propertyvalues.data.notes_change) %}selected {%endif%}>{{value}}</option>
+                                {%endfor%}
+                            </select></div></td>
+                        </tr>
+                                    {# fourth, do score #}
+                                    
+                        <tr><td colspan="4"><label for="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score">
+                            <input 
+                            type="checkbox"
+                            id="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score" 
+                            class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} score" 
+                            name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score"
+                            {% if propertyvalues.data.score is not none %}checked{%endif%}
+                            value="1" /> Score for this element</label></td></tr>
+                                    
+                               {%endfor%}
+                               {% endif %}
+                            {% endfor %}
+                        {% endfor%}
+                    </tbody>
+                </table>
+            </fieldset>
+            <p><a href="#second" data-toggle="tab" class="btn second">&laquo; Back</a> <input type="submit" value="Update schedule" class="btn btn-success" name="do_import" /></p>
+        </div>
+    </div>
+    </form>
+    
+    <script>
+     $(function () {
+        $('#pageTab .first').tab('show');
+     });
+     $("#second select, #second input").change(function(){
+        if ($(this).is("select")) {
+            element = $(this).attr('class');
+            original = element.replace(" status_actual", ".status_original");
+            changereason = element.replace(" status_actual", ".status_change");
+        } else {
+            element = $(this).attr('class');
+            original = element.replace(" date_actual", ".date_original");
+            changereason = element.replace(" date_actual", ".date_change");
+        }
+        if ($(this).val() != $('.'+original).val()) {
+            changer = $("."+changereason);
+            changer.removeAttr('disabled');
+            ensureSelectNotEmpty(changer);
+        } else {
+            changer = $("."+changereason);
+            changer.closest(".control-group").removeClass("error");
+            changer.attr('disabled', 'disabled');
+        }
+     });
+
+     $("#second select, #second input, #second textarea").change(function(){
+        element = $(this).attr('class');
+        original = element.replace(" actual", ".original");
+        changereason = element.replace(" actual", ".change");
+        if ($(this).val() != $('.'+original).val()) {
+            changer = $("."+changereason);
+            changer.removeAttr('disabled');
+            ensureSelectNotEmpty(changer);
+        } else {
+            changer = $("."+changereason);
+            changer.closest(".control-group").removeClass("error");
+            changer.attr('disabled', 'disabled');
+        }
+     });
+     $("select").change(function(){
+        ensureSelectNotEmpty(this);
+     });
+
+     function ensureSelectNotEmpty(element) {
+        if ($(element).val() == "") {
+            $(element).closest(".control-group").addClass("error");
+        } else {
+            $(element).closest(".control-group").removeClass("error");
+        }
+     }
+    </script>
+{% endblock %}
