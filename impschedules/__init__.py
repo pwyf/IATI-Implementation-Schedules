@@ -121,7 +121,7 @@ def index():
     return render_template("dashboard.html", auth=check_login())
 
 
-@app.route("/publishers/<publisher_id>/<id>/edit", methods=['GET', 'POST'])
+@app.route("/organisations/<publisher_id>/<id>/edit", methods=['GET', 'POST'])
 @login_required
 def edit_schedule(publisher_id=None, id=None):
     if (request.method == 'POST'):
@@ -132,21 +132,8 @@ def edit_schedule(publisher_id=None, id=None):
             data = {}
             s = {} # schedule
 
-            if (request.form['form#createupdate'] == 'existing'):
-                # use existing publisher
-                publisher_id = request.form['form#existing-publisher']
-                publisher = models.Publisher.query.filter_by(id=publisher_id).first()
-            else:
-                # create new publisher
-                publisher = models.Publisher()
-                publisher.publisher_original = request.form['form#publisher#original']
-                publisher.publisher_actual = request.form['form#publisher#actual']
-                publisher.publisher_code_original = request.form['form#publisher_code#original']
-                publisher.publisher_code_actual = request.form['form#publisher_code#actual']
-                db.session.add(publisher)
-                db.commit()
-                publisher_id = publisher.id
-            s['publisher_id'] = publisher_id
+            s = models.ImpSchedule.query.filter_by(id=id).first()
+
             for field, values in request.form.items():
 
                 a = field.split('#')
@@ -156,10 +143,10 @@ def edit_schedule(publisher_id=None, id=None):
                 #a[2] is field part (e.g. status_original, status_actual, etc.)
                 if field.startswith('data'):
                     p = a[1]
-                    s[p] = values
+                    s.p = values
                 elif field.startswith('metadata'):
                     p = a[1] + "_" + a[2]
-                    s[p] = values
+                    s.p = values
 
                 elif field.startswith('publishing'):
                     try:
@@ -200,18 +187,15 @@ def edit_schedule(publisher_id=None, id=None):
                     data[a[0]][at[0]][at[1]][a[2]] = values
 
             # write schedule
-            sched = models.ImpSchedule(**s)
-            db.session.add(sched)
+            db.session.add(s)
             db.session.commit()
             # then write properties
             for k, v in pr.items():
-                d = {}
-                d["publisher_id"] = sched.id
-                d["segment"] = k
+                d = models.ImpScheduleData.query.filter_by(publisher_id=s.id, segment=k).first()
                 for a, b in v.items():
-                    d["segment_value_"+a] = b
-                dd = models.ImpScheduleData(**d)
-                db.session.add(dd)
+                    setattr(d, "segment_value_" + a, b)
+                db.session.add(d)
+                db.session.commit()
 
             # then write data
             elements = db.session.query(
@@ -232,32 +216,28 @@ def edit_schedule(publisher_id=None, id=None):
                 for element, attributes in values.items():
                     element_id = elements[(level, element)]
                     for defining_attribute_value, prs in attributes.items():
+                        if (defining_attribute_value == ''):
+                            defining_attribute_value = None
+                        n = models.Data.query.filter_by(property_id=element_properties[(element_id, defining_attribute_value)], impschedule_id=s.id).first()
                         # level
                         # element name
                         # defining_attribute_value
                         # properties
-                        if (defining_attribute_value == ''):
-                            defining_attribute_value = None
-                        n = {}
-                        n["property_id"] = element_properties[(element_id, defining_attribute_value)]
-                        n["impschedule_id"] = sched.id
-                        n["date_recorded"] = datetime.datetime.now()
+
+                        #n.date_recorded = datetime.datetime.now() # might want to add date_updated to DB
                         for k, v in prs.items():
-                            n[k] = v
                             if ((k=='date_original') or (k=='date_actual')):
-                                if (v==''):
-                                    n[k] = None
+                                if (v=='' or v=='None'):
+                                    setattr(n, k, None)
                                 else:
-                                    n[k] = datetime.datetime.strptime(v, "%Y-%m-%d")
-                        if (n['status_actual'] is None):
-                            n['status_actual'] = 'np'
-                        if (n['status_actual'] is None):
-                            n['status_actual'] = None
-                        ndb = models.Data(**n)
-                        db.session.add(ndb)
-            db.session.commit()
-            flash('Successfully imported your schedule', 'success')
-            return redirect(url_for('publisher', id=publisher.publisher_code_actual))
+                                    setattr(n, k, datetime.datetime.strptime(v, "%Y-%m-%d"))
+                            else:
+                                setattr(n, k, v)
+                        db.session.add(n)
+                        db.session.commit()
+
+            flash('Successfully updated your schedule', 'success')
+            return redirect(url_for('organisation', id=publisher_id))
     else:
         publisher = models.Publisher.query.filter_by(publisher_code_actual=publisher_id).first()
         schedule = models.ImpSchedule.query.filter_by(id=id).first()
@@ -274,11 +254,9 @@ def edit_schedule(publisher_id=None, id=None):
         
         data = db.session.query(models.Data,
                                 models.Property,
-                                models.Element,
-                                models.ElementGroup
+                                models.Element
                                 ).join(models.Property
                                 ).join(models.Element
-                                ).join(models.ElementGroup
                                 ).filter(models.ImpSchedule.id==id).all()
 
         elementdata = map(lambda x: {
@@ -292,6 +270,7 @@ def edit_schedule(publisher_id=None, id=None):
                                       }
                                     }
                                     }, data)
+
         data = {}
         for d in elementdata:
             merge_dict(data, d)
@@ -433,7 +412,7 @@ def import_schedule():
                         db.session.add(ndb)
             db.session.commit()
             flash('Successfully imported your schedule', 'success')
-            return redirect(url_for('publisher', id=publisher.publisher_code_actual))
+            return redirect(url_for('organisation', id=publisher.publisher_code_actual))
         else:
             publishers = models.Publisher.query.all()
             url = request.form['url']
@@ -623,9 +602,9 @@ def element(level=None, id=None, type=None):
         totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
         return render_template("elements.html", elements=elements, compliance=compliance, totalnum=totalnum.number, auth=check_login())
 
-@app.route("/publishers/")
-@app.route("/publishers/<id>/")
-def publisher(id=None):
+@app.route("/organisations/")
+@app.route("/organisations/<id>/")
+def organisation(id=None):
     if (id is not None):
         """ need to return:
             # publisher information
@@ -667,31 +646,37 @@ def publisher(id=None):
                                        models.Property.weight,
                                        models.ElementGroup.weight,
                                        models.Element.weight,
-                                       models.Property.weight
+                                       models.Property.weight,
+                                       models.ElementGroup.order,
+                                       models.Element.order,
+                                       models.Property.order
                                       ).filter(models.Data.impschedule_id == schedule.id
+                                      ).order_by(models.ElementGroup.order, models.Element.order, models.Property.order
                                       ).join(models.Property
                                       ).join(models.Element
                                       ).join(models.ElementGroup
-                                      ).order_by(models.ElementGroup.order, models.Element.order
                                       ).all()
         
-        data = {}
+        data = collections.OrderedDict()
         elementdata = map(lambda x: {x[7] : {
                                                'name': x[8],
                                                'description': x[9],
                                                'weight': x[12],
+                                               'order': x[17],
                                                'elements': {
                                                   x[4]: {
                                                       'name': x[5],
                                                       'description': x[6],
                                                       'level': x[10],
                                                       'weight': x[11],
+                                                      'order': x[18],
                                                       'properties': {
                                                         x[1]: {
                                                             'parent_element': x[2],
                                                             'defining_attribute_value': x[3],
                                                             'data': x[0],
-                                                            'weight': x[13]
+                                                            'weight': x[13],
+                                                            'order': x[19]
                                                         }
                                                   }
                                                 }
@@ -711,6 +696,10 @@ def publisher(id=None):
             s['group_code'] = "alert-info"
         return render_template("publisher.html", publisher=publisher, schedule=schedule, data=data, segments=schedule_data, properties=properties, score=s, score_calculations=Markup(s["calculations"]), auth=check_login())
     else:
+        # get all publishers
+        allpublishers = models.Publisher.query.all()
+        allpublishers = dict(map(lambda x: (x.id, (x.publisher_actual, x.publisher_code_actual)), allpublishers))
+
         orgs = db.session.query(models.Publisher,
                                 models.ImpSchedule, 
                                 models.ImpScheduleData
@@ -719,6 +708,7 @@ def publisher(id=None):
                 ).order_by(models.Publisher.publisher_actual
                 ).all()
 
+        publishingpublishers = set(map(lambda x: x[0], orgs))
         # get impschedule id, # results for this score, the score, the elementgroup id
         org_data = db.session.query(models.Data.impschedule_id,
                                     func.count(models.Data.id),
@@ -734,6 +724,9 @@ def publisher(id=None):
                 ).all()
 
         publishers = set(map(lambda x: x[0], org_data))
+        for publisher in publishingpublishers:
+            allpublishers.pop(publisher.id)
+        
         elementgroups = set(map(lambda x: x[3], org_data))
         org_data = dict(map(lambda x: ((x[0],x[3],x[2]),(x[1])), org_data))
         org_pdata = map(lambda x: {x[1].id: {
@@ -745,7 +738,7 @@ def publisher(id=None):
                                         }
                                     }
                                 }}, orgs)
-        orgs = {}
+        orgs = collections.OrderedDict()
         for o in org_pdata:
             merge_dict(orgs, o)
 
@@ -759,7 +752,7 @@ def publisher(id=None):
         # total scores per group where weight is not 0
         
         totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
-        return render_template("publishers.html", orgs=orgs, totalnum=totalnum.number, scores=scores, auth=check_login())
+        return render_template("publishers.html", orgs=orgs, totalnum=totalnum.number, scores=scores, auth=check_login(), notpublishing=allpublishers)
 
 def merge_dict(d1, d2):
     # from here: http://stackoverflow.com/questions/10703858/python-merge-multi-level-dictionaries
@@ -803,9 +796,9 @@ def logout():
     flash('You have been logged out.', 'success')
     return redirect(url_for('index'))
 
-@app.route("/publishers/<id>/edit/", methods=['GET', 'POST'])
+@app.route("/organisations/<id>/edit/", methods=['GET', 'POST'])
 @login_required
-def publisher_edit(id=id):
+def organisation_edit(id=id):
     if (request.method == 'POST'):
         publisher = models.Publisher.query.filter_by(publisher_code_actual=id).first()
         impschedule = models.ImpSchedule.query.filter_by(publisher_id=publisher.id).first()

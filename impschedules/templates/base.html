@@ -29,7 +29,7 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li{% if active_page == "index" %} class="active"{%endif%}><a href="/">Home</a></li>
-              <li{% if active_page == "publishers" %} class="active"{%endif%}><a href="{{url_for('publisher')}}">Publishers</a></li>
+              <li{% if active_page == "organisations" %} class="active"{%endif%}><a href="{{url_for('organisation')}}">Organisations</a></li>
               <li{% if active_page == "elements" %} class="active"{%endif%}><a href="/elements">Elements</a></li>
               <li{% if active_page == "timeline" %} class="active"{%endif%}><a href="{{url_for('timeline')}}">Timeline</a></li>
               <li><a href="#about">About</a></li>

@@ -17,7 +17,7 @@
     </thead>
     <tbody>
     {% for d in data %}
-    <tr{%if (d.Data.status=='uc') %} class="error"{%elif (d.Data.status=='fp') %} class="info"{%endif%}><td><a href="{{url_for('publisher', id=d.Publisher.publisher_code_actual)}}">{{d.Publisher.publisher_actual}}</a></td><td>
+    <tr{%if (d.Data.status=='uc') %} class="error"{%elif (d.Data.status=='fp') %} class="info"{%endif%}><td><a href="{{url_for('organisation', id=d.Publisher.publisher_code_actual)}}">{{d.Publisher.publisher_actual}}</a></td><td>
 {%
                     if (d.Data.status_actual=="fc")
                     %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
