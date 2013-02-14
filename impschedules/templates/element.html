@@ -5,8 +5,8 @@
     {% else %}
     <a class="btn btn-success pull-right" href="{{url_for('edit_element', id=element.element.name, level=element.element.level)}}">Edit</a>
     {%endif%}{%endif%}
-    <h1>{{element.element.description}} {% if element.properties%}({{element.properties.defining_attribute_value}}){%endif%}</h1>
-    <h3>Implementation Schedule Information</h3>
+    <h1>{{element.element.description}} {% if element.properties%}({{element.properties.defining_attribute_description}}){%endif%}</h1>
+    {% if element.element.longdescription%}<h3>{{element.element.longdescription}}</h3>{%endif%}
     <table class="table">
     <thead>
         <th>Organisation</th>
@@ -17,26 +17,26 @@
     </thead>
     <tbody>
     {% for d in data %}
-    <tr{%if (d.Data.status=='uc') %} class="error"{%elif (d.Data.status=='fp') %} class="info"{%endif%}><td><a href="{{url_for('organisation', id=d.Publisher.publisher_code_actual)}}">{{d.Publisher.publisher_actual}}</a></td><td>
-{%
-                    if (d.Data.status_actual=="fc")
-                    %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-                    elif (d.Data.status_actual=="uc")
-                    %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
-                    elif (d.Data.status_actual=="pc")
-                    %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-                    elif (d.Data.status_actual=="up")
-                    %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-                    elif (d.Data.status_actual=="fp")
-                    %}<i class="icon-wrench" title="Future publication"></i><br />Future
-                    {% else %}
-                    {{ d.Data.status_actual }}
-                    {%endif%}</td>
-		    <td>{% if d.Data.date_actual is not none %}{{d.Data.date_actual}}{%endif%}</td>
-            <td>{{d.Data.notes_actual}} {%if d.Data.exclusions%}{{d.Data.exclusions}}{%endif%}</td>
-            <td>{%if d.Data.score%}<i class="icon-ok" title="Fully compliant"></i>{%endif%}</td>
+    <tr{%if (d.Data.status=='uc') %} class="error"{%elif (d.Data.status=='fp') %} class="info"{%endif%}>
+        <td><a href="{{url_for('organisation', id=d.Publisher.publisher_code_actual)}}">{{d.Publisher.publisher_actual}}</a></td><td>
+        {% if (d.Data.status_actual=="fc")
+        %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
+        elif (d.Data.status_actual=="uc")
+        %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
+        elif (d.Data.status_actual=="pc")
+        %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
+        elif (d.Data.status_actual=="up")
+        %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
+        elif (d.Data.status_actual=="fp")
+        %}<i class="icon-wrench" title="Future publication"></i><br />Future
+        {% else %}
+        {{ d.Data.status_actual }}
+        {%endif%}</td>
+	    <td>{% if d.Data.date_actual is not none %}{{d.Data.date_actual}}{%endif%}</td>
+        <td>{{d.Data.notes_actual}} {%if d.Data.exclusions%}{{d.Data.exclusions}}{%endif%}</td>
+        <td>{%if d.Data.score%}<i class="icon-ok" title="Fully compliant"></i>{%endif%}</td>
 
-</tr>
+    </tr>
     {% endfor %}
     </tbody>
     </table>        

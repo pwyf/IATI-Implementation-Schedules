@@ -1,3 +1,5 @@
+import collections
+
 publishers = [
     {
     "name": "Australia",
@@ -205,7 +207,7 @@ publishers = [
     }
 ]
 
-elementgroups = {
+elementgroups = collections.OrderedDict({
             'org': {
                 'description': 'Organisation level',
                 'order': 1
@@ -242,10 +244,10 @@ elementgroups = {
                 'description': 'Performance',
                 'order': 8
             }
-}
+})
 
-elements = {
-        'organisation': {
+elements = collections.OrderedDict({
+        'organisation': collections.OrderedDict({
             'total-budget': {
                 'description': 'Organisation budget',
                 'group': 'org',
@@ -266,8 +268,8 @@ elements = {
                 'group': 'org',
                 'order': 4
             }
-        },
-        'activity': {
+        }),
+        'activity': collections.OrderedDict({
             'reporting-org': { 
                 'description': 'Reporting organisation',
                 'group': 'identification',
@@ -288,10 +290,12 @@ elements = {
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
                     'agency': {
-                        'order': 1
+                        'order': 1,
+                        'description': 'Agency language'
                     },
                     'recipient': {
-                        'order': 2
+                        'order': 2,
+                        'description': 'Recipient language'
                     }
                 },
                 'order': 8,
@@ -302,10 +306,12 @@ elements = {
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
                     'agency': {
-                        'order': 1
+                        'order': 1,
+                        'description': 'Agency language'
                     },
                     'recipient': {
-                        'order': 2
+                        'order': 2,
+                        'description': 'Recipient language'
                     }
                 },
                 'order': 9,
@@ -321,10 +327,12 @@ elements = {
                 'defining_attribute': 'type', 
                 'defining_attribute_values': {
                     'start': {
-                        'order': 1
+                        'order': 1,
+                        'description': 'Start Date'
                     },
                     'end': {
-                        'order': 2
+                        'order': 2,
+                        'description': 'End Date'
                     }
                 },
                 'group': 'basic-activity-information',
@@ -340,16 +348,20 @@ elements = {
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
                     'funding': {
-                        'order': 1
+                        'order': 1,
+                        'description': 'Funding'
                     },
                     'extending': {
-                        'order': 2
+                        'order': 2,
+                        'description': 'Extending'
                     },
                     'accountable': {
-                        'order': 3
+                        'order': 3,
+                        'description': 'Accountable'
                     },
                     'implementing': {
-                        'order': 4
+                        'order': 4,
+                        'description': 'Implementing'
                     }
                 },
                 'order': 13,
@@ -375,10 +387,12 @@ elements = {
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
                     'crs': {
-                        'order': 1
+                        'order': 1,
+                        'description': 'DAC CRS'
                     },
                     'agency': {
-                        'order': 2
+                        'order': 2,
+                        'description': 'Agency specific'
                     }
                 },
                 'group': 'classifications',
@@ -428,8 +442,14 @@ elements = {
                 'description': 'Budget identifier',
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
-                    'economic': {},
-                    'administrative-functional': {}
+                    'economic': {
+                        'order': 1,
+                        'description': 'Economic'
+                    },
+                    'administrative-functional': {
+                        'order': 2,
+                        'description': 'Administrative/functional'
+                    }
                 },
                 'group': 'financial',
                 'order': 26
@@ -439,19 +459,25 @@ elements = {
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
                     'commitment': {
-                        'order': 1
+                        'order': 1,
+                        'description': 'Commitment'
+                    
                     },
                     'disbursement': {
-                        'order': 2
+                        'order': 2,
+                        'description': 'Disbursement & Expenditure'
                     },
                     'reimbursement': {
-                        'order': 3
+                        'order': 3,
+                        'description': 'Reimbursement'
                     },
                     'incoming': {
-                        'order': 4
+                        'order': 4,
+                        'description': 'Incoming Funds'
                     },
                     'repayment': {
-                        'order': 5
+                        'order': 5,
+                        'description': 'Loan repayment / interest repayment'
                     }
                 },
                 'group': 'financial-transaction',
@@ -477,10 +503,12 @@ elements = {
                 'defining_attribute': 'type',
                 'defining_attribute_values': {
                     'attached': {
-                        'order': 1
+                        'order': 1,
+                        'description': 'Attached Y/N'
                     },
                     'text': {
-                        'order': 2
+                        'order': 2,
+                        'description': 'Text'
                     }
                 },
                 'group': 'performance',
@@ -491,8 +519,8 @@ elements = {
                 'group': 'performance',
                 'order': 32
             }
-        }
-    }
+        })
+    })
 properties = {
     'under_consideration': { 
         'name': 'Under consideration',
@@ -701,30 +729,31 @@ properties = {
         'type': 'text'
         }
 }
-status = {    'fc': 'Fully compliant',
+status = collections.OrderedDict({    'fc': 'Fully compliant',
               'fp': 'Future publication',
               'pc': 'Partially compliant',
               'up': 'Unable to publish',
               'uc': 'Under consideration',
               'na': 'Not applicable'
-         }
+         })
 
 codes = {   
     # Data quality
     'quality': {   'u': 'Unverified', 'v': 'Verified'},
     # Frequency
-    'frequency': {   'a': 'Annually',
-                     'b': 'Bi-annually',
+    'frequency': collections.OrderedDict({   'r': 'Real time',
+                     'w': 'Weekly',
                      'f': 'Fortnightly',
                      'm': 'Monthly',
                      'o': 'Other',
                      'q': 'Quarterly',
-                     'r': 'Real time',
-                     'w': 'Weekly'},
+                     'b': 'Bi-annually',
+                     'a': 'Annually'}),
     # License type
-    'license': {    'a': 'Attribution-only',
-                    'o': 'Other (non-compliant)',
-                    'p': 'Public domain'},
+    'license': collections.OrderedDict({    'p': 'Public domain',
+                    'a': 'Attribution-only',
+                    'o': 'Other (non-compliant)'
+               }),
     # Lifecyle
     'point': {   'i': 'Implementation',
                  'o': 'Other',
@@ -750,14 +779,15 @@ codes = {
                    'm': 'Manual capture through an online tool (web entry platform)',
                    'o': 'Other'},
     # Timeliness
-    'timeliness': {   '1m': '1 month in arrears',
-                      '1q': '1 quarter in arrears',
+    'timeliness': collections.OrderedDict({  
+                      'r': 'Real time',
                       '1w': '1 week in arrears',
-                      '2m': '2 months in arrears',
                       '2w': '2 weeks in arrears',
+                      '1m': '1 month in arrears',
+                      '2m': '2 months in arrears',
+                      '1q': '1 quarter in arrears',
                       'gt': '> 1 quarter in arrears',
-                      'o': 'Other',
-                      'r': 'Real time'},
+                      'o': 'Other'}),
     # User interface
     'status': {   'i': 'In development',
                   'n': 'No',
@@ -773,5 +803,6 @@ change_reasons = {
     'initial_date': 'Initial date later',
     'parse_error': 'Not parsed properly',
     'typo': 'Fix typo',
-    'missing': 'Information missing'
+    'missing': 'Information missing',
+    'assumed': 'Information assumed'
 }

@@ -97,7 +97,7 @@ def setup():
             element_id = e.id
             if (elvalue.has_key("defining_attribute")):
                 # if there are multiple versions of this element, e.g. funding, extending participating-orgs
-                for defining_attribute_value in elvalue["defining_attribute_values"]:
+                for defining_attribute_value, property_values in elvalue["defining_attribute_values"].items():
                     #for attribute in attributes:
                     p = models.Property()
                     p.level = level
@@ -105,6 +105,8 @@ def setup():
                     #p.attribute = attribute
                     p.defining_attribute = elvalue["defining_attribute"]
                     p.defining_attribute_value = defining_attribute_value
+                    p.defining_attribute_description = property_values['description']
+                    p.order = property_values['order']
                     db.session.add(p)
             else:
                 #for attribute in attributes:
@@ -450,9 +452,32 @@ def import_schedule():
         return render_template("import.html", auth=check_login())
 
 @app.route("/elementgroups/")
-@app.route("/elementgroups/<id>/", methods=['GET', 'POST'])
-@login_required
+@app.route("/elementgroups/<id>/")
 def elementgroup(id=None):
+    if (id is not None):
+        elementgroup = db.session.query(
+                    models.ElementGroup.id,
+                    models.ElementGroup.name,
+                    models.ElementGroup.description,
+                    models.ElementGroup.weight
+                    ).filter(
+                    models.ElementGroup.id==id
+                    ).first()
+        return render_template("elementgroup.html", elementgroup=elementgroup, auth=check_login())
+    else:
+        elementgroups = db.session.query(
+                    models.ElementGroup.id,
+                    models.ElementGroup.name,
+                    models.ElementGroup.description,
+                    models.ElementGroup.weight,
+                    models.ElementGroup.order
+                    ).order_by(models.ElementGroup.order
+                    ).all()
+        return render_template("elementgroups.html", elementgroups=elementgroups, auth=check_login())
+
+@app.route("/elementgroups/<id>/edit/", methods=['GET', 'POST'])
+@login_required
+def elementgroup_edit(id=None):
     if (request.method == 'POST'):
         # handle post
         elementgroup = models.ElementGroup.query.filter_by(id=id).first()
@@ -460,26 +485,17 @@ def elementgroup(id=None):
         db.session.add(elementgroup)
         db.session.commit()
         flash('Updated element group', "success")
-        return render_template("elementgroup.html", elementgroup=elementgroup, auth=check_login())
+        return render_template("elementgroup_edit.html", elementgroup=elementgroup, auth=check_login())
     else:
-        if (id is not None):
-            elementgroup = db.session.query(
-                        models.ElementGroup.id,
-                        models.ElementGroup.name,
-                        models.ElementGroup.description,
-                        models.ElementGroup.weight
-                        ).filter(
-                        models.ElementGroup.id==id
-                        ).first()
-            return render_template("elementgroup.html", elementgroup=elementgroup, auth=check_login())
-        else:
-            elementgroups = db.session.query(
-                        models.ElementGroup.id,
-                        models.ElementGroup.name,
-                        models.ElementGroup.description,
-                        models.ElementGroup.weight
-                        ).all()
-            return render_template("elementgroups.html", elementgroups=elementgroups, auth=check_login())
+        elementgroup = db.session.query(
+                    models.ElementGroup.id,
+                    models.ElementGroup.name,
+                    models.ElementGroup.description,
+                    models.ElementGroup.weight
+                    ).filter(
+                    models.ElementGroup.id==id
+                    ).first()
+        return render_template("elementgroup_edit.html", elementgroup=elementgroup, auth=check_login())
 
 @app.route("/elements/<level>/<id>/edit/", methods=['GET', 'POST'])
 @app.route("/elements/<level>/<id>/<type>/edit/", methods=['GET', 'POST'])
@@ -579,6 +595,7 @@ def element(level=None, id=None, type=None):
     else:
         elements = db.session.query(models.Property.parent_element, 
                                     models.Property.defining_attribute_value, 
+                                    models.Property.defining_attribute_description,
                                     models.Element.id, 
                                     models.Element.name, 
                                     models.Element.level,
@@ -649,7 +666,8 @@ def organisation(id=None):
                                        models.Property.weight,
                                        models.ElementGroup.order,
                                        models.Element.order,
-                                       models.Property.order
+                                       models.Property.order,
+                                       models.Property.defining_attribute_description,
                                       ).filter(models.Data.impschedule_id == schedule.id
                                       ).order_by(models.ElementGroup.order, models.Element.order, models.Property.order
                                       ).join(models.Property
@@ -674,6 +692,7 @@ def organisation(id=None):
                                                         x[1]: {
                                                             'parent_element': x[2],
                                                             'defining_attribute_value': x[3],
+                                                            'defining_attribute_description': x[20],
                                                             'data': x[0],
                                                             'weight': x[13],
                                                             'order': x[19]
@@ -809,7 +828,7 @@ def organisation_edit(id=id):
         db.session.add(impschedule)
         db.session.commit()
         flash('Updated', "success")
-        return render_template("publisher_editor.html", publisher=publisher, impschedule=impschedule, auth=check_login())
+        return redirect(url_for('organisation', id=id))
     else:
         publisher = models.Publisher.query.filter_by(publisher_code_actual=id).first()
         impschedule = models.ImpSchedule.query.filter_by(publisher_id=publisher.id).first()

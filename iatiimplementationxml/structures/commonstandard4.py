@@ -287,8 +287,8 @@ publishing_rows = [
     (),
     (),
     (),
-    ('split', 'license', {'license': {'col': 2, 'opts': {0: 'Public domain', 3: 'Attribution-only'}}}), # row 146 in reality
-    (),
+    (), # row 146 in reality
+    ('split', 'license', {'license': {'col': 2, 'opts': {0: 'Public domain', 3: 'Attribution-only'}}}), # row 147 in reality
     (),
     (), #150
     (),

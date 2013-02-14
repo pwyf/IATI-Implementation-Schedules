@@ -125,13 +125,13 @@
             </thead>
             <tbody>
             {% for groupid, groupvalues in data.items() %}
-                <tr class="info"><td colspan="7"><a id="{{groupvalues.name}}"></a><a href="{{url_for('elementgroup', id=groupid)}}">{{groupvalues.description}}</a></tr>
+                <tr class="info"><td colspan="7"><a id="{{groupvalues.name}}"></a><b>{{groupvalues.description}}</b></tr>
                 {% for elementid, elementvalues in groupvalues.elements.items() %}
                    {% for propertyid, propertyvalues in elementvalues.properties.items() %}
                         {% set status = propertyvalues.data.status_actual%}
                         <tr{% if ((elementvalues.weight == 0) or (propertyvalues.weight==0)) %} class="hidden"{%endif%}>
                             <td>{{elementvalues.level|capitalize}}</td>
-                            <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', level=elementvalues.level, id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', level=elementvalues.level, id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_value}}){%endif%}</a></td>
+                            <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', level=elementvalues.level, id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', level=elementvalues.level, id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_description}}){%endif%}</a></td>
                             <td>{%
                                 if (status=="fc")
                                 %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%

@@ -1,6 +1,6 @@
 {% set active_page='elements'%}{% extends "base.html" %}
 {% block content %}
-    <script src="static/jquery.tablesorter.min.js"></script>
+    <script src="/static/jquery.tablesorter.min.js"></script>
     <script >
     $(function() {
     $("table#elements").tablesorter({ sortList: [[0,1]] });
@@ -21,7 +21,7 @@
     {% set pct_compliant = (cd[True]/totalnum*100)|int %}
     {%endif%}
     <tr{%if (pct_compliant<30) %} class="error"{%elif (pct_compliant>70) %} class="success"{%endif%}>
-	<td>{% if element.defining_attribute_value %}<a href="{{url_for('element', level=element.level, id=element.name, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.description }} ({{ element.defining_attribute_value }})</a>{% else %}<a href="{{url_for('element', level=element.level, id=element.name)}}">{{element.level|capitalize}} - {{ element.description }}</a>{%endif%} </td>
+	<td>{% if element.defining_attribute_value %}<a href="{{url_for('element', level=element.level, id=element.name, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.description }} ({{ element.defining_attribute_description }})</a>{% else %}<a href="{{url_for('element', level=element.level, id=element.name)}}">{{element.level|capitalize}} - {{ element.description }}</a>{%endif%} </td>
 
     <td><span class="pct">{{ pct_compliant }}</pct></td>
     </tr>

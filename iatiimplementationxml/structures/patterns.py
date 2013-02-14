@@ -7,7 +7,7 @@ structures = {
         'value': "1. When will data be published?"
     },
     'iatiusa': {
-        'sheet': 2,
+        'sheet': 1,
         'row': 1,
         'col': 3,
         'value': "Introductory Notes:"
