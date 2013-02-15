@@ -799,6 +799,7 @@ codes = {
                        '': ''},
 }
 change_reasons = {
+    'no_initial_date': 'No initial date provided',
     'no_date': 'No date provided',
     'initial_date': 'Initial date later',
     'parse_error': 'Not parsed properly',

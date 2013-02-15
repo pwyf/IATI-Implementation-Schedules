@@ -301,7 +301,7 @@ def import_schedule():
                 publisher.publisher_code_original = request.form['form#publisher_code#original']
                 publisher.publisher_code_actual = request.form['form#publisher_code#actual']
                 db.session.add(publisher)
-                db.commit()
+                db.session.commit()
                 publisher_id = publisher.id
             s['publisher_id'] = publisher_id
             for field, values in request.form.items():
