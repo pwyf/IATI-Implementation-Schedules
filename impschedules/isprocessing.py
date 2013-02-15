@@ -60,7 +60,7 @@ def score_all(data, publishers, elements, org_data):
         if (org_data[publisher]["impschedule"].under_consideration):
             out[publisher]["score"]["group"] = "Under consideration"
             out[publisher]["score"]["group_code"] = ""
-        if (out[publisher]["score"]["will_publish"] == 100):
+        if (out[publisher]["score"]["will_publish"] >= 100):
             if ((out[publisher]["score"]["elements"] >=60)  and (out[publisher]["score"]["approach"]>=100)):
                 out[publisher]["score"]["group"] = "Ambitious"
                 out[publisher]["score"]["group_code"] = "label-success"

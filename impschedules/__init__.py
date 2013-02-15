@@ -360,6 +360,7 @@ def import_schedule():
             sched = models.ImpSchedule(**s)
             db.session.add(sched)
             db.session.commit()
+            print xx
             # then write properties
             for k, v in pr.items():
                 d = {}

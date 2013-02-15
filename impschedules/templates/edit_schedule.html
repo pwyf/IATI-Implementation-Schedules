@@ -166,7 +166,7 @@
                                         
                                         <td>Status</td>
 
-                                        <td><input type="text" value="{{propertyvalues.data.status_original}}" class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} status_original" name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#status_original" readonly/></td>
+                                        <td><input type="text" value="{{propertyvalues.data.status_original}}" class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} status_original" name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#status_original" /></td>
                                         <td><select
                                              name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#status_actual"
                                              class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} status_actual" >
@@ -177,7 +177,7 @@
                                         </select></td>
                                         <td><div class="control-group"><select
                                          name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#status_change"
-                                         class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} status_change" disabled>
+                                         class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} status_change" >
                                             <option value=""></option>
                                             {% for key, value in properties.change_reasons.items() %}
                                                 <option value="{{key}}" {% if key == (propertyvalues.data.status_change) %}selected {%endif%}>{{value}}</option>
@@ -194,7 +194,7 @@
                             value="{{propertyvalues.data.date_original}}" 
                             name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#date_original"
                             class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} date_original"
-                            readonly/></td>
+                            /></td>
                             <td><input type="text" 
                             value="{{propertyvalues.data.date_actual}}" 
                             name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#date_actual"
@@ -204,7 +204,7 @@
                             <select 
                             name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#date_change"
                             class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} date_change" 
-                            disabled>
+                            >
                                 <option></option>
                                 {% for key, value in properties.change_reasons.items() %}
                                     <option value="{{key}}" {% if key == (propertyvalues.data.date_change) %}selected {%endif%}>{{value}}</option>
@@ -219,13 +219,13 @@
                             <td>Notes</td>
                             <td><textarea 
                             name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#notes_original"
-                            readonly>{{propertyvalues.data.notes_original}}</textarea></td>
+                            >{{propertyvalues.data.notes_original}}</textarea></td>
                             <td><textarea
                             name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#notes_actual"
                             >{{propertyvalues.data.notes_actual}}</textarea></td>
                             <td><div class="control-group"><select 
                             name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#notes_change"
-                            disabled>
+                            >
                                 <option></option>
                                 {% for key, value in properties.change_reasons.items() %}
                                     <option value="{{key}}" {% if key == (propertyvalues.data.notes_change) %}selected {%endif%}>{{value}}</option>
@@ -271,12 +271,12 @@
         }
         if ($(this).val() != $('.'+original).val()) {
             changer = $("."+changereason);
-            changer.removeAttr('disabled');
+            //changer.removeAttr('disabled');
             ensureSelectNotEmpty(changer);
         } else {
             changer = $("."+changereason);
             changer.closest(".control-group").removeClass("error");
-            changer.attr('disabled', 'disabled');
+            //changer.attr('disabled', 'disabled');
         }
      });
 
@@ -286,12 +286,12 @@
         changereason = element.replace(" actual", ".change");
         if ($(this).val() != $('.'+original).val()) {
             changer = $("."+changereason);
-            changer.removeAttr('disabled');
+            //changer.removeAttr('disabled');
             ensureSelectNotEmpty(changer);
         } else {
             changer = $("."+changereason);
             changer.closest(".control-group").removeClass("error");
-            changer.attr('disabled', 'disabled');
+            //changer.attr('disabled', 'disabled');
         }
      });
      $("select").change(function(){
