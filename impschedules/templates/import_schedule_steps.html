@@ -187,7 +187,7 @@
         <div class="tab-pane" id="third">
             <fieldset>
                 <legend>Detailed information</legend>
-            <p><a href="#second" data-toggle="tab" class="btn second">&laquo; Back</a> <input type="submit" value="Import schedule" class="btn btn-success" name="do_import" /></p>
+            <p><a href="#second" data-toggle="tab" class="btn second">&laquo; Back</a> <input type="submit" value="Import schedule" class="btn btn-success" name="do_import"  id="do_import" /></p>
                 <table class="table">
                     <thead>
                         <th>Field</th>
@@ -229,10 +229,10 @@
                             name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#date_original"
                             class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} date_original"
                             readonly/></td>
-                            <td><input type="text" 
+                            <td><div class="control-group"><input type="text" 
                             value="{{element.find("publication-date").text}}" 
                             name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#date_actual"
-                            class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} date_actual"  /></td>
+                            class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} date_actual"  /></div></td>
                             <td>
                             <div class="control-group">
                             <select 
@@ -276,7 +276,7 @@
                     </tbody>
                 </table>
             </fieldset>
-            <p><a href="#second" data-toggle="tab" class="btn second">&laquo; Back</a> <input type="submit" value="Import schedule" class="btn btn-success" name="do_import" /></p>
+            <p><a href="#second" data-toggle="tab" class="btn second">&laquo; Back</a> <input type="submit" value="Import schedule" class="btn btn-success" name="do_import" id="do_import" /></p>
         </div>
     </div>
     </form>
@@ -286,6 +286,31 @@
      $(".third").click(function(){ 
         doSetupForm();
      });
+     $("#do_import").click(function(e) {
+        e.preventDefault();
+        if (validateDates()) {
+            $("form").submit();
+        }
+     });
+     function validateDates() {
+        var validate = true;
+        $("#third .date_actual").each(function() {
+            element = $(this).attr('class');
+            // regular expression to match required date format 
+            re = /^\d{4}\-\d{1,2}\-\d{1,2}$/; 
+            if (($(this).val()=="") || (!$(this).val().match(re))) {
+                $(this).closest(".control-group").addClass("error");
+                validate = false; 
+            }
+        });
+        if (validate == false) {
+            alert("Please ensure all of your dates are formatted YYYY-MM-DD or blank.");
+            return false;
+        } else {
+            return true;
+        }
+     }
+
      function doSetupForm() {
         initial_date = $("#publishing_timetable_date_initial").val();
         under_consideration = $("#under_consideration").attr('checked');

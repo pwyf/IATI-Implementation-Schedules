@@ -259,7 +259,7 @@ def edit_schedule(publisher_id=None, id=None):
                                 models.Element
                                 ).join(models.Property
                                 ).join(models.Element
-                                ).filter(models.ImpSchedule.id==id).all()
+                                ).filter(models.Data.impschedule_id==id).all()
 
         elementdata = map(lambda x: {
                                       x[2].id: {
