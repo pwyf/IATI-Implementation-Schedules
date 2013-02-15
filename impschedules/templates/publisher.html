@@ -4,6 +4,9 @@
     .progress {
         margin-bottom: 0px;
     }
+    .progress .bar {
+        transition: width 1s ease 0.5s;
+    }
     .label, .badge {
         line-height: 18px;
         font-size: 16px;
@@ -31,12 +34,12 @@
             <tr>
                 <td>Frequency</td><td>
                 <div class="progress">
-                    <div class="bar" style="width: {{score.frequency*100|int}}%;"></div>
+                    <div class="bar" data-width="{{score.frequency*100|int}}"></div>
                 </div></td><td>{% if score.frequency ==1 %}At least quarterly{%else %}Less than quarterly{%endif%}</td>
             </tr>
             <tr>
                 <td>License</td><td><div class="progress">
-                    <div class="bar" style="width: {{score.license*100|int}}%;"></div>
+                    <div class="bar" data-width="{{score.license*100|int}}"></div>
                 </div></td><td>{% if score.license ==1 %}Open license{%else %}No license{%endif%}</td>
             </tr>
             <tr><td></td><td></td>
@@ -56,7 +59,7 @@
         <tr>
         <td><a href="#{{groupvalues.name}}" class="scrollto">{{groupvalues.description}}</a></td>
         <td><div class="progress">
-                <div class="bar" style="width: {{score.groups[groupid].total|int}}%;"></div>
+                <div class="bar" data-width="{{score.groups[groupid].total|int}}"></div>
             </div>
         </td>
         <td>{{score.groups[groupid].total|int}}%</td>
@@ -195,6 +198,12 @@
         $("html, body").animate(
                 {scrollTop: $(scrollto).offset().top},'slow'
         );
+    });
+    $(".bar").each(function(e){
+        width = $(this).attr('data-width');
+        if (width > 0) {
+            $(this).width(width+'%');
+        }
     });
 </script>
 
