@@ -188,11 +188,13 @@
             {% endfor %}
             </tbody>
             </table>
-<script>
+<script type="text/javascript">
     $(".scrollto").click(function(e){
         e.preventDefault();
         scrollto = $(this).attr('href');
-        $("html").animate({scrollTop: $(scrollto).offset().top},'slow');
+        $("html, body").animate(
+                {scrollTop: $(scrollto).offset().top},'slow'
+        );
     });
 </script>
 
