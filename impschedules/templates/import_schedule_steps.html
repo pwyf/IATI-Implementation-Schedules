@@ -329,6 +329,7 @@
             ensureSelectNotEmpty(changer);
         } else {
             changer = $("."+changereason);
+            changer.attr('value', "");
             changer.closest(".control-group").removeClass("error");
             changer.attr('disabled', 'disabled');
         }
@@ -344,6 +345,7 @@
             ensureSelectNotEmpty(changer);
         } else {
             changer = $("."+changereason);
+            changer.attr('value', "");
             changer.closest(".control-group").removeClass("error");
             changer.attr('disabled', 'disabled');
         }
