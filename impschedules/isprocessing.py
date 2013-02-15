@@ -36,7 +36,7 @@ def score_all(data, publishers, elements, org_data):
             out[publisher]["score"]["total"] += total/numelements
         out[publisher]["score"]["total"] = round((out[publisher]["score"]["total"]*100), 0)
 
-        if (org_data[publisher]["properties"]["publishing_timetable_date_initial"] != ""):
+        if (org_data[publisher]["properties"]["publishing_timetable_date_initial"]["value"] != ""):
             will_publish = 1.0
         else:
             will_publish = 0.0
