@@ -187,7 +187,7 @@
         <div class="tab-pane" id="third">
             <fieldset>
                 <legend>Detailed information</legend>
-            <p><a href="#second" data-toggle="tab" class="btn second">&laquo; Back</a> <input type="submit" value="Import schedule" class="btn btn-success" name="do_import"  id="do_import" /></p>
+            <p><a href="#second" data-toggle="tab" class="btn second">&laquo; Back</a> <input type="submit" value="Import schedule" class="btn btn-success" name="do_import" id="do_import" /></p>
                 <table class="table">
                     <thead>
                         <th>Field</th>
@@ -286,6 +286,7 @@
      $(".third").click(function(){ 
         doSetupForm();
      });
+
      $("#do_import").click(function(e) {
         e.preventDefault();
         if (validateDates()) {
@@ -298,7 +299,9 @@
             element = $(this).attr('class');
             // regular expression to match required date format 
             re = /^\d{4}\-\d{1,2}\-\d{1,2}$/; 
-            if (($(this).val()=="") || (!$(this).val().match(re))) {
+
+            // if not blank and doesn't match the required format...
+            if ((!$(this).val()=="") && (!$(this).val().match(re))) {
                 $(this).closest(".control-group").addClass("error");
                 validate = false; 
             }
@@ -310,7 +313,6 @@
             return true;
         }
      }
-
      function doSetupForm() {
         initial_date = $("#publishing_timetable_date_initial").val();
         under_consideration = $("#under_consideration").attr('checked');

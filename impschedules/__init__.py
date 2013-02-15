@@ -185,7 +185,8 @@ def edit_schedule(publisher_id=None, id=None):
                         data[a[0]][at[0]][at[1]]
                     except KeyError:
                         data[a[0]][at[0]][at[1]] = {}
-
+                    if ((a[2] == "score") and (values == "0")):
+                        values = None
                     data[a[0]][at[0]][at[1]][a[2]] = values
 
             # write schedule
@@ -282,7 +283,7 @@ def edit_schedule(publisher_id=None, id=None):
 @login_required
 def import_schedule():
     if (request.method == 'POST'):
-        if ("do_import" in request.form):
+        if ("form#createupdate" in request.form):
             out = ""
             out2 = ""
             pr = {}

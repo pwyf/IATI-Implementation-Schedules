@@ -234,14 +234,26 @@
                         </tr>
                                     {# fourth, do score #}
                                     
-                        <tr><td colspan="4"><label for="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score">
+                        <tr><td>Score</td><td colspan="3"><label for="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score">
                             <input 
-                            type="checkbox"
+                            type="radio"
                             id="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score" 
                             class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} score" 
                             name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score"
                             {% if propertyvalues.data.score is not none %}checked{%endif%}
-                            value="1" /> Score for this element</label></td></tr>
+                            value="1" /> <i class="icon-ok"></i></label>
+
+                            <label for="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score_no">
+                            <input 
+                            type="radio"
+                            id="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score_no" 
+                            class="{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}-{{propertyvalues.property.defining_attribute_value}}{%endif%} score" 
+                            name="{{level}}#{{elementvalues.element.name}}{% if propertyvalues.property.defining_attribute_value %}@{{propertyvalues.property.defining_attribute_value}}{%endif%}#score"
+                            {% if propertyvalues.data.score is none %}checked{%endif%}
+                            value="0" /> <i class="icon-remove"></i></label>
+
+
+</td></tr>
                                     
                                {%endfor%}
                                {% endif %}
