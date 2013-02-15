@@ -805,5 +805,6 @@ change_reasons = {
     'parse_error': 'Not parsed properly',
     'typo': 'Fix typo',
     'missing': 'Information missing',
-    'assumed': 'Information assumed'
+    'assumed': 'Information assumed',
+    'inconsistent': 'Status/notes inconsistent'
 }
