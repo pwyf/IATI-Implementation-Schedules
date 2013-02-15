@@ -72,7 +72,7 @@ def score_all(data, publishers, elements, org_data):
                 out[publisher]["score"]["group_code"] = "label-important"
             elif ((out[publisher]["score"]["elements"] == 0) and (out[publisher]["score"]["will_publish"] >=100)):
                 out[publisher]["score"]["group"] = "Incomplete"
-                out[publisher]["score"]["group_code"] = "label-inverse"
+                out[publisher]["score"]["group_code"] = "label-important"
         elif (out[publisher]["score"]["will_publish"] ==0):
             out[publisher]["score"]["group"] = "No publication"
             out[publisher]["score"]["group_code"] = "label-inverse"
@@ -143,7 +143,7 @@ def score2(publisher_data, element_data):
             s["group_code"] = "label-important"
         elif ((s["elements"] == 0) and (s["will_publish"] >=100)):
             s["group"] = "Incomplete"
-            s["group_code"] = "label-inverse"
+            s["group_code"] = "label-important"
     elif (s["will_publish"] ==0):
         s["group"] = "No publication"
         s["group_code"] = "label-inverse"
