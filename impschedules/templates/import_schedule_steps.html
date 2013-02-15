@@ -205,7 +205,7 @@
                         <tr>
                             <td rowspan="4">{{element.tag}}{% if element.get("type") %} ({{element.get("type")}}){%endif%}</td>
                             <td>Status</td>
-                            <td><input type="text" value="{{element.find("status").get("category")}}" class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_original" name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#status_original" readonly/></td>
+                            <td><input type="text" value="{% if element.find("status").get("category") is not none %}{{element.find("status").get("category")}}{%endif%}" class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_original" name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#status_original" readonly/></td>
                             <td><select
                                  name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#status_actual"
                                  class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} status_actual" >
