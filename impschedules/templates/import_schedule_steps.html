@@ -296,10 +296,14 @@
                     element = $(this).attr('class');
                     element = element.replace(" status_actual", "");
                     
-                    $("." + element + ".status_actual").attr('value', "");
-                    $("." + element + ".date_actual").attr('value', "");
-                    $("." + element + ".date_change").removeAttr('disabled').val('no_date');
-                    $("." + element + ".status_change").removeAttr('disabled').val('no_date');
+                    if ($("." + element + ".status_actual").attr('value') != "") {
+                        $("." + element + ".status_actual").attr('value', "");
+                        $("." + element + ".status_change").removeAttr('disabled').val('no_initial_date');
+                    }
+                    if ($("." + element + ".date_actual").attr('value') != "") {
+                        $("." + element + ".date_actual").attr('value', "");
+                        $("." + element + ".date_change").removeAttr('disabled').val('no_initial_date');
+                    }
                 });
             } else {
                 ensureInitial();
