@@ -67,7 +67,7 @@
         <div class="tab-pane" id="second">
             <fieldset>
                 <legend>Basic information</legend>
-                  <p><a href="#first" data-toggle="tab" class="btn first">&laquo; Back</a> <a href="#third" data-toggle="tab" class="btn btn-success third">Next &raquo;</a></p>
+                  <p><a href="#first" data-toggle="tab" class="btn first">&laquo; Back</a> <a href="#third" class="btn btn-success third">Next &raquo;</a></p>
                 <table class="table">
                     <thead>
                         <th>Field</th>
@@ -95,7 +95,8 @@
                         <tr class="info">
                             <td>Initial implementation date</td>
                             <td><input type="text" name="publishing#publishing_timetable_date_initial#original" class="publishing_timetable_date_initial original" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" readonly/></td>
-                            <td><input type="text" name="publishing#publishing_timetable_date_initial#actual" class="publishing_timetable_date_initial actual" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" id="publishing_timetable_date_initial" /><br /><label for="under_consideration"><input type="checkbox" name="data#under_consideration" id="under_consideration" /> Under consideration</label></td>
+                            <td>
+                            <div class="control-group"><input type="text" name="publishing#publishing_timetable_date_initial#actual" class="publishing_timetable_date_initial actual" value="{{doc.find("publishing").find("publication-timetable").get("date-initial")}}" id="publishing_timetable_date_initial" /><br /><label for="under_consideration"><input type="checkbox" name="data#under_consideration" id="under_consideration" /> Under consideration</label></div></td>
                             <td><div class="control-group"><select name="publishing#publishing_timetable_date_initial#change" class="publishing_timetable_date_initial change" disabled><option></option>                                {% for key, value in properties.change_reasons.items() %}
                                 <option value="{{key}}">{{value}}</option>
                                 {%endfor%}</select></div></td>
@@ -182,7 +183,7 @@
                     </tbody>
                 </table>
             </fieldset>
-            <p><a href="#first" data-toggle="tab" class="btn first">&laquo; Back</a> <a href="#third" data-toggle="tab" class="btn btn-success third">Next &raquo;</a></p>
+            <p><a href="#first" data-toggle="tab" class="btn first">&laquo; Back</a> <a href="#third" class="btn btn-success third">Next &raquo;</a></p>
         </div>
         <div class="tab-pane" id="third">
             <fieldset>
@@ -283,8 +284,23 @@
     
     <script type="text/javascript">
      var initial_date;
-     $(".third").click(function(){ 
-        doSetupForm();
+     $(".third").click(function(e){ 
+        e.preventDefault();
+        validate = true;
+        var pdate;
+        pdate = $("#publishing_timetable_date_initial").val();
+
+        re = /^\d{4}\-\d{1,2}\-\d{1,2}$/; 
+        if (!(pdate == "") && !(pdate.match(re))) {
+            $($("#publishing_timetable_date_initial")).closest(".control-group").addClass("error");
+            validate = false; 
+        }
+        if (validate == false) {
+            alert('Your initial publication date is not a valid date of the format YYYY-MM-DD');
+        } else {
+            doSetupForm();
+            $('#pageTab .third').tab('show');
+        }
      });
 
      $("#do_import").click(function(e) {
@@ -306,6 +322,15 @@
                 validate = false; 
             }
         });
+        var pdate;
+        pdate = $("#publishing_timetable_date_initial").val();
+
+        re = /^\d{4}\-\d{1,2}\-\d{1,2}$/; 
+        if (!(pdate == "") && !(pdate.match(re))) {
+            $($("#publishing_timetable_date_initial")).closest(".control-group").addClass("error");
+            validate = false; 
+            alert('Your initial publication date is not a valid date.');
+        }
         if (validate == false) {
             alert("Please ensure all of your dates are formatted YYYY-MM-DD or blank.");
             return false;
