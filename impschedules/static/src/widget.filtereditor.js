@@ -123,8 +123,6 @@ my.FilterEditor = Backbone.View.extend({
     var filterType = $target.find('select.filterType').val();
     var field      = $target.find('select.fields').val();
     this.model.queryState.addFilter({type: filterType, field: field});
-    // trigger render explicitly as queryState change will not be triggered (as blank value for filter)
-    this.render();
   },
   onRemoveFilter: function(e) {
     e.preventDefault();
@@ -141,7 +139,7 @@ my.FilterEditor = Backbone.View.extend({
       var $input = $(input);
       var filterType  = $input.attr('data-filter-type');
       var fieldId     = $input.attr('data-filter-field');
-      var filterIndex = parseInt($input.attr('data-filter-id'));
+      var filterIndex = parseInt($input.attr('data-filter-id'), 10);
       var name        = $input.attr('name');
       var value       = $input.val();
 
@@ -162,7 +160,7 @@ my.FilterEditor = Backbone.View.extend({
           break;
       }
     });
-    self.model.queryState.set({filters: filters});
+    self.model.queryState.set({filters: filters, from: 0});
     self.model.queryState.trigger('change');
   }
 });

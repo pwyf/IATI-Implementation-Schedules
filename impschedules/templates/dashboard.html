@@ -1,38 +1,153 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+.highlight-yellow {
+    background-color: yellow;
+}
+.black {
+    color:#000000;
+    font-size:75px;
+}
+.recline-timeline .vmm-timeline, .data-views .recline-map .map {
+    height: 400px;
+}
+</style>
+
+
+ <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link rel="stylesheet" href="/static/css/timeline.css">
+
+
+  <!-- 3rd party JS libraries -->
+  <script type="text/javascript" src="/static/vendor/jquery/1.7.1/jquery.js"></script>
+  <script type="text/javascript" src="/static/vendor/underscore/1.4.2/underscore.js"></script>
+  <script type="text/javascript" src="/static/vendor/underscore.deferred/0.4.0/underscore.deferred.js"></script>
+  <script type="text/javascript" src="/static/vendor/backbone/0.9.2/backbone.js"></script>
+  <script type="text/javascript" src="/static/vendor/moment/1.6.2/moment.js"></script>
+  <script type="text/javascript" src="/static/vendor/mustache/0.5.0-dev/mustache.js"></script>
+  <script type="text/javascript" src="/static/vendor/bootstrap/2.0.2/bootstrap.js"></script>
+  <script type="text/javascript" src="/static/vendor/timeline/20120520/js/timeline.js"></script>
+
+  <script type="text/javascript" src="/static/src/backend.json.js"></script>
+  <script type="text/javascript" src="/static/src/backend.memory.js"></script>
+
+  <script type="text/javascript" src="/static/src/view.timeline.js"></script>
+  <script type="text/javascript" src="/static/src/model.js"></script>
+
     <div class="jumbotron">
-    <h1>Implementation schedule browser</h1>
-    <p class="lead">This is a testing site for a forthcoming implementation schedules browser. It's under active development, so you shouldn't rely on any of the information contained in here.</p>
-    <!--<p>
-    <a class="btn btn-success btn-large">
-    Learn more
-    </a>
-    </p>-->
+    <h1>Plan. <span class="black">Publish.</span></h1>
+    <p class="lead">Donors have released plans to publish more information about their aid activities.</p>
+    <p class="lead">Want to see the big picture? Put the pieces together. Browse the plans.</p>
     </div>
     <div class="row">
         <div class="span6">
             <h1>Organisations</h1>
-            <p>See implementation schedules from individual organisations</p>
+            <p class="lead">See implementation schedules from individual organisations</p>
             <p>
             <a class="btn" href="{{url_for('organisation')}}">Organisations »</a>
             </p>
         </div>
         <div class="span6">
             <h1>Elements</h1>
-            <p>See elements across implementation schedules</p>
+            <p class="lead">See elements across implementation schedules</p>
             <p>
             <a class="btn" href="{{url_for('element')}}">Elements »</a>
             </p>
         </div>
     </div>
-    <div class="row">
+    <div class="row-fluid">
         <div class="span6">
             <h1>Timeline</h1>
-            <p>Use the timeline to see a graph of publication over time for different elements</p>
+            <p class="lead">Use the timeline to see a graph of publication over time for different elements</p>
             <p>
             <a class="btn" href="{{url_for('timeline')}}">Timeline »</a>
             </p>
         </div>
+        <div class="span6 data-views">
+          <div class="timeline"></div>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+        </div>
     </div>
+
+<script>jQuery(function($) {
+  var url = "/api/publishers/data/publishing_timetable_date_initial/";
+  var dataset = new recline.Model.Dataset({
+      url:url,
+      fields: [
+          {id: 'date', type: 'date', label:"Date"},
+          {id: 'organisation_name', type: 'string', label: "Organisation"}
+        ],
+      backend:'json'
+    });
+  var timeliner = new TimelinerView({
+    model: dataset,
+    el: $('.data-views')
+  });
+  timeliner.render();
+});
+
+var TimelinerView = Backbone.View.extend({
+  events: {
+    'click .controls .js-show-toolbox': '_onShowToolbox',
+    'submit .toolbox form': '_onSearch'
+  },
+
+  _onShowToolbox: function(e) {
+    e.preventDefault();
+    if (this.$el.find('.toolbox').hasClass('hideme')) {
+      this.$el.find('.toolbox').removeClass('hideme');
+    } else {
+      this.$el.find('.toolbox').addClass('hideme');
+    }
+  },
+
+  _onSearch: function(e) {
+    e.preventDefault();
+    var query = this.$el.find('.text-query input').val();
+    this.model.query({q: query});
+  },
+
+  render: function() {
+    var self = this;
+    // explicitly set width as otherwise Timeline does extends a bit too far (seems to use window width rather than width of actual div)
+    // $el.width((this.el.width() - 45)/2.0);
+    this.timeline = new recline.View.Timeline({
+      model: this.model,
+      el: this.$el.find('.timeline')
+    });
+    
+    this.timeline.convertRecord = function(record, fields) {
+        var out = this._convertRecord(record);
+        if (out) {
+            out.headline = record.get('organisation_name').toString();
+            out.text = "Initial implementation";
+        }
+        return out;
+    }
+    this.timeline.render();
+    
+    this.model.fetch();
+
+  }
+});
+
+
+
+</script>
 
 {% endblock %}

@@ -3,6 +3,27 @@ from impschedules import app
 from impschedules import db
 from isfunctions import *
 import models
+import properties
+import flask
+
+@app.route("/api/publishers/data/<segment>/")
+def publishers_implementation_data(segment):
+    # Get each publisher, most recent ImpSchedule
+    publishers = db.session.query(models.Publisher,
+                                  models.ImpSchedule,
+                                  models.ImpScheduleData.segment_value_actual
+                        ).join(models.ImpSchedule,
+                               models.ImpScheduleData
+                        ).filter(models.ImpScheduleData.segment == flask.escape(segment)
+                        ).filter(models.ImpScheduleData.segment_value_actual != ""
+                        ).order_by(models.ImpScheduleData.segment_value_actual
+                        ).all()
+    p = map(lambda x: {"organisation_id": str(x[0].id),
+                       "organisation_name": str(x[0].publisher_actual),
+                       "implementationschedule_id": str(x[1].id), 
+                       "date": str(x[2])}, publishers)
+    return jsonify({"dates": p})
+    #{"metadata": {"segment": segment, "name": properties.properties[segment]["name"]}, 
 
 @app.route("/api/publishers/<publisher_code>")
 def publisher_implementation_data(publisher_code):

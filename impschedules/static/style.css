@@ -58,3 +58,6 @@ color:#ffffff;
 .hidden {
     display:none;
 }
+.clearer {
+    clear:both;
+}

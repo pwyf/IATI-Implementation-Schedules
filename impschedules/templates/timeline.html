@@ -1,8 +1,14 @@
 {% set active_page='timeline'%}{% extends "base.html" %}
 {% block content %}
 
-  <!-- Recline CSS components -->
-  <link rel="stylesheet" href="/static/css/graph.css">
+<style>
+    .editor-type, .editor-group, .label-editor-type, .label-editor-group {
+        display:none;
+    }
+</style>
+
+    <!-- Recline CSS components -->
+  <link rel="stylesheet" href="/static/css/flot.css">
   <link rel="stylesheet" href="/static/css/multiview.css">
   <!-- /Recline CSS components -->
 
@@ -10,82 +16,106 @@
   <script type="text/javascript" src="/static/vendor/underscore/1.4.2/underscore.js"></script>
   <script type="text/javascript" src="/static/vendor/backbone/0.9.2/backbone.js"></script>
   <script type="text/javascript" src="/static/vendor/mustache/0.5.0-dev/mustache.js"></script>
-  <script type="text/javascript" src="/static/vendor/bootstrap/2.0.2/bootstrap.js"></script>
-  <script type="text/javascript" src="/static/vendor/flotr2/flotr2.js"></script>
-  <script type="text/javascript" src="/static/src/view.graph.js"></script>
+  <!--[if lte IE 8]>
+  <script language="javascript" type="text/javascript" src="/static/vendor/flot/excanvas.min.js"></script>
+  <![endif]-->
+  <script type="text/javascript" src="/static/vendor/flot/jquery.flot.js"></script>
+  <!--[if lte IE 7]>
+  <script language="javascript" type="text/javascript" src="/static/vendor/json/json2.js"></script>
+  <![endif]-->
+
+
+  <!-- model and backends -->
+  <script type="text/javascript" src="/static/src/ecma-fixes.js"></script>
   <script type="text/javascript" src="/static/src/model.js"></script>
-  <script type="text/javascript" src="/static/src/backend.memory.js"></script>
   <script type="text/javascript" src="/static/src/backend.json.js"></script>
-  <script type="text/javascript" src="/static/src/backend.gdocs.js"></script>
-  <script type="text/javascript" src="/static/src/view.multiview.js"></script>
+  <script type="text/javascript" src="/static/src/backend.memory.js"></script>
+
+  <!-- views -->
+  <script type="text/javascript" src="/static/src/view.flot.js"></script>
+  <script type="text/javascript" src="/static/src/view.graph.js"></script>
+  <script type="text/javascript" src="/static/src/widget.pager.js"></script>
+  <script type="text/javascript" src="/static/src/widget.queryeditor.js"></script>
   <script type="text/javascript" src="/static/src/widget.filtereditor.js"></script>
   <script type="text/javascript" src="/static/src/widget.fields.js"></script>
-  <script type="text/javascript" src="/static/src/widget.pager.js"></script>
-  <script type="text/javascript" src="/static/src/widget.facetviewer.js"></script>
-  <script type="text/javascript" src="/static/src/widget.queryeditor.js"></script>
+  <script type="text/javascript" src="/static/src/view.multiview.js"></script>
 
-    <div class="alert alert-info alert-block">
-    <p>Select "date" from the <b>Group Column</b> drop-down box. You can then choose which element you are interested in, and add new elements by clicking "add series".</p>
-    </div>
-<div id="mygraph"></div>
+
+<div id="elementsgraph"></div>
 <div style='clear: both;'></div>
 <script type="text/javascript">
 
 
-var $el = $('#mygraph');
-var url = "/api/elements/dates/groups";
+jQuery(function($) {
 
-// Get the dataset via JSON
-var dataset = new recline.Model.Dataset({
-  url:url,
-  fields: [
-      {id: 'date', type: 'date', label:"Date"}
-      {% for element in elements %},
-      {id: '{{element.propertyid}}', label: "{{element.level|capitalize}} - {{element.description}}{% if element.defining_attribute_value %} ({{element.defining_attribute_value}}){%endif%}", type: "string"}
-      {%endfor%}
-    ],
-  backend:'json'
-});
+    var url = "/api/elements/dates/groups";
+  window.dataExplorer = null;
+  window.explorerDiv = $('#elementsgraph');
 
-var views = [
-       {
-         id: 'graph',
-         label: 'Graph',
-         view: new recline.View.Graph({
-           model: dataset,
-            group: "date"
-         })
-       }
-    ];
-
-var sidebarViews = [
-];
-
-var state = {
+  // This is some fancy stuff to allow configuring the multiview from
+  // parameters in the query string
+  //
+  // For more on state see the view documentation.
+    var state = {
     "view-graph": {
         graphType: "line", 
         group: "date",
-        series: [{% for element in elements %} {% if loop.first %}'{{element.propertyid}}'{% else %}, '{{element.propertyid}}'{%endif%}{%endfor%}]
+        series: [{% for element in elements %}{% if loop.first %}'{{element.propertyid}}'{% else %}, '{{element.propertyid}}'{%endif%}{%endfor%}]
     },
     currentView: "graph"
     };
-
- var myExplorer = new recline.View.MultiView({
-   model: dataset,
-   el: $el,
-   views: views,
-   sidebarViews: sidebarViews,
-   state: state
- });
-this.viewExplorer();
-
-dataset.fetch().done(function(dataset) {
-  if (console) {
-    console.log(dataset.records);
-  }
+  var dataset = new recline.Model.Dataset({
+      url:url,
+      fields: [
+          {id: 'date', type: 'date', label:"Date"}
+          {% for element in elements %},
+          {id: '{{element.propertyid}}', label: "{{element.level|capitalize}} - {{element.description}}{% if element.defining_attribute_value %} ({{element.defining_attribute_value}}){%endif%}", type: "string"}{%endfor%}
+        ],
+      backend:'json'
+    });
+  createExplorer(dataset, state);
 });
 
 
+// make Explorer creation / initialization in a function so we can call it
+// again and again
+var createExplorer = function(dataset, state) {
+  // remove existing data explorer view
+  var reload = false;
+  if (window.dataExplorer) {
+    window.dataExplorer.remove();
+    reload = true;
+  }
+  window.dataExplorer = null;
+  var $el = $('<div />');
+  $el.appendTo(window.explorerDiv);
+
+  var views = [
+    {
+      id: 'graph',
+      label: 'Graph',
+      view: new recline.View.Graph({
+        model: dataset,
+        state: {
+            graphType: "lines",
+            group: "date",
+            series: ["5", "6"]
+          }
+      })
+    }
+  ];
+
+ var sidebarViews = [
+ ];
+
+  window.dataExplorer = new recline.View.MultiView({
+    model: dataset,
+    el: $el,
+    state: state,
+    views: views,
+    sidebarViews: sidebarViews
+  });
+}
 
 </script>
 {% endblock %}
