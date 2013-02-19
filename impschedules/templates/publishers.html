@@ -4,6 +4,7 @@
     <script >
     $(function() {
     $("table#organisations").tablesorter({ sortList: [[0,0]] });
+    $("table#noschedules").tablesorter({ sortList: [[0,0]] });
     });
 
     </script>
@@ -27,6 +28,9 @@
     <td><span class="{{scores[org].score.group_code}} label lead" >{{scores[org].score.group}}</span></td>
     </tr>
 	{% endfor %}
+    </tbody>
+    <table class="table" id="noschedules">
+    <tbody>
     <tr class="info"><td colspan="3"><b>No implementation schedules</b></td></tr>
     {% for publisher, publishervalues in notpublishing.items() %}
     <tr>
