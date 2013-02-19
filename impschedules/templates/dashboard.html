@@ -11,6 +11,8 @@
 .recline-timeline .vmm-timeline, .data-views .recline-map .map {
     height: 400px;
 }
+
+
 </style>
 
 
@@ -48,14 +50,14 @@
             <h1>Organisations</h1>
             <p class="lead">See implementation schedules from individual organisations</p>
             <p>
-            <a class="btn" href="{{url_for('organisation')}}">Organisations »</a>
+            <a class="btn btn-primary" href="{{url_for('organisation')}}">Organisations »</a>
             </p>
         </div>
         <div class="span6">
             <h1>Elements</h1>
             <p class="lead">See elements across implementation schedules</p>
             <p>
-            <a class="btn" href="{{url_for('element')}}">Elements »</a>
+            <a class="btn btn-primary" href="{{url_for('element')}}">Elements »</a>
             </p>
         </div>
     </div>
@@ -64,12 +66,13 @@
             <h1>Timeline</h1>
             <p class="lead">Use the timeline to see a graph of publication over time for different elements</p>
             <p>
-            <a class="btn" href="{{url_for('timeline')}}">Timeline »</a>
+            <a class="btn btn-primary" href="{{url_for('timeline')}}">Timeline »</a>
             </p>
         </div>
     </div>
     <div class="row-fluid">
         <div class="span12 data-views">
+          <center><h3>Initial implementation</h3></center>
           <div class="timeline"></div>
           <p>&nbsp;</p>
           <p>&nbsp;</p>

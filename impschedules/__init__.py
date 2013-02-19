@@ -612,9 +612,17 @@ def element(level=None, id=None, type=None):
                                     models.Element.name, 
                                     models.Element.level,
                                     models.Data.score,
-                                    func.count(models.Data.id)
+                                    func.count(models.Data.id),
+                                    models.ImpScheduleData.segment_value_actual,
+                                    models.ImpScheduleData.segment
                 ).group_by(models.Data.status_actual, models.Property
-                ).join(models.Element).join(models.Data).all()
+                ).join(models.Element
+                ).join(models.Data
+                ).join(models.ImpSchedule
+                ).join(models.ImpScheduleData
+                ).filter(models.ImpScheduleData.segment=='publishing_timetable_date_initial'
+                ).filter(models.ImpScheduleData.segment_value_actual != ""
+                ).all()
 
         compliance = nest_compliance_scores(compliance_data)
         totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
