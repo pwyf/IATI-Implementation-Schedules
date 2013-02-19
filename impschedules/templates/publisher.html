@@ -13,7 +13,7 @@
     }
     </style>
     {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('organisation_edit', id=publisher.publisher_code_actual)}}">Edit organisation</a>{%endif%}
-    <h1>{{publisher.publisher_actual}} <span class="{{score.group_code}} label label-important lead" >{{score.group}}</span></h1>
+    <h1>{{publisher.publisher_actual}} <span class="{{score.group_code}} label lead" >{{score.group}}</span></h1>
     <p> </p>
     {% if not schedule.under_consideration %}
         {% if schedule.analysis %}
