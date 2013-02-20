@@ -598,7 +598,7 @@ def element(level=None, id=None, type=None):
                              models.Element,
                              models.Data.score,
                              func.count(models.Data.id)
-        ).group_by(models.Data.status_actual
+        ).group_by(models.Data.score
         ).group_by(models.Property.id
         ).join(models.Element
         ).join(models.Data
