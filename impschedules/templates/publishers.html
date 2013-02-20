@@ -25,7 +25,7 @@
     <td>{{scores[org].score.approach}}</td>
     <td>{{scores[org].score.elements}}</td>
     {% endif %}
-    <td><span class="{{scores[org].score.group_code}} label lead" >{{scores[org].score.group}}</span></td>
+    <td><span class="{{scores[org].score.group_code}} label lead label-publishers" >{{scores[org].score.group}}</span></td>
     </tr>
 	{% endfor %}
     </tbody>
@@ -36,7 +36,7 @@
     <tr>
     <td>{{publishervalues[0]}}</td>
     <td></td>
-    <td><span class="label-inverse label lead">No implementation schedule</span></td>
+    <td><span class="label-inverse label lead label-publishers">No schedule</span></td>
     </tr>
     {%endfor%}
     </tbody>

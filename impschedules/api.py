@@ -65,6 +65,7 @@ def element_dates_groups():
                             func.count(models.Data.id)
         ).group_by(models.Property.id, models.Data.date_actual
         ).filter(models.Data.score==1
+        ).filter(models.Data.date_actual!=None
         ).join(models.Element).join(models.Data).all()
 
     compliance = publication_dates_groups(compliance_data, True)

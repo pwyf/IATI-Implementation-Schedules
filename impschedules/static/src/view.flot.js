@@ -352,7 +352,7 @@ my.FlotControls = Backbone.View.extend({
         <label class="label-editor-type">Graph Type</label> \
         <div class="input editor-type"> \
           <select> \
-          <option value="lines-and-points">Lines and Points</option> \
+          <option value="lines">Lines</option> \
           </select> \
         </div> \
         <label class="label-editor-group">Group Column (Axis 1)</label> \

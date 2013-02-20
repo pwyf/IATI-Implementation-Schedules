@@ -61,3 +61,12 @@ color:#ffffff;
 .clearer {
     clear:both;
 }
+.hideindent {
+    text-indent:-1000px;
+    overflow:hidden;
+}
+.label-publishers {
+    width:130px;
+    line-height:1.3;
+    text-align:center;
+}

@@ -154,7 +154,7 @@
                             </td>
                             <td>{% if propertyvalues.data.date_actual is not none %}{{propertyvalues.data.date_actual}}{%endif%}</td>
                             <td>{{propertyvalues.data.notes_actual}}</td>
-                            <td>{% if propertyvalues.data.score is not none %}<i class="icon-ok"></i>{%endif%}</td>
+                            <td>{% if propertyvalues.data.score is not none %}<i class="icon-ok hideindent">1</i>{%endif%}</td>
                             <td>{% if (propertyvalues.data.status_change or propertyvalues.data.date_change or propertyvalues.data.notes_change)  %}
                             <a href="#change{{propertyvalues.data.id}}" role="button" class="btn" data-toggle="modal"><i class="icon-info-sign"></i></a>
 

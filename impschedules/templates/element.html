@@ -34,7 +34,7 @@
         {%endif%}</td>
 	    <td>{% if d.Data.date_actual is not none %}{{d.Data.date_actual}}{%endif%}</td>
         <td>{{d.Data.notes_actual}} {%if d.Data.exclusions%}{{d.Data.exclusions}}{%endif%}</td>
-        <td>{%if d.Data.score%}<i class="icon-ok" title="Fully compliant"></i>{%endif%}</td>
+        <td>{%if d.Data.score%}<i class="icon-ok hideindent" title="Fully compliant">1</i>{%endif%}</td>
 
     </tr>
     {% endfor %}
