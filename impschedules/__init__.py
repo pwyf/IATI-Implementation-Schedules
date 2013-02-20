@@ -602,10 +602,10 @@ def element(level=None, id=None, type=None):
         ).group_by(models.Property.id
         ).join(models.Element
         ).join(models.Data
-        ).join(models.ImpSchedule
-        ).join(models.ImpScheduleData
-        ).filter(models.ImpScheduleData.segment=='publishing_timetable_date_initial'
-        ).filter(models.ImpScheduleData.segment_value_actual != ""
+        #).join(models.ImpSchedule
+        #).join(models.ImpScheduleData
+        #).filter(models.ImpScheduleData.segment=='publishing_timetable_date_initial'
+        #).filter(models.ImpScheduleData.segment_value_actual != ""
         ).all()
 
         b = map(lambda x: {x[0].id: {"property": x[0], "element": x[1], "scores": {x[2]: x[3]}}}, x)
