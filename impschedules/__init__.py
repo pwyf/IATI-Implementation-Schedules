@@ -847,6 +847,7 @@ def timeline(id=id):
                             models.Element.id, 
                             models.Element.description, 
                             models.Element.level,
+                            models.Element.name,
                             models.Property.id.label("propertyid")
         ).distinct(
         ).join(models.Element).all()
