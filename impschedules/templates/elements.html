@@ -15,13 +15,10 @@
     <th>Compliant %</th>
     </thead>
     <tbody>
-	{% for element in elements %}
-    {% if compliance[element.propertyid] is defined %}
-    {% set cd = compliance[element.propertyid] %}
-    {% set pct_compliant = (cd[True]/totalnum*100)|int %}
-    {%endif%}
+	{% for d, element in data.items() %}
+    {% set pct_compliant = element.scores.percentage %}
     <tr{%if (pct_compliant<30) %} class="error"{%elif (pct_compliant>70) %} class="success"{%endif%}>
-	<td>{% if element.defining_attribute_value %}<a href="{{url_for('element', level=element.level, id=element.name, type=element.defining_attribute_value)}}">{{element.level|capitalize}} - {{ element.description }} ({{ element.defining_attribute_description }})</a>{% else %}<a href="{{url_for('element', level=element.level, id=element.name)}}">{{element.level|capitalize}} - {{ element.description }}</a>{%endif%} </td>
+	<td>{% if element.property.defining_attribute_value %}<a href="{{url_for('element', level=element.element.level, id=element.element.name, type=element.property.defining_attribute_value)}}">{{element.element.level|capitalize}} - {{ element.element.description }} ({{ element.property.defining_attribute_description }})</a>{% else %}<a href="{{url_for('element', level=element.element.level, id=element.element.name)}}">{{element.element.level|capitalize}} - {{ element.element.description }}</a>{%endif%} </td>
 
     <td><span class="pct">{{ pct_compliant }}</pct></td>
     </tr>

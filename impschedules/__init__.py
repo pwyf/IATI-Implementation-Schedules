@@ -594,39 +594,36 @@ def element(level=None, id=None, type=None):
                 return render_template("element_with_properties.html", element=elements, auth=check_login())
         return render_template("element.html", element=elements, data=data, auth=check_login())
     else:
-        elements = db.session.query(models.Property.parent_element, 
-                                    models.Property.defining_attribute_value, 
-                                    models.Property.defining_attribute_description,
-                                    models.Element.id, 
-                                    models.Element.name, 
-                                    models.Element.level,
-                                    models.Element.description,
-                                    models.Property.id.label("propertyid")
-                ).distinct(
-                ).join(models.Element).all()
+        x = db.session.query(models.Property,
+                             models.Element,
+                             models.Data.score,
+                             func.count(models.Data.id)
+        ).group_by(models.Data.status_actual
+        ).group_by(models.Property.id
+        ).join(models.Element
+        ).join(models.Data
+        ).join(models.ImpSchedule
+        ).join(models.ImpScheduleData
+        ).filter(models.ImpScheduleData.segment=='publishing_timetable_date_initial'
+        ).filter(models.ImpScheduleData.segment_value_actual != ""
+        ).all()
 
-        compliance_data = db.session.query(models.Property.parent_element, 
-                                    models.Property.defining_attribute_value, 
-                                    models.Property.id.label("propertyid"),
-                                    models.Element.id, 
-                                    models.Element.name, 
-                                    models.Element.level,
-                                    models.Data.score,
-                                    func.count(models.Data.id),
-                                    models.ImpScheduleData.segment_value_actual,
-                                    models.ImpScheduleData.segment
-                ).group_by(models.Data.status_actual, models.Property
-                ).join(models.Element
-                ).join(models.Data
-                ).join(models.ImpSchedule
-                ).join(models.ImpScheduleData
-                ).filter(models.ImpScheduleData.segment=='publishing_timetable_date_initial'
-                ).filter(models.ImpScheduleData.segment_value_actual != ""
-                ).all()
+        b = map(lambda x: {x[0].id: {"property": x[0], "element": x[1], "scores": {x[2]: x[3]}}}, x)
+        data = {}
+        for d in b:
+            merge_dict(data, d)
 
-        compliance = nest_compliance_scores(compliance_data)
-        totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
-        return render_template("elements.html", elements=elements, compliance=compliance, totalnum=totalnum.number, auth=check_login())
+        values = {True, None}
+        for x in data:
+            data[x]["scores"]
+            for v in values:
+                try:
+                    data[x]["scores"][v]
+                except KeyError:
+                    data[x]["scores"][v] = 0
+            data[x]["scores"]["percentage"] = int(round(((float(data[x]["scores"][True])/(float(data[x]["scores"][True]+data[x]["scores"][None])))*100),0))
+
+        return render_template("elements.html", data=data, auth=check_login())
 
 @app.route("/organisations/")
 @app.route("/organisations/<id>/")

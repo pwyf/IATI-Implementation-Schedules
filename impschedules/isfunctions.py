@@ -112,25 +112,6 @@ def nest_compliance_results(data):
                 out[t][v] = 0
     return out
 
-def nest_compliance_scores(data):
-    properties = set(map(lambda x: (x[2]), data))
-    b = map(lambda x: (x[2],(x[6], x[7])), data)
-    out = {}
-    for s, k in b:
-        try:
-            out[s].update({(k[0], k[1])})
-        except KeyError:
-            out[s] = {}
-            out[s].update({(k[0], k[1])})
-    values = {True, None}
-    for t in out:
-        for v in values:
-            try:
-                a=out[t][v]
-            except KeyError:
-                out[t][v] = 0
-    return out
-
 def toUs(element):
     # replace hyphen with underscore
     us = re.sub("-", "_", element)
