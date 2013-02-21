@@ -363,7 +363,7 @@ my.FlotControls = Backbone.View.extend({
         </div> \
       </div> \
       <div class="editor-buttons"> \
-        <button class="btn editor-add">Add new element</button> \
+        <button class="btn editor-add">Add new field</button> \
       </div> \
       <div class="editor-buttons editor-submit" comment="hidden temporarily" style="display: none;"> \
         <button class="editor-save">Save</button> \

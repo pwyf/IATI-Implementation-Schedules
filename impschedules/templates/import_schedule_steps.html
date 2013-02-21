@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% set title='Refine and import | Implementation schedule browser'%}{% extends "base.html" %}
 {% block content %}
     <style type="text/css">
     .bigchoice label {
@@ -271,7 +271,7 @@
                             id="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%}#score" 
                             class="{{element.tag}}{% if element.get("type") %}-{{element.get("type")}}{%endif%} score" 
                             name="{{level}}#{{element.tag}}{% if element.get("type") %}@{{element.get("type")}}{%endif%}#score"
-                            value="1" /> Score for this element</label></td></tr>
+                            value="1" /> Score for this field</label></td></tr>
                         {% endfor %}
                         {% endfor %}
                     </tbody>

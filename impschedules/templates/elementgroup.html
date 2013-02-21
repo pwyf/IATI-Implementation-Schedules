@@ -1,7 +1,7 @@
-{% set active_page='elementgroups'%}{% extends "base.html" %}
+{% set title=elementgroup.description + ' | Field Group | Implementation schedule browser'%}{% set active_page='elementgroups'%}{% extends "base.html" %}
 {% block content %}
     <form action="" method="post">
-    <h1>Group: {{elementgroup.description}}</h1>
+    <h1>Field Group: {{elementgroup.description}}</h1>
     <h3>{{elementgroup.longdescription}}</h3>
     <table class="table">
     <thead>
@@ -10,17 +10,12 @@
     </thead>
     <tbody>
     <tr>
-        <td>Element group name</td>
-        <td><input type="text" value="{{elementgroup.name}}" name="name" disabled /></td>
+        <td>Name</td>
+        <td>{{elementgroup.name}}</td>
     </tr>
     <tr>
-        <td>Element group description</td>
-        <td><input type="text" value="{{elementgroup.description}}" name="description" /></td>
-    </tr>
-    <tr>
-    <td colspan="2">
-    <input type="submit" value="Update" class="btn" />
-    </td>
+        <td>Description</td>
+        <td>{{elementgroup.description}}</td>
     </tr>
     </tbody>
     </table>

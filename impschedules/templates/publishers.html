@@ -1,4 +1,4 @@
-{% set active_page='organisations'%}{% extends "base.html" %}
+{% set title='Organisations | Implementation schedule browser'%}{% set active_page='organisations'%}{% extends "base.html" %}
 {% block content %}
     <script src="/static/jquery.tablesorter.min.js"></script>
     <script >
@@ -12,7 +12,7 @@
 	<h1>Select an organisation</h1>
     <table class="table" id="organisations">
     <thead>
-    <th>Organisation</th><th>Initial implementation</th>{% if auth %}<th>Total score</th><th>Will publish</th><th>Approach</th><th>Elements</th>{%endif%}<th>Group</th>
+    <th>Organisation</th><th>Initial implementation</th>{% if auth %}<th>Total score</th><th>Will publish</th><th>Approach</th><th>Fields</th>{%endif%}<th>Group</th>
     </thead>
     <tbody>
 	{% for org,org_data in orgs.items() %}

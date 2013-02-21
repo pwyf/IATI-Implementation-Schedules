@@ -1,4 +1,4 @@
-{% set active_page='organisations'%}{% extends "base.html" %}
+{% set title=publisher.publisher_actual + ' | Organisations | Implementation schedule browser'%}{% set active_page='organisations'%}{% extends "base.html" %}
 {% block content %}
     <style>
     .progress {
@@ -13,8 +13,7 @@
     }
     </style>
     {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('organisation_edit', id=publisher.publisher_code_actual)}}">Edit organisation</a>{%endif%}
-    <h1>{{publisher.publisher_actual}} <span class="{{score.group_code}} label lead" >{{score.group}}</span></h1>
-    <p> </p>
+    <h1>{{publisher.publisher_actual}} <span class="{{score.group_code}} label lead" >{{score.group}}</span> </h1>
     {% if not schedule.under_consideration %}
         {% if schedule.analysis %}
             <div class="alert alert-info">
@@ -24,9 +23,10 @@
             <hr />
         {% endif%}
     <h3>Overview</h3>
+    <h4>Publication approach</h4>
     <table class="table">
     <thead class="info">
-        <th width="35%"><b>Publication approach</b></th>
+        <th width="35%"><b>Area</b></th>
         <th width="35%">Compliance</th>
         <th width="30%">Status</th>
     </thead>
@@ -47,9 +47,10 @@
             </tr>
     </tbody>
     </table>
+    <h4>Fields</h4>
     <table class="table">
     <thead>
-        <th width="35%"><b>Section</b></th>
+        <th width="35%"><b>Group</b></th>
         <th width="35%">Compliance</th>
         <th width="15%"></th>
         <th width="15%">Total</th>
@@ -66,6 +67,14 @@
         <td>{{score.groups[groupid].yes|int}} of {{(score.groups[groupid].no+score.groups[groupid].yes)|int}}</td>
         </tr>
     {% endfor%}
+    <tr><td>Average for all groups</td>
+
+        <td><div class="progress">
+                <div class="bar" data-width="{{score.elements|int}}"></div>
+            </div>
+        </td>
+        <td colspan="2">{{score.elements|round|int}}%</td>
+    </tr>
     </tbody>
     </table>
     {% endif%}
@@ -119,7 +128,7 @@
             <table class="table" id="tabledetailed">
             <thead>
                 <th>Level</th>
-                <th>Element</th>
+                <th>Field</th>
                 <th>Compliance</th>
                 <th>Publication date</th>
                 <th>Notes</th>

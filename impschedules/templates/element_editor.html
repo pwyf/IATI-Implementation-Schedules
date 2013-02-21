@@ -1,8 +1,8 @@
-{% set active_page='elements'%}{% extends "base.html" %}
+{% set title=element.element.description + ' | Edit Fields | Implementation schedule browser'%}{% set active_page='elements'%}{% extends "base.html" %}
 {% block content %}
     <form action="" method="post">
     <h1>{{element.element.description}}</h1>
-    <h3>Edit this element</h3>
+    <h3>Edit this field</h3>
     <table class="table">
     <thead>
         <th>Item</th>
@@ -10,19 +10,19 @@
     </thead>
     <tbody>
     <tr>
-        <td>Element name</td>
+        <td>Field name</td>
         <td><input type="text" value="{{element.element.name}}" name="element#name" disabled /></td>
     </tr>
     <tr>
-        <td>Element description</td>
+        <td>Field description</td>
         <td><input type="text" value="{{element.element.description}}" name="element#description" /></td>
     </tr>
     <tr>
-        <td>Element long description</td>
+        <td>Field long description</td>
         <td><textarea name="element#longdescription" rows="4">{% if element.element.longdescription%}{{element.element.longdescription}}{%endif%}</textarea></td>
     </tr>
     <tr>
-        <td>Element weight</td>
+        <td>Field weight</td>
         <td><label for="weight"><input id="weight" type="checkbox" value="0" name="element#weight" {% if element.element.weight is not none %}checked{%endif%} /> Zero weight</label></td>
     </tr>
     {% if element.properties %}

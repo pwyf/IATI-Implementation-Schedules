@@ -452,8 +452,8 @@ def import_schedule():
     else:
         return render_template("import.html", auth=check_login())
 
-@app.route("/elementgroups/")
-@app.route("/elementgroups/<id>/")
+@app.route("/fieldgroups/")
+@app.route("/fieldgroups/<id>/")
 def elementgroup(id=None):
     if (id is not None):
         elementgroup = db.session.query(
@@ -476,7 +476,7 @@ def elementgroup(id=None):
                     ).all()
         return render_template("elementgroups.html", elementgroups=elementgroups, auth=check_login())
 
-@app.route("/elementgroups/<id>/edit/", methods=['GET', 'POST'])
+@app.route("/fieldgroups/<id>/edit/", methods=['GET', 'POST'])
 @login_required
 def elementgroup_edit(id=None):
     if (request.method == 'POST'):
@@ -498,8 +498,8 @@ def elementgroup_edit(id=None):
                     ).first()
         return render_template("elementgroup_edit.html", elementgroup=elementgroup, auth=check_login())
 
-@app.route("/elements/<level>/<id>/edit/", methods=['GET', 'POST'])
-@app.route("/elements/<level>/<id>/<type>/edit/", methods=['GET', 'POST'])
+@app.route("/fields/<level>/<id>/edit/", methods=['GET', 'POST'])
+@app.route("/fields/<level>/<id>/<type>/edit/", methods=['GET', 'POST'])
 @login_required
 def edit_element(level=None,id=None,type=None):
     if (level is not None and id is not None):
@@ -551,9 +551,9 @@ def edit_element(level=None,id=None,type=None):
     else:
         abort(404)
 
-@app.route("/elements/")
-@app.route("/elements/<level>/<id>/")
-@app.route("/elements/<level>/<id>/<type>/")
+@app.route("/fields/")
+@app.route("/fields/<level>/<id>/")
+@app.route("/fields/<level>/<id>/<type>/")
 def element(level=None, id=None, type=None):
     if ((level is not None) and (id is not None)):
         if (type):
