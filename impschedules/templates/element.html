@@ -17,21 +17,11 @@
     </thead>
     <tbody>
     {% for d in data %}
+    {% set status = d.Data.status_actual %}
     <tr{%if (d.Data.status=='uc') %} class="error"{%elif (d.Data.status=='fp') %} class="info"{%endif%}>
-        <td><a href="{{url_for('organisation', id=d.Publisher.publisher_code_actual)}}">{{d.Publisher.publisher_actual}}</a></td><td>
-        {% if (d.Data.status_actual=="fc")
-        %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-        elif (d.Data.status_actual=="uc")
-        %}<i class="icon-remove" title="Uncompliant"></i><br />Uncompliant{%
-        elif (d.Data.status_actual=="pc")
-        %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-        elif (d.Data.status_actual=="up")
-        %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-        elif (d.Data.status_actual=="fp")
-        %}<i class="icon-wrench" title="Future publication"></i><br />Future
-        {% else %}
-        {{ d.Data.status_actual }}
-        {%endif%}</td>
+        <td><a href="{{url_for('organisation', id=d.Publisher.publisher_code_actual)}}">{{d.Publisher.publisher_actual}}</a></td>
+        <td><i class="{{properties.status_formatted[status]['class']}}" title="{{properties.status_formatted[status]['name']}}"></i><br />
+                            {{properties.status_formatted[status]['name']}}</td>
 	    <td>{% if d.Data.date_actual is not none %}{{d.Data.date_actual}}{%endif%}</td>
         <td>{{d.Data.notes_actual}} {%if d.Data.exclusions%}{{d.Data.exclusions}}{%endif%}</td>
         <td>{%if d.Data.score%}<i class="icon-ok hideindent" title="Fully compliant">1</i>{%endif%}</td>

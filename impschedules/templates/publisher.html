@@ -135,22 +135,9 @@
                         <tr{% if ((elementvalues.weight == 0) or (propertyvalues.weight==0)) %} class="hidden"{%endif%}>
                             <td>{{elementvalues.level|capitalize}}</td>
                             <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', level=elementvalues.level, id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', level=elementvalues.level, id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_description}}){%endif%}</a></td>
-                            <td>{%
-                                if (status=="fc")
-                                %}<i class="icon-ok" title="Fully compliant"></i><br />Compliant{%
-                                elif (status=="uc")
-                                %}<i class="icon-refresh" title="Under consideration"></i><br />Under consideration{%
-                                elif (status=="pc")
-                                %}<i class="icon-flag" title="Partially compliant"></i><br />Partial{%
-                                elif (status=="up")
-                                %}<i class="icon-remove" title="Unable to publish"></i><br />Unable{%
-                                elif (status=="fp")
-                                %}<i class="icon-wrench" title="Future publication"></i><br />Future{%
-                                elif (status=="na")
-                                %}<i class="icon-remove" title="Not applicable"></i><br />Not applicable
-                                {% else %}
-                                {{ status }}
-                                {%endif%}
+                            <td>
+                            <i class="{{properties.status_formatted[status]['class']}}" title="{{properties.status_formatted[status]['name']}}"></i><br />
+                            {{properties.status_formatted[status]['name']}}
                             </td>
                             <td>{% if propertyvalues.data.date_actual is not none %}{{propertyvalues.data.date_actual}}{%endif%}</td>
                             <td>{{propertyvalues.data.notes_actual}}</td>

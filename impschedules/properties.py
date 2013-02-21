@@ -737,6 +737,38 @@ status = collections.OrderedDict({    'fc': 'Fully compliant',
               'na': 'Not applicable'
          })
 
+
+status_formatted = {
+            'fc': {
+                'name': 'Fully compliant',
+                'class': 'icon-ok'
+            },
+            'fp': {
+                'name': 'Future publication',
+                'class': 'icon-wrench'
+            },
+            'pc': {
+                'name': 'Partially compliant',
+                'class': 'icon-flag'
+            },
+            'up': {
+                'name': 'Unable to publish',
+                'class': 'icon-remove'
+            },
+            'uc': {
+                'name': 'Under consideration',
+                'class': 'icon-refresh'
+            },
+            'na': {
+                'name': 'Not applicable',
+                'class': 'icon-remove'
+            },
+            '': {
+                'name': '',
+                'class': ''
+            }
+         }
+
 codes = {   
     # Data quality
     'quality': {   'u': 'Unverified', 'v': 'Verified'},

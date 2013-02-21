@@ -592,7 +592,7 @@ def element(level=None, id=None, type=None):
                 elements = {'element': element[0],
                             'properties':prop}
                 return render_template("element_with_properties.html", element=elements, auth=check_login())
-        return render_template("element.html", element=elements, data=data, auth=check_login())
+        return render_template("element.html", element=elements, data=data, auth=check_login(), properties=properties)
     else:
         x = db.session.query(models.Property,
                              models.Element,
