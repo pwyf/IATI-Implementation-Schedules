@@ -30,7 +30,7 @@
               <li{% if active_page == "organisations" %} class="active"{%endif%}><a href="{{url_for('organisation')}}">Organisations</a></li>
               <li{% if active_page == "elements" %} class="active"{%endif%}><a href="{{url_for('element')}}">Fields</a></li>
               <li{% if active_page == "timeline" %} class="active"{%endif%}><a href="{{url_for('timeline')}}">Timeline</a></li>
-              <li><a href="#about">About</a></li>
+              <li><a href="{{url_for('about')}}">About</a></li>
             </ul>
             {% if auth %}
             <ul class="nav pull-right">
@@ -54,7 +54,7 @@
 
     {% if ((active_page != "index") and (not auth)) %}    
     <div class="alert alert-error alert-block"><h4>Watch out!</h4>
-    <p>This site is in beta; the content should not be relied on. You're strongly advised to check out the <a href="http://aidtransparency.net/implementation">original implementation schedules</a> before drawing strong conclusions about this data.</p>
+    <p>This site is in beta; the content should not be relied on. You're strongly advised to check out the <a href="http://www.oecd.org/dac/aid-architecture/acommonstandard.htm">original implementation schedules</a> before drawing strong conclusions about this data.</p>
     </div>
     {%endif%}
         {% with messages = get_flashed_messages(with_categories=true) %}

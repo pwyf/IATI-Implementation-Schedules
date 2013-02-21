@@ -122,8 +122,11 @@ def setup():
 def index():
     return render_template("dashboard.html", auth=check_login())
 
+@app.route("/about/")
+def about():
+    return render_template("about.html", auth=check_login())
 
-@app.route("/organisations/<publisher_id>/<id>/edit", methods=['GET', 'POST'])
+@app.route("/organisations/<publisher_id>/<id>/edit/", methods=['GET', 'POST'])
 @login_required
 def edit_schedule(publisher_id=None, id=None):
     if (request.method == 'POST'):
