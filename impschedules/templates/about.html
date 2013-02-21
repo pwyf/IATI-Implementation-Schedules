@@ -1,10 +1,80 @@
-{% set title='About | Implementation schedule browser'%}{% set active_page='login'%}{% extends "base.html" %}
+{% set title='About | Implementation schedule browser'%}{% set active_page='about'%}{% extends "base.html" %}
 {% block content %}
     <h1>About</h1>
+    <h3>Who's behind this</h3>
+    <p><a href="http://publishwhatyoufund.org">Publish What You Fund</a>, the global campaign for aid transparency, developed this site to showcase and analyse the implementation schedules being released as part of the common standard for aid information.</p>
+    <hr />
     <h3>Why we're doing this</h3>
     <p>Brief explanation of what implementation schedules are and why we're doing this.</p>
+    <hr />
     <h3>Methodology</h3>
     <p>Methodology information will go here.</p>
+    <hr />
     <h3>Process</h3>
-    <p>Process information will go here, including screenshots before and after.</p>
+    <p>Analysing and processing the common standard schedules has required a detailed look at each donor's schedule, as well as interpreting them when donors have filled them out in different ways or understood the various options differently.</p>
+    <h4>The original implementation schedules</h4>
+    <p>The implementation schedules for the common standard were published in individual Excel files, containing three main sheets: general, agency, and activity-level information.</p>
+    <ul class="thumbnails">
+        <li class="span4">
+            <div class="thumbnail">
+                <img src="/static/img/sweden1.png" class="img-rounded"/>
+                <div class="caption">
+                    <h5>General</h5>
+                    <p>Approach to publication: includes timeliness and frequency, license, initial publication dates, scope of publication.</p>
+                </div>
+            </div>
+        </li>
+        <li class="span4">
+            <div class="thumbnail">
+                <img src="/static/img/sweden2.png" class="img-rounded"/>
+                <div class="caption">
+                    <h5>Agency</h5>
+                    <p>Agency-level publication: includes country budgets, organisation documents.</p>
+                </div>
+            </div>
+        </li>
+        <li class="span4">
+            <div class="thumbnail">
+                <img src="/static/img/sweden3.png" class="img-rounded"/>
+                <div class="caption">
+                    <h5>Activity</h5>
+                    <p>Activity-level publication: includes information about when the organisation will (or won't) be compliant with each field in the standard.</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <h4>Templates</h4>
+    <p>While the common standard has a template for implementation schedules, several different templates exist, and donors further added to this complexity by modifying the templates, changing options, and adding and deleting rows &ndash; in all, we counted eleven different versions. In some cases, importing the schedules proved difficult because of this. In addition, some donors saved their templates in PDF format which made it impossible to automatically parse. In these cases, it was necessary to copy the same data into new spreadsheets. While the data was thoroughly checked, it is possible that some human error will have resulted. Some interpretation was necessary to ensure consistency and comparability across them (you can read more about the assumptions made above).</p>
+    <h4>Importing</h4>
+    <p>The schedules were automatically parsed and imported into this application. Publish What You Fund staff then checked the resulting data to ensure that it had been parsed correctly and that it made sense.</p>
+    <ul class="thumbnails">
+        <li class="span4">
+            <div class="thumbnail">
+                <img src="/static/img/import.png" class="img-rounded"/>
+                <div class="caption">
+                    <h5>Select a file</h5>
+                    <p>The user can select a schedule from any publicly-accessible URL. This could be the OECD/DAC common standard website, the IATI website, or the donor's own website.</p>
+                    <p>Where the original schedules could not be automatically parsed (e.g. because they were in PDF), a new file was created and uploaded to the Publish What You Fund website.</p>
+                </div>
+            </div>
+        </li>
+        <li class="span4">
+            <div class="thumbnail">
+                <img src="/static/img/import2.png" class="img-rounded"/>
+                <div class="caption">
+                    <h5>Successfully parsed</h5>
+                    <p>The schedule was successfully parsed and is presented to the user to check and correct.</p>
+                </div>
+            </div>
+        </li>
+        <li class="span4">
+            <div class="thumbnail">
+                <img src="/static/img/import3.png" class="img-rounded"/>
+                <div class="caption">
+                    <h5>Check fields</h5>
+                    <p>Make sure that all information has been parsed correctly, ensure that compliance status is consistent with notes, and score for partially compliant fields if the publisher had been overly conservative.</p>
+                </div>
+            </div>
+        </li>
+    </ul>
 {% endblock %}

@@ -30,7 +30,7 @@
               <li{% if active_page == "organisations" %} class="active"{%endif%}><a href="{{url_for('organisation')}}">Organisations</a></li>
               <li{% if active_page == "elements" %} class="active"{%endif%}><a href="{{url_for('element')}}">Fields</a></li>
               <li{% if active_page == "timeline" %} class="active"{%endif%}><a href="{{url_for('timeline')}}">Timeline</a></li>
-              <li><a href="{{url_for('about')}}">About</a></li>
+              <li{% if active_page == "about" %} class="active"{%endif%}><a href="{{url_for('about')}}">About</a></li>
             </ul>
             {% if auth %}
             <ul class="nav pull-right">
@@ -72,16 +72,23 @@
   </div>
     <footer class="footer">
     <div class="container">
+    <div class="alert alert-info alert-block"><h4>Caution!</h4>
+    <p>Some interpretatation has been inevitable to ensure consistency and comparability across templates. You're advised to refer to the <a href="http://www.oecd.org/dac/aid-architecture/acommonstandard.htm">original implementation schedules</a> before drawing any conclusions about this data.</p>
+    </div>
     <div class="pull-left">
         <p>A project of <a href="http://publishwhatyoufund.org">Publish What You Fund</a>, the Global Campaign for Aid Transparency</p>
         <p><a href="https://github.com/markbrough/IATI-Implementation-Schedules">Source code on Github</a>, released under the <a href="http://www.gnu.org/licenses/agpl-3.0.html">AGPL v3.0 License</a>.</p>
-        <p>With thanks to <a href="http://twitter.com/bjwebb67">Ben Webb</a></p>
+        <p><a href="http://aidtransparency.net">International Aid Transparency Initiative (IATI)</a></p>
+        <p><a href="http://www.oecd.org/dac/aid-architecture/acommonstandard.htm">OECD/DAC Common Standard site</a></p>
     </div>
     <div class="pull-right">
-        <p><a href="http://www.oecd.org/dac/aidarchitecture/acommonstandard.htm">OECD/DAC Common Standard site</a></p>
-        <p><a href="http://aidtransparency.net">IATI</a> <a href="http://aidtransparency.net/implementation">Implementation Schedules</a></p>
-        <p><a href="http://twitter.github.com/bootstrap">Bootstrap from Twitter</a></p>
-        <p><a href="http://tablesorter.com/docs/">JQuery TableSorter</a></p>
+        <p>Uses some great open source code:</p>
+        <ul>
+            <li><a href="http://twitter.github.com/bootstrap">Bootstrap from Twitter</a></li>
+            <li><a href="http://tablesorter.com/docs/">JQuery TableSorter</a></li>
+            <li><a href="http://reclinejs.com/">ReclineJS</a>, by <a href="http://okfn.org">OKFN</a></li>
+            <li><a href="https://github.com/Bjwebb/iati-implementationxml">iati-implementationxml</a>, by <a href="http://twitter.com/bjwebb67">Ben Webb</a></li>
+        </ul>
     </div>
     </div></footer>
 </body>
