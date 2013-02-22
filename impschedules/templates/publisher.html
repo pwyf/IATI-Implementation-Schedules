@@ -139,7 +139,7 @@
             {% for groupid, groupvalues in data.items() %}
                 <tr class="info"><td colspan="7"><a id="{{groupvalues.name}}"></a><b>{{groupvalues.description}}</b></tr>
                 {% for elementid, elementvalues in groupvalues.elements.items() %}
-                   {% for propertyid, propertyvalues in elementvalues.properties.items() %}
+                   {% for propertyid, propertyvalues in elementvalues.properties.items() %}{% set unweight=false %}
                         {% set status = propertyvalues.data.status_actual%}
                         <tr{% if ((elementvalues.weight == 0) or (propertyvalues.weight==0)) %}{% set unweight=true %} class="muted"{%endif%}>
                             <td>{{elementvalues.level|capitalize}}</td>
