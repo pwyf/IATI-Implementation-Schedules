@@ -141,7 +141,7 @@
                 {% for elementid, elementvalues in groupvalues.elements.items() %}
                    {% for propertyid, propertyvalues in elementvalues.properties.items() %}
                         {% set status = propertyvalues.data.status_actual%}
-                        <tr{% if ((elementvalues.weight == 0) or (propertyvalues.weight==0)) %} class="hidden"{%endif%}>
+                        <tr{% if ((elementvalues.weight == 0) or (propertyvalues.weight==0)) %}{% set unweight=true %} class="muted"{%endif%}>
                             <td>{{elementvalues.level|capitalize}}</td>
                             <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', level=elementvalues.level, id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', level=elementvalues.level, id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_description}}){%endif%}</a></td>
                             <td>
@@ -150,7 +150,7 @@
                             </td>
                             <td>{% if propertyvalues.data.date_actual is not none %}{{propertyvalues.data.date_actual}}{%endif%}</td>
                             <td>{{propertyvalues.data.notes_actual}}</td>
-                            <td>{% if propertyvalues.data.score is not none %}<i class="icon-ok hideindent">1</i>{%endif%}</td>
+                            <td>{% if unweight %}<i class="icon-ban-circle hideindent" title="Not scored">N/A</i>{%else%}{% if propertyvalues.data.score is not none %}<i class="icon-ok hideindent">1</i>{%endif%}{%endif%}</td>
                             <td>{% if (propertyvalues.data.status_change or propertyvalues.data.date_change or propertyvalues.data.notes_change)  %}
                             <a href="#change{{propertyvalues.data.id}}" role="button" class="btn" data-toggle="modal"><i class="icon-info-sign"></i></a>
 
