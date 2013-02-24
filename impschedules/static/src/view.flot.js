@@ -110,6 +110,11 @@ my.Flot = Backbone.View.extend({
         var x = item.datapoint[0].toFixed(2),
             y = item.datapoint[1].toFixed(2);
 
+        if (this.state.attributes.graphType === 'bars') {
+          x = item.datapoint[1].toFixed(2),
+          y = item.datapoint[0].toFixed(2);
+        }
+
         var content = _.template('<%= group %> = <%= x %>, <%= series %> = <%= y %>', {
           group: this.state.attributes.group,
           x: this._xaxisLabel(x),
@@ -120,6 +125,9 @@ my.Flot = Backbone.View.extend({
         // use a different tooltip location offset for bar charts
         var xLocation, yLocation;
         if (this.state.attributes.graphType === 'bars') {
+          xLocation = item.pageX + 15;
+          yLocation = item.pageY - 10;
+        } else if (this.state.attributes.graphType === 'columns') {
           xLocation = item.pageX + 15;
           yLocation = item.pageY;
         } else {
@@ -178,8 +186,8 @@ my.Flot = Backbone.View.extend({
       if (typeof label !== 'string') {
         label = label.toString();
       }
-      if (label.length > 8) {
-        label = label.slice(0, 5) + "...";
+      if (self.state.attributes.graphType !== 'bars' && label.length > 10) {
+        label = label.slice(0, 10) + "...";
       }
 
       return label;
@@ -198,11 +206,15 @@ my.Flot = Backbone.View.extend({
           x = 1,
           i = 0;
 
-      while (x <= maxTicks) {
-        if ((numPoints / x) <= maxTicks) {
-          break;
+      // show all ticks in bar graphs
+      // for other graphs only show up to maxTicks ticks
+      if (self.state.attributes.graphType !== 'bars') {
+        while (x <= maxTicks) {
+          if ((numPoints / x) <= maxTicks) {
+            break;
+          }
+          x = x + 1;
         }
-        x = x + 1;
       }
 
       for (i = 0; i < numPoints; i = i + x) {
@@ -296,7 +308,7 @@ my.Flot = Backbone.View.extend({
     var series = [];
     _.each(this.state.attributes.series, function(field) {
       var points = [];
-      var field_label = self.model.fields.get(field).get('label');
+      var fieldLabel = self.model.fields.get(field).get('label');
       _.each(self.model.records.models, function(doc, index) {
         var xfield = self.model.fields.get(self.state.attributes.group);
         var x = doc.getFieldValue(xfield);
@@ -306,12 +318,7 @@ my.Flot = Backbone.View.extend({
         var isDateTime = (xtype === 'date' || xtype === 'date-time' || xtype  === 'time');
 
         if (isDateTime) {
-          if (self.state.attributes.graphType != 'bars' &&
-              self.state.attributes.graphType != 'columns') {
-            x = new Date(x).getTime();
-          } else {
-            x = index;
-          }
+          x = index;
         } else if (typeof x === 'string') {
           x = parseFloat(x);
           if (isNaN(x)) {
@@ -330,7 +337,7 @@ my.Flot = Backbone.View.extend({
       });
       series.push({
         data: points,
-        label: field_label,
+        label: fieldLabel,
         hoverable: true
       });
     });
@@ -347,7 +354,11 @@ my.FlotControls = Backbone.View.extend({
         <label class="label-editor-type">Graph Type</label> \
         <div class="input editor-type"> \
           <select> \
+          <option value="lines-and-points">Lines and Points</option> \
           <option value="lines">Lines</option> \
+          <option value="points">Points</option> \
+          <option value="bars">Bars</option> \
+          <option value="columns">Columns</option> \
           </select> \
         </div> \
         <label class="label-editor-group">Group Column (Axis 1)</label> \
@@ -363,7 +374,7 @@ my.FlotControls = Backbone.View.extend({
         </div> \
       </div> \
       <div class="editor-buttons"> \
-        <button class="btn editor-add">Add new field</button> \
+        <button class="btn editor-add">Add Field</button> \
       </div> \
       <div class="editor-buttons editor-submit" comment="hidden temporarily" style="display: none;"> \
         <button class="editor-save">Save</button> \
@@ -374,6 +385,7 @@ my.FlotControls = Backbone.View.extend({
 ',
   templateSeriesEditor: ' \
     <div class="editor-series js-series-{{seriesIndex}}"> \
+      </label> \
       <div class="input"> \
         <select> \
         {{#fields}} \
@@ -487,4 +499,3 @@ my.FlotControls = Backbone.View.extend({
 });
 
 })(jQuery, recline.View);
-

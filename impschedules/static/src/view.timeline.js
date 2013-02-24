@@ -28,7 +28,6 @@ my.Timeline = Backbone.View.extend({
   initialize: function(options) {
     var self = this;
     this.el = $(this.el);
-    this.timeline = new VMM.Timeline();
     this._timelineIsInitialized = false;
     this.model.fields.bind('reset', function() {
       self._setupTemporalField();
@@ -38,12 +37,16 @@ my.Timeline = Backbone.View.extend({
     });
     var stateData = _.extend({
         startField: null,
-        endField: null
+        endField: null,
+        timelineConfig: {
+            start_at_end: true
+        }
       },
       options.state
     );
     this.state = new recline.Model.ObjectState(stateData);
     this._setupTemporalField();
+    this.timeline = new VMM.Timeline(1000,400, stateData.timelineConfig);
   },
 
   render: function() {
