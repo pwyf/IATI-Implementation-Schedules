@@ -832,11 +832,15 @@ def organisation_edit(id=id):
         impschedule = models.ImpSchedule.query.filter_by(publisher_id=publisher.id).first()
         publisher.publisher_actual = request.form['publisher']
         publisher.publisher_code_actual = request.form['publisher_code']
-        impschedule.analysis = request.form['impschedule_analysis']
         db.session.add(publisher)
-        db.session.add(impschedule)
-        db.session.commit()
+        try:
+            impschedule.analysis = request.form['impschedule_analysis']
+            db.session.add(impschedule)
+        # If there's no schedule, then pass
+        except AttributeError:
+            id = None
         flash('Updated', "success")
+        db.session.commit()
         return redirect(url_for('organisation', id=id))
     else:
         publisher = models.Publisher.query.filter_by(publisher_code_actual=id).first()
