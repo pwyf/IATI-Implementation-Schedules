@@ -34,7 +34,7 @@
     <tr class="info"><td colspan="3"><b>No implementation schedules</b></td></tr>
     {% for publisher, publishervalues in notpublishing.items() %}
     <tr>
-    <td width="60%">{{publishervalues[0]}}</td>
+    <td width="60%">{% if auth %}<a href="{{url_for('organisation_edit', id=publishervalues[1])}}">{{publishervalues[0]}}</a>{%else%}{{publishervalues[0]}}{%endif%}</td>
     <td width="20%"></td>
     <td width="20%"><span class="label-inverse label lead label-publishers">No schedule</span></td>
     </tr>
