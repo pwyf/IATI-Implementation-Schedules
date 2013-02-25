@@ -1,14 +1,102 @@
 {% set title='About | Implementation schedule browser'%}{% set active_page='about'%}{% extends "base.html" %}
 {% block content %}
     <h1>About</h1>
-    <h3>Who's behind this</h3>
     <p><a href="http://publishwhatyoufund.org">Publish What You Fund</a>, the global campaign for aid transparency, developed this site to showcase and analyse the implementation schedules being released as part of the common standard for aid information.</p>
     <hr />
-    <h3>Why we're doing this</h3>
-    <p>Brief explanation of what implementation schedules are and why we're doing this.</p>
+    <h3>Purpose</h3>
+    <p>Since agreeing upon the common standard on aid information at the 4th High Level Forum on Aid
+    Effectiveness at Busan in 2012, 39 donor organisations and governments have released implementation
+    schedules outlining their plans for meeting the end of 2015 target date for publishing timely,
+    comprehensive and forward-looking information on resources for development co-operation.</p>
+    <p>A great
+    deal of new information on plans and systems is contained within the schedules which needs to be
+    analysed in order to understand what donors are setting as their own targets and timeline for meeting
+    the commitments made at Busan. Publish What You Fund carried out detailed comparative analysis of
+    the implementation schedules to take stock of progress, highlight trends and provide feedback to donors
+    on discrepancies in interpretation and approaches.</p>
     <hr />
     <h3>Methodology</h3>
-    <p>Methodology information will go here.</p>
+    <p>We developed an online application in order to meaningfully assess and compare the various versions
+    of donor implementation schedules currently available. This application has been designed to read
+    both the IATI and common standard schedules and provides an easy front end onto otherwise daunting
+    spreadsheets. It provides information on each field within the standard, when it will be published by
+    different organisations, as well as a timeline of publication.</p>
+    <h4>Scoring criteria</h4>
+    <p>Donors were assessed on three key criteria: the intention to publish to the common standard / IATI; their publication approach; and their publication plans for each field at the agency and activity levels of the Standard.</p>
+    <table class="table">
+    <tbody>
+        <tr class="info"><td colspan="2"><b>Intention to publish</b>
+        </td></tr>
+        <tr><td><i class="icon-ok"></i></td><td>Stating intention to publish to the common standard / IATI with an explicit time frame indicated</td></tr>
+        <tr class="info"><td colspan="2"><b>Publication approach</b>
+        </td></tr>
+        <tr><td><i class="icon-ok"></i><i class="icon-ok"></i></td><td>Open license (public domain or attribution-only) and at least quarterly publication</td></tr>
+        <tr><td><i class="icon-ok"></i></td><td>Open license or quarterly publication, but not both</td></tr>
+        <tr><td></td><td>Neither open license nor quarterly publication</td></tr>
+        <tr class="info"><td colspan="2"><b>Fields</b>
+        </td></tr>
+        <tr><td><b>0-100%</b></td><td>
+            <p>A point was awarded for planning to publish by a specific date for each agency and activity-level field in the standard</p>
+                <p>Each field received a point if the publication status was marked ‘fully compliant’, ‘future
+            publication’ with an explicit target date or ‘partially compliant’ with supplementary text
+            suggesting plans for future publication by a specific target date.</p>
+                <p>Where there were inconsistencies between the status and the accompanying text
+            descriptions, donors were not scored even if the publication status was marked ‘fully
+            compliant.’</p>
+                <p>Fields were grouped under the sub-headings used in the common standard template</p>
+                <p>All groups were weighted equal, as were all fields within each group, to arrive at a final score in
+            the range of 0 to 100.</p>
+            </ul>
+        </td></tr>
+    </tbody>
+    </table>
+    <h4>Grouping</h4>
+    <p>Based on the scores received, donors were placed in one of the following groups:</p>
+    <table class="table">
+        <thead>
+            <th>Group</th><th>Intention to publish</th><th>Publication approach</th><th>Fields</th>
+        </thead>
+        <tbody>
+            <tr><td><span class="label-success label lead label-publishers">Ambitious</span></td><td><i class="icon-ok"></i></td><td><i class="icon-ok"></i><i class="icon-ok"></i></td></td><td><b>60-100%</b></td></tr>
+            <tr><td><span class="label-warning label lead label-publishers">Unambitious</span></td><td><i class="icon-ok"></i></td><td><i class="icon-ok"></i></td><td><b>40-59%</b></td></tr>
+            <tr><td><span class="label-important label lead label-publishers">Unambitious</span></td><td><i class="icon-ok"></i></td><td></td><td><b>1-39%</b></td></tr>
+        </tbody>
+    </table>
+    <p><b>Some donors could not be grouped into any of the above groups, and were categorised as follows:</b></p>
+        <table class="table">
+            <tbody>
+                <tr><td><span class="label lead label-publishers">Under consideration</span></td><td>Donors who are actively considering publication</td></tr>
+                <tr><td><span class="label-important label lead label-publishers">Incomplete</span></td><td>Donors who have submitted implementation schedules without providing any agency or activity level information</td></tr>
+                <tr><td><span class="label-inverse label lead label-publishers">No schedule</span></td><td>Donors who have not yet published an implementation schedule outlining their plans &ndash; which was due by the end of 2012</td></tr>
+                <tr><td><span class="label-inverse label lead label-publishers">No publication</span></td><td>Donors who are not planning to publish to the standard</td></tr>
+        </table>
+    <h4>Notes</h4>
+    <p>The following assumptions were made in order to ensure that the data was comparable across donors:</p>
+    <ul>
+    <li>Not answering a question was understood as a “no” and received no score.</li>
+    <li>Using only the year in a date field was understood as the last day of the year.</li>
+    <li>The initial implementation date was used as the minimum publication date for all elements.</li>
+    <li>If the publication date for specific items was later than the initial implementation date, then
+    that item-specific date was be used instead.</li>
+    </ul>
+    <p></p>
+    <p>The following fields were not scored since they might not be relevant for all the donor
+            agencies assessed at this point, depending on their particular business models:</p>
+        <ul>
+            <li>Transactions (Reimbursement)</li>
+            <li>Transactions (Loan repayment / interest repayment)</li>
+            <li>Activity website</li>
+            <li>Sector (Agency specific)</li>
+            <li>Other Identifier</li>
+        </ul>
+    <p>The scores and groups reflect only the level of ambition demonstrated by
+donors in their implementation schedules and not the quality or veracity of data that is being
+or will be published. In addition, because of the apparent variation in the way donors have
+understood and completed different fields within the schedule, some interpretation on our
+part has been inevitable to ensure consistency and comparability across templates. Donors may
+want to review their schedules and initiate a conversation with us on matters where they note
+discrepancies. For these same reasons, donors have not been ranked according to their total
+scores at this point in time.</p>
     <hr />
     <h3>Process</h3>
     <p>Analysing and processing the common standard schedules has required a detailed look at each donor's schedule, as well as interpreting them when donors have filled them out in different ways or understood the various options differently.</p>
