@@ -12,7 +12,7 @@
 	<h1>Select an organisation</h1>
     <table class="table" id="organisations">
     <thead>
-    <th>Organisation</th><th>Initial implementation</th>{% if auth %}<th>Total score</th><th>Will publish</th><th>Approach</th><th>Fields</th>{%endif%}<th>Group</th>
+    <th width="60%">Organisation</th><th width="20%">Initial implementation</th>{% if auth %}<th>Total score</th><th>Will publish</th><th>Approach</th><th>Fields</th>{%endif%}<th width="20%">Group</th>
     </thead>
     <tbody>
 	{% for org,org_data in orgs.items() %}
@@ -34,9 +34,9 @@
     <tr class="info"><td colspan="3"><b>No implementation schedules</b></td></tr>
     {% for publisher, publishervalues in notpublishing.items() %}
     <tr>
-    <td>{{publishervalues[0]}}</td>
-    <td></td>
-    <td><span class="label-inverse label lead label-publishers">No schedule</span></td>
+    <td width="60%">{{publishervalues[0]}}</td>
+    <td width="20%"></td>
+    <td width="20%"><span class="label-inverse label lead label-publishers">No schedule</span></td>
     </tr>
     {%endfor%}
     </tbody>
