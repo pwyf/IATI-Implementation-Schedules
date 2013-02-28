@@ -18,7 +18,7 @@ def publishers_implementation_data(segment):
                         ).filter(models.ImpScheduleData.segment_value_actual != ""
                         ).order_by(models.ImpScheduleData.segment_value_actual
                         ).all()
-    p = map(lambda x: {"organisation_id": str(x[0].id),
+    p = map(lambda x: {"organisation_code": str(x[0].publisher_code_actual),
                        "organisation_name": str(x[0].publisher_actual),
                        "implementationschedule_id": str(x[1].id), 
                        "date": str(x[2])}, publishers)

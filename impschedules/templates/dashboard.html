@@ -29,7 +29,6 @@
   <script type="text/javascript" src="/static/vendor/backbone/0.9.2/backbone.js"></script>
   <script type="text/javascript" src="/static/vendor/moment/1.6.2/moment.js"></script>
   <script type="text/javascript" src="/static/vendor/mustache/0.5.0-dev/mustache.js"></script>
-  <script type="text/javascript" src="/static/vendor/bootstrap/2.0.2/bootstrap.js"></script>
   <script type="text/javascript" src="/static/vendor/timeline/20120520/js/timeline.js"></script>
 
   <script type="text/javascript" src="/static/src/backend.json.js"></script>
@@ -37,6 +36,44 @@
 
   <script type="text/javascript" src="/static/src/view.timeline.js"></script>
   <script type="text/javascript" src="/static/src/model.js"></script>
+
+  <style>
+    a.btn-timeline {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        background-color: #F5F5F5;
+        background-image: linear-gradient(to bottom, #FFFFFF, #E6E6E6);
+        background-repeat: repeat-x;
+        border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) #B3B3B3;
+        border-image: none;
+        border-radius: 4px 4px 4px 4px;
+        border-style: solid;
+        border-width: 1px;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+        color: #333333;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 0;
+        padding: 4px 12px;
+        text-align: center;
+        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+        vertical-align: middle;
+    }
+    .btn:hover, .btn:focus {
+        background-position: 0 -15px;
+        color: #333333 !important;
+        text-decoration: none !important;
+        transition: background-position 0.1s linear 0s;
+    }
+    .btn:hover, .btn:focus, .btn:active, .btn.active, .btn.disabled, .btn[disabled]  {
+        background-color: #E6E6E6;
+        color: #333333;
+    }
+    </style>
 
     <div class="jumbotron">
     <h1>Plan. <span class="black">Publish.</span></h1>
@@ -96,7 +133,8 @@
       url:url,
       fields: [
           {id: 'date', type: 'date', label:"Date"},
-          {id: 'organisation_name', type: 'string', label: "Organisation"}
+          {id: 'organisation_name', type: 'string', label: "Organisation"},
+          {id: 'organisation_code', type: 'string', label: "Organisation"}
         ],
       backend:'json'
     });
@@ -142,6 +180,7 @@ var TimelinerView = Backbone.View.extend({
         if (out) {
             out.headline = record.get('organisation_name').toString();
             out.text = "Initial implementation";
+            out.text += '<p><a class="btn btn-timeline" href="/organisations/' + record.get('organisation_code') + '">Organisation page &raquo;</a></p>';
         }
         return out;
     }
