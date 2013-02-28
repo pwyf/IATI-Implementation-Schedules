@@ -165,13 +165,13 @@
                                     <thead><th>Component</th><th>Initial</th><th>Corrected</th><th>Change reason</th></thead>
                                     <tbody>
                                         <tr>
-                                            <td>Status</td><td>{{properties.status[propertyvalues.data.status_original]}}</td><td>{{properties.status[propertyvalues.data.status_actual]}}</td>{% if propertyvalues.data.status_change %}<td><span title="{{change_reasons[propertyvalues.data.status_change]}}">{{properties.change_reasons[propertyvalues.data.status_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
+                                            <td>Status</td><td>{{properties.status[propertyvalues.data.status_original]}}</td><td>{{properties.status[propertyvalues.data.status_actual]}}</td>{% if propertyvalues.data.status_change %}<td><span title="{{change_reasons[propertyvalues.data.status_change][1]}}">{{properties.change_reasons[propertyvalues.data.status_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
                                         </tr>
                                         <tr>
-                                            <td>Date</td><td>{{propertyvalues.data.date_original}}</td><td>{{propertyvalues.data.date_actual}}</td>{%if propertyvalues.data.date_change%}<td><span title="{{change_reasons[propertyvalues.data.date_change]}}">{{properties.change_reasons[propertyvalues.data.date_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
+                                            <td>Date</td><td>{{propertyvalues.data.date_original}}</td><td>{{propertyvalues.data.date_actual}}</td>{%if propertyvalues.data.date_change%}<td><span title="{{change_reasons[propertyvalues.data.date_change][1]}}">{{properties.change_reasons[propertyvalues.data.date_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
                                         </tr>
                                         <tr>
-                                            <td>Notes</td><td>{{propertyvalues.data.notes_original}}</td><td>{{propertyvalues.data.notes_actual}}</td>{% if propertyvalues.data.notes_change %}<td><span title="{{change_reasons[propertyvalues.data.notes_change]}}">{{properties.change_reasons[propertyvalues.data.notes_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
+                                            <td>Notes</td><td>{{propertyvalues.data.notes_original}}</td><td>{{propertyvalues.data.notes_actual}}</td>{% if propertyvalues.data.notes_change %}<td><span title="{{change_reasons[propertyvalues.data.notes_change][1]}}">{{properties.change_reasons[propertyvalues.data.notes_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
                                         </tr>
                                     </table>
                                     </div>
