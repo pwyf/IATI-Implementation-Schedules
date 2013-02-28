@@ -9,7 +9,23 @@
 
     </script>
     {% if auth%}<a class="btn btn-success pull-right" href="{{url_for('import_schedule')}}">Import new schedule</a>{%endif%}
-	<h1>Select an organisation</h1>
+	<h1>Organisations</h1>
+    <p class="lead">Each donor that has published an implementation schedule has been scored according to the ambition of the schedule.</p>
+    <p class="lead">Some donors have not published an implementation schedule. The list below correspondends to the donors that will be included in the 2013 Aid Transparency Index.</p>
+
+    <h4>Grouping</h4>
+    <p>Based on the scores received, donors were placed in one of the following groups. All the criteria of a group must be met to be placed in that group. <a href="{{url_for('about')}}" class="btn">More details &raquo;</a></p>
+    <table class="table">
+        <thead>
+            <th>Group</th><th>Intention to publish</th><th>Publication approach</th><th>Fields</th>
+        </thead>
+        <tbody>
+            <tr><td><span class="label-success label lead label-publishers">Ambitious</span></td><td><i class="icon-ok"></i></td><td><i class="icon-ok"></i><i class="icon-ok"></i></td></td><td><b>60-100%</b></td></tr>
+            <tr><td><span class="label-warning label lead label-publishers">Moderately ambitious</span></td><td><i class="icon-ok"></i></td><td><i class="icon-ok"></i></td><td><b>40-59%</b></td></tr>
+            <tr><td><span class="label-important label lead label-publishers">Unambitious</span></td><td><i class="icon-ok"></i></td><td></td><td><b>1-39%</b></td></tr>
+        </tbody>
+    </table>
+    <hr />
     <table class="table" id="organisations">
     <thead>
     <th width="60%">Organisation</th><th width="20%">Initial implementation</th>{% if auth %}<th>Total score</th><th>Will publish</th><th>Approach</th><th>Fields</th>{%endif%}<th width="20%">Group</th>

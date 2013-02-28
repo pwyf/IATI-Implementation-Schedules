@@ -8,8 +8,10 @@
 
     </script>
 
-    <h1>Select a field</h1>
-    <p>Total scores for each field are the average score for all donors with an implementation schedule (including those in the <span class="label label-inverse">No publication</span> and <span class="label">Under consideration</span> groups).</p>
+    <h1>Fields</h1>
+    <p class="lead">Total scores for each field are the average score for all donors with an implementation schedule (including those in the <span class="label label-inverse">No publication</span> and <span class="label">Under consideration</span> groups).</p>
+    <p class="lead">Click on a field to see each donor's publication plans.</p>
+    <hr />
 	<table class="table" id="elements">
     <thead>
     <th>Field</th>
@@ -18,7 +20,7 @@
     <tbody>
 	{% for d, element in data.items() %}
     {% set pct_compliant = element.scores.percentage %}
-    <tr{%if (pct_compliant<30) %} class="error"{%elif (pct_compliant>70) %} class="success"{%endif%}>
+    <tr>
 	<td>{% if element.property.defining_attribute_value %}<a href="{{url_for('element', level=element.element.level, id=element.element.name, type=element.property.defining_attribute_value)}}">{{element.element.level|capitalize}} - {{ element.element.description }} ({{ element.property.defining_attribute_description }})</a>{% else %}<a href="{{url_for('element', level=element.element.level, id=element.element.name)}}">{{element.element.level|capitalize}} - {{ element.element.description }}</a>{%endif%} </td>
 
     <td><span class="pct">{{ pct_compliant }}</pct></td>
