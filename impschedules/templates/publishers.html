@@ -2,11 +2,30 @@
 {% block content %}
     <script src="/static/jquery.tablesorter.min.js"></script>
     <script >
-    $(function() {
-    $("table#organisations").tablesorter({ sortList: [[0,0]] });
-    $("table#noschedules").tablesorter({ sortList: [[0,0]] });
-    });
 
+    
+    $.tablesorter.addParser({
+        id: 'ambitionsorter',
+        is: function(s) { 
+            // return false so this parser is not auto detected 
+            return false; 
+        }, 
+        format: function(value, table, cell) {
+            return cell.getAttribute('data-ambition-order');
+        },
+        type: 'numeric'
+    }); 
+    $(function() {
+        $("table#organisations").tablesorter({ 
+                headers: {
+                    2: {
+                        sorter: 'ambitionsorter'
+                       }
+                },
+                sortList: [[2,0],[0,0]]
+             });
+        $("table#noschedules").tablesorter({ sortList: [[0,0]] });
+    });
     </script>
     {% if auth%}<a class="btn btn-success pull-right" href="{{url_for('import_schedule')}}">Import new schedule</a>{%endif%}
 	<h1>Organisations</h1>
@@ -39,7 +58,7 @@
     <td>{{scores[org].score.approach}}</td>
     <td>{{scores[org].score.elements}}</td>
     {% endif %}
-    <td><span class="{{scores[org].score.group_code}} label lead label-publishers" >{{scores[org].score.group}}</span></td>
+    <td data-ambition-order="{{scores[org].score.group_order}}"><span class="{{scores[org].score.group_code}} label lead label-publishers" >{{scores[org].score.group}}</span></td>
     </tr>
 	{% endfor %}
     </tbody>

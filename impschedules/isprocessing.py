@@ -60,23 +60,29 @@ def score_all(data, publishers, elements, org_data):
         if (org_data[publisher]["impschedule"].under_consideration):
             out[publisher]["score"]["group"] = "Under consideration"
             out[publisher]["score"]["group_code"] = ""
+            out[publisher]["score"]["group_order"] = "4"
         else:
             if (out[publisher]["score"]["will_publish"] >= 100):
                 if ((out[publisher]["score"]["elements"] >=60)  and (out[publisher]["score"]["approach"]>=100)):
                     out[publisher]["score"]["group"] = "Ambitious"
                     out[publisher]["score"]["group_code"] = "label-success"
+                    out[publisher]["score"]["group_order"] = "1"
                 elif ((out[publisher]["score"]["elements"] >=40) and (out[publisher]["score"]["approach"]>=50)):
                     out[publisher]["score"]["group"] = "Moderately ambitious"
                     out[publisher]["score"]["group_code"] = "label-warning"
+                    out[publisher]["score"]["group_order"] = "2"
                 elif (out[publisher]["score"]["elements"] >=1):
                     out[publisher]["score"]["group"] = "Unambitious"
                     out[publisher]["score"]["group_code"] = "label-important"
+                    out[publisher]["score"]["group_order"] = "3"
                 elif ((out[publisher]["score"]["elements"] == 0) and (out[publisher]["score"]["will_publish"] >=100)):
                     out[publisher]["score"]["group"] = "Incomplete"
                     out[publisher]["score"]["group_code"] = "label-important"
+                    out[publisher]["score"]["group_order"] = "5"
             elif (out[publisher]["score"]["will_publish"] ==0):
                 out[publisher]["score"]["group"] = "No publication"
                 out[publisher]["score"]["group_code"] = "label-inverse"
+                out[publisher]["score"]["group_order"] = "6"
 
     return out
 
