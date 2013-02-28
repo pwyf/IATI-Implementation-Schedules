@@ -9,10 +9,11 @@
     </script>
 
     <h1>Select a field</h1>
+    <p>Total scores for each field are the average score for all donors with an implementation schedule (including those in the <span class="label label-inverse">No publication</span> and <span class="label">Under consideration</span> groups).</p>
 	<table class="table" id="elements">
     <thead>
     <th>Field</th>
-    <th>Compliant %</th>
+    <th>Score %</th>
     </thead>
     <tbody>
 	{% for d, element in data.items() %}

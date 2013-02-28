@@ -153,7 +153,7 @@
                                 {%endfor%}</select></div></td>
                         </tr>
                         <tr>
-                            <td>License</td>
+                            <td>Licence</td>
                             <td><input name="publishing#publishing_license#original" class="publishing_license original" type="text" value="{{doc.find("publishing").find("license").get("license")}}" readonly/></td>
                             <td><select name="publishing#publishing_license#actual" class="publishing_license actual"><option></option> 
                                 {% for key, value in properties.codes[properties.properties['publishing_license']["code"]].items() %}

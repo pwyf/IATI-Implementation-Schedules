@@ -656,7 +656,7 @@ properties = {
         },
     'publishing_license':
         { 
-        'name': 'License',
+        'name': 'Licence',
         'group': 'publishing_license',
         'data' : 'schedule.find("publishing").find("license").get("license")',
         'type': 'code',
@@ -664,7 +664,7 @@ properties = {
         },
     'publishing_license_narrative':
         { 
-        'name': 'License narrative',
+        'name': 'Licence narrative',
         'group': 'publishing_license',
         'data' : 'schedule.find("publishing").find("license").find("narrative").text',
         'type': 'text'
