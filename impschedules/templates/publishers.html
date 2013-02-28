@@ -22,7 +22,7 @@
                         sorter: 'ambitionsorter'
                        }
                 },
-                sortList: [[2,0],[0,0]]
+                sortList: [[{% if auth %}6{%else%}2{%endif%},0],[0,0]]
              });
         $("table#noschedules").tablesorter({ sortList: [[0,0]] });
     });

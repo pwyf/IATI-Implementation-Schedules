@@ -577,7 +577,7 @@ def element(level=None, id=None, type=None):
                        'properties': element[1]}
         else:
             element = db.session.query(models.Element, models.Property
-                ).filter(models.Element.name==id
+                ).filter(models.Element.name==id, models.Element.level==level
                 ).join(models.Property).first()
             data = db.session.query(models.Data, models.ImpSchedule, models.Publisher
                 ).filter(models.Element.name==id, models.Element.level==level
@@ -590,7 +590,7 @@ def element(level=None, id=None, type=None):
             elements = {'element': element[0]}
             if (element[1].defining_attribute_value):
                 prop = db.session.query(models.Property
-                ).filter(models.Element.name==id
+                ).filter(models.Element.name==id, models.Element.level==level
                 ).join(models.Element).all()
                 elements = {'element': element[0],
                             'properties':prop}
