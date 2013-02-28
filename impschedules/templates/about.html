@@ -1,33 +1,38 @@
 {% set title='About | Implementation schedule browser'%}{% set active_page='about'%}{% extends "base.html" %}
 {% block content %}
     <h1>About</h1>
-    <p><a href="http://publishwhatyoufund.org">Publish What You Fund</a>, the global campaign for aid transparency, developed this site to showcase and analyse the implementation schedules being released as part of the common standard for aid information.</p>
+    <p><a href="http://publishwhatyoufund.org">Publish What You Fund</a>, the global campaign for aid transparency, developed this site to showcase and analyse the implementation schedules being released as part of donors' commitment to publish aid information to a common standard by the end of 2015.</p>
     <hr />
     <h3>Purpose</h3>
-    <p>Since agreeing upon the common standard on aid information at the 4th High Level Forum on Aid
-    Effectiveness at Busan in 2012, 39 donor organisations and governments have released implementation
-    schedules outlining their plans for meeting the end of 2015 target date for publishing timely,
-    comprehensive and forward-looking information on resources for development co-operation.</p>
-    <p>A great
-    deal of new information on plans and systems is contained within the schedules which needs to be
+    <p>Since agreeing a common standard for publishing aid information at the 4th High Level Forum on Aid
+    Effectiveness at Busan in 2011, 39 donor organisations and governments have released implementation
+    schedules outlining their plans to meet this commitment. Their target date for publishing timely,
+    comprehensive and forward-looking information on resources for development co-operation is the end of 2015.</p>
+    <p>Specifically agreed at Busan, implementation schedules are important components of the transparency
+    process, laying out an organisation's intentions. The schedules contain a great
+    deal of new information on plans and systems. This information needs to be
     analysed in order to understand what donors are setting as their own targets and timeline for meeting
-    the commitments made at Busan. Publish What You Fund carried out detailed comparative analysis of
+    the commitments they made at Busan. Publish What You Fund carried out detailed comparative analysis of
     the implementation schedules to take stock of progress, highlight trends and provide feedback to donors
     on discrepancies in interpretation and approaches.</p>
     <hr />
     <h3>Methodology</h3>
-    <p>We developed an online application in order to meaningfully assess and compare the various versions
-    of donor implementation schedules currently available. This application has been designed to read
-    both the IATI and common standard schedules and provides an easy front end onto otherwise daunting
-    spreadsheets. It provides information on each field within the standard, when it will be published by
-    different organisations, as well as a timeline of publication.</p>
+    <p>We developed an online application in order to assess and compare the various 
+    donor implementation schedules currently available. The application has been designed to read
+    the common standard schedules and presents the findings in an accessible format that allows them
+    to be compared across donors. It provides information on each field included in the standard, when 
+    each field will be published by different organisations, as well as an overall timeline for publication.</p>
     <h4>Scoring criteria</h4>
-    <p>Donors were assessed on three key criteria: the intention to publish to the common standard / IATI; their publication approach; and their publication plans for each field at the agency and activity levels of the Standard.</p>
+    <p>Donors are assessed on three key criteria:
+    <ol>
+        <li>The intention to publish to the IATI component of the common standard;</li>
+        <li>Their publication approach;</li>
+        <li>Their publication plans for each field at the agency and activity levels of the IATI standard.</ol>
     <table class="table">
     <tbody>
         <tr class="info"><td colspan="2"><b>Intention to publish</b>
         </td></tr>
-        <tr><td width="50px"><i class="icon-ok"></i></td><td>Stating intention to publish to the common standard / IATI with an explicit time frame indicated</td></tr>
+        <tr><td width="50px"><i class="icon-ok"></i></td><td>Stating intention to publish to the IATI component of the common standard with an explicit time frame indicated</td></tr>
         <tr class="info"><td colspan="2"><b>Publication approach</b>
         </td></tr>
         <tr><td><i class="icon-ok"></i><i class="icon-ok"></i></td><td>Open license (public domain or attribution-only) and at least quarterly publication</td></tr>
@@ -36,22 +41,22 @@
         <tr class="info"><td colspan="2"><b>Fields</b>
         </td></tr>
         <tr><td><b>0-100%</b></td><td>
-            <p>A point was awarded for planning to publish by a specific date for each agency and activity-level field in the standard</p>
-                <p>Each field received a point if the publication status was marked ‘fully compliant’, ‘future
+            <p>A point is awarded for planning to publish by a specific date for each agency and activity-level field in the standard</p>
+                <p>Each field received a point if the publication status is marked ‘fully compliant’, ‘future
             publication’ with an explicit target date or ‘partially compliant’ with supplementary text
             suggesting plans for future publication by a specific target date.</p>
-                <p>Where there were inconsistencies between the status and the accompanying text
-            descriptions, donors were not scored even if the publication status was marked ‘fully
+                <p>Where there are contradictions between the status and the accompanying text
+            descriptions, donors are not scored even if the publication status was marked ‘fully
             compliant.’</p>
-                <p>Fields were grouped under the sub-headings used in the common standard template</p>
-                <p>All groups were weighted equal, as were all fields within each group, to arrive at a final score in
+                <p>Fields are grouped under the sub-headings used in the common standard template</p>
+                <p>All groups are weighted equally, as were all fields within each group, to arrive at a final score in
             the range of 0 to 100.</p>
             </ul>
         </td></tr>
     </tbody>
     </table>
     <h4>Grouping</h4>
-    <p>Based on the scores received, donors were placed in one of the following groups. All the criteria of a group must be met to be placed in that group.</p>
+    <p>Based on the scores received, donors are placed in one of the following groups. All the criteria of a group must be met to be placed in that group.</p>
     <table class="table">
         <thead>
             <th>Group</th><th>Intention to publish</th><th>Publication approach</th><th>Fields</th>
@@ -62,13 +67,13 @@
             <tr><td><span class="label-important label lead label-publishers">Unambitious</span></td><td><i class="icon-ok"></i></td><td></td><td><b>1-39%</b></td></tr>
         </tbody>
     </table>
-    <p><b>Some donors could not be grouped into any of the above groups, and were categorised as follows:</b></p>
+    <p><b>Some donors can not be grouped into any of the above groups, and are categorised as follows:</b></p>
         <table class="table">
             <tbody>
-                <tr><td><span class="label lead label-publishers">Under consideration</span></td><td>Donors who are actively considering publication</td></tr>
-                <tr><td><span class="label-important label lead label-publishers">Incomplete</span></td><td>Donors who have submitted implementation schedules without providing any agency or activity level information</td></tr>
-                <tr><td><span class="label-inverse label lead label-publishers">No schedule</span></td><td>Donors who have not yet published an implementation schedule outlining their plans &ndash; which was due by the end of 2012</td></tr>
-                <tr><td><span class="label-inverse label lead label-publishers">No publication</span></td><td>Donors who are not planning to publish to the standard</td></tr>
+                <tr><td><span class="label lead label-publishers">Under consideration</span></td><td>Donors that are actively considering publication</td></tr>
+                <tr><td><span class="label-important label lead label-publishers">Incomplete</span></td><td>Donors that have submitted implementation schedules without providing any agency or activity level information</td></tr>
+                <tr><td><span class="label-inverse label lead label-publishers">No schedule</span></td><td>Donors that have not yet published an implementation schedule outlining their plans &ndash; which was due by the end of 2012</td></tr>
+                <tr><td><span class="label-inverse label lead label-publishers">No publication</span></td><td>Donors that are not planning to publish to the IATI component of the common standard</td></tr>
         </table>
     <h4>Notes</h4>
     <p>The following assumptions were made in order to ensure that the data was comparable across donors:</p>
@@ -90,18 +95,18 @@
             <li>Other Identifier</li>
         </ul>
     <p>The scores and groups reflect only the level of ambition demonstrated by
-donors in their implementation schedules and not the quality or veracity of data that is being
+donors in their implementation schedules and not the quality or veracity of data that is currently being
 or will be published. In addition, because of the apparent variation in the way donors have
-understood and completed different fields within the schedule, some interpretation on our
+understood and completed different fields within the schedules, some interpretation on our
 part has been inevitable to ensure consistency and comparability across templates. Donors may
-want to review their schedules and initiate a conversation with us on matters where they note
+wish to review their schedules and contact Publish What You Fund on matters where they note
 discrepancies. For these same reasons, donors have not been ranked according to their total
 scores at this point in time.</p>
     <hr />
     <h3>Process</h3>
-    <p>Analysing and processing the common standard schedules has required a detailed look at each donor's schedule, as well as interpreting them when donors have filled them out in different ways or understood the various options differently.</p>
+    <p>Analysing and processing the common standard schedules has required a detailed look at each donor's schedule, as well as interpreting them when donors have completed them in different ways or understood the various options differently.</p>
     <h4>The original implementation schedules</h4>
-    <p>The implementation schedules for the common standard were published in individual Excel files, containing three main sheets: general, agency, and activity-level information.</p>
+    <p>The implementation schedules were published in individual Excel files, containing three main sheets: general, agency, and activity-level information.</p>
     <ul class="thumbnails">
         <li class="span4">
             <div class="thumbnail">
@@ -132,7 +137,7 @@ scores at this point in time.</p>
         </li>
     </ul>
     <h4>Templates</h4>
-    <p>While the common standard has a template for implementation schedules, several different templates exist, and donors further added to this complexity by modifying the templates, changing options, and adding and deleting rows &ndash; in all, we counted eleven different versions. In some cases, importing the schedules proved difficult because of this. In addition, some donors saved their templates in PDF format which made it impossible to automatically parse. In these cases, it was necessary to copy the same data into new spreadsheets. While the data was thoroughly checked, it is possible that some human error will have resulted. Some interpretation was necessary to ensure consistency and comparability across them (you can read more about the assumptions made above).</p>
+    <p>While there is a template for the common standard implementation schedules, several different templates exist, and donors further added to this complexity by modifying the templates, changing options, and adding and deleting rows &ndash; in all, we counted eleven different versions. Importing the schedules proved difficult because of this. In addition, some donors saved their templates in PDF format which made them impossible to automatically parse (or read automatically). In these cases, it was necessary to copy the same data into new spreadsheets. While the data was thoroughly checked, it is possible that some human error will have resulted. Some interpretation was necessary to ensure consistency and comparability across the schedules (see notes section above)..</p>
     <h4>Importing</h4>
     <p>The schedules were automatically parsed and imported into this application. Publish What You Fund staff then checked the resulting data to ensure that it had been parsed correctly and that it made sense.</p>
     <ul class="thumbnails">
@@ -141,8 +146,8 @@ scores at this point in time.</p>
                 <img src="/static/img/import.png" class="img-rounded"/>
                 <div class="caption">
                     <h5>Select a file</h5>
-                    <p>The user can select a schedule from any publicly-accessible URL. This could be the OECD/DAC common standard website, the IATI website, or the donor's own website.</p>
-                    <p>Where the original schedules could not be automatically parsed (e.g. because they were in PDF), a new file was created and uploaded to the Publish What You Fund website.</p>
+                    <p>The user can select a schedule from any publicly-accessible URL. This could be the <a href="http://www.oecd.org/dac/aid-architecture/acommonstandard.htm">OECD/DAC common standard website</a>, the <a href="http://aidtransparency.net">IATI website</a>, or the donor's own website.</p>
+                    <p>Where the original schedules could not be automatically parsed (e.g. because they were in PDF), a new spreadsheet was created by Publish What You Fund using the information included in the original schedule.</p>
                 </div>
             </div>
         </li>
@@ -160,7 +165,7 @@ scores at this point in time.</p>
                 <img src="/static/img/import3.png" class="img-rounded"/>
                 <div class="caption">
                     <h5>Check fields</h5>
-                    <p>Make sure that all information has been parsed correctly, ensure that compliance status is consistent with notes, and score for partially compliant fields if the publisher had been overly conservative.</p>
+                    <p>Make sure that all information has been parsed correctly, ensure that compliance status is consistent with notes, and score for partially compliant fields if the publisher has understated their publication relative to other donors.</p>
                 </div>
             </div>
         </li>
