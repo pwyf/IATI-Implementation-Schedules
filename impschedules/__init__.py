@@ -714,7 +714,7 @@ def organisation(id=None):
             merge_dict(data, d)
     
         change_reasons = models.AlterationCategory.query.all()
-        change_reasons = dict(map(lambda x: (x.name, (x.description, x.longdescription)), x))
+        change_reasons = dict(map(lambda x: (x.name, (x.description, x.longdescription)), change_reasons))
         
         try:
             s = score2(schedule_data, data)
