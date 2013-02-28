@@ -115,10 +115,15 @@ class AlterationCategory(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(UnicodeText)
     description = Column(UnicodeText)
+    longdescription = Column(UnicodeText)
 
-    def __init__(self, name=None, description=None):
+    def __init__(self, name=None, description=None, longdescription=None):
         self.name = name
         self.description = description
+        self.longdescription = longdescription
+    
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class Data(db.Model):
     __tablename__ = 'data'

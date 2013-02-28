@@ -713,6 +713,9 @@ def organisation(id=None):
         for d in elementdata:
             merge_dict(data, d)
     
+        change_reasons = models.AlerationCategory.query.all()
+        
+        
         try:
             s = score2(schedule_data, data)
         except IndexError:
@@ -722,7 +725,7 @@ def organisation(id=None):
         if schedule.under_consideration:
             s['group'] = "Under consideration"
             s['group_code'] = "alert-info"
-        return render_template("publisher.html", publisher=publisher, schedule=schedule, data=data, segments=schedule_data, properties=properties, score=s, score_calculations=Markup(s["calculations"]), auth=check_login())
+        return render_template("publisher.html", publisher=publisher, schedule=schedule, data=data, segments=schedule_data, properties=properties, score=s, score_calculations=Markup(s["calculations"]), auth=check_login(), change_reasons=change_reasons.as_dict())
     else:
         # get all publishers
         allpublishers = models.Publisher.query.all()
