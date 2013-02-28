@@ -6,7 +6,7 @@
     <a class="btn btn-success pull-right" href="{{url_for('edit_element', id=element.element.name, level=element.element.level)}}">Edit</a>
     {%endif%}{%endif%}
     <h1>{{element.element.description}} {% if element.properties%}({{element.properties.defining_attribute_description}}){%endif%}</h1>
-    {% if element.element.longdescription%}<h3>{{element.element.longdescription}}</h3>{%endif%}
+    {% if element.properties%}{{element.properties.defining_attribute_longdescription}}{%else%}{% if element.element.longdescription%}<p class="lead">{{element.element.longdescription}}</p>{%endif%}{%endif%}
     <table class="table">
     <thead>
         <th>Organisation</th>
