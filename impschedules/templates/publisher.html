@@ -125,8 +125,8 @@
     <hr />
     {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('edit_schedule', publisher_id=publisher.publisher_code_actual, id=schedule.id)}}">Edit</a>{%endif%}
             <h3>Detailed results</h3>
-            <p class="lead">The information in the following table is as provided by the publisher, except where changes have been made by Publish What You Fund staff (marked with the button <a class="btn" role="button"><i class="icon-info-sign"></i></a>, which you can click for details of changes).</p>
-            <p class="lead">Where a field has been scored, it is marked with a <i class="icon-ok"></i> icon. Where a field has not been weighted (for all donors) it is marked with a <i class="icon-info-sign"></i> icon. You can read more about the scoring methodology on the <a href="{{url_for('about')}}">about</a> page.</p>
+            <p>The information in the following table is as provided by the publisher, except where changes have been made by Publish What You Fund staff (marked with the button <a class="btn btn-mini" role="button"><i class="icon-info-sign"></i></a>, which you can click for details of changes).</p>
+            <p>Where a field has been scored, it is marked with a <i class="icon-ok"></i> icon. Where a field has not been weighted (for all donors) it is marked with a <i class="icon-info-sign"></i> icon. You can read more about the scoring methodology on the <a href="{{url_for('about')}}">about</a> page.</p>
             <table class="table" id="tabledetailed">
             <thead>
                 <th>Level</th>
