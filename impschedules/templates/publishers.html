@@ -10,11 +10,9 @@
     </script>
     {% if auth%}<a class="btn btn-success pull-right" href="{{url_for('import_schedule')}}">Import new schedule</a>{%endif%}
 	<h1>Organisations</h1>
-    <p class="lead">Each donor that has published an implementation schedule has been scored according to the ambition of the schedule.</p>
-    <p class="lead">Some donors have not published an implementation schedule. The list below correspondends to the donors that will be included in the 2013 Aid Transparency Index.</p>
-
-    <h4>Grouping</h4>
-    <p>Based on the scores received, donors were placed in one of the following groups. All the criteria of a group must be met to be placed in that group. <a href="{{url_for('about')}}" class="btn">More details &raquo;</a></p>
+    <p class="lead">Donor that have published an implementation schedule have been grouped according to the ambition of their plans.</p>
+    <hr />
+    <p class="lead">Based on the scores received, donors were placed in one of the following groups. All the criteria of a group must be met to be placed in that group. <a href="{{url_for('about')}}" class="btn btn-mini">More details &raquo;</a></p>
     <table class="table">
         <thead>
             <th>Group</th><th>Intention to publish</th><th>Publication approach</th><th>Fields</th>
@@ -45,6 +43,8 @@
     </tr>
 	{% endfor %}
     </tbody>
+    </table><!--
+    <hr />
     <table class="table" id="noschedules">
     <tbody>
     <tr class="info"><td colspan="3"><b>No implementation schedules</b></td></tr>
@@ -56,6 +56,6 @@
     </tr>
     {%endfor%}
     </tbody>
-    </table>
+    </table>-->
 
 {% endblock %}
