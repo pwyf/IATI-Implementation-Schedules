@@ -18,7 +18,7 @@
     $(function() {
         $("table#organisations").tablesorter({ 
                 headers: {
-                    2: {
+                    {% if auth %}6{%else%}2{%endif%}: {
                         sorter: 'ambitionsorter'
                        }
                 },
