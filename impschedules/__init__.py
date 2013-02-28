@@ -713,7 +713,7 @@ def organisation(id=None):
         for d in elementdata:
             merge_dict(data, d)
     
-        change_reasons = models.AlerationCategory.query.all()
+        change_reasons = models.AlterationCategory.query.all()
         
         
         try:
