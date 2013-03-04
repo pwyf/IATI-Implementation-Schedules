@@ -729,10 +729,11 @@ properties = {
         'type': 'text'
         }
 }
-status = collections.OrderedDict({    'fc': 'Fully compliant',
+status = collections.OrderedDict({
+              'fc': 'Fully compliant',
               'fp': 'Future publication',
               'pc': 'Partially compliant',
-              'up': 'Unable to publish',
+              'up': 'Not publishing now',
               'uc': 'Under consideration',
               'na': 'Not applicable'
          })
@@ -752,7 +753,7 @@ status_formatted = {
                 'class': 'icon-flag'
             },
             'up': {
-                'name': 'Unable to publish',
+                'name': 'Not publishing now',
                 'class': 'icon-remove'
             },
             'uc': {

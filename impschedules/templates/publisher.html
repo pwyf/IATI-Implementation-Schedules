@@ -116,7 +116,7 @@
                 </tr>
                 {% endfor %}
                 </tbody>
-                </table>
+                </table>icon
             </div>
             <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -125,8 +125,8 @@
     <hr />
     {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('edit_schedule', publisher_id=publisher.publisher_code_actual, id=schedule.id)}}">Edit</a>{%endif%}
             <h3>Detailed results</h3>
-            <p>The information in the following table is as provided by the publisher, except where changes have been made by Publish What You Fund staff (marked with the button <a class="btn btn-mini" role="button"><i class="icon-info-sign"></i></a>, which you can click for details of changes).</p>
-            <p>Where a field has been scored, it is marked with a <i class="icon-ok"></i> icon. Where a field has not been weighted (for all donors) it is marked with a <i class="icon-info-sign"></i> icon. You can read more about the scoring methodology on the <a href="{{url_for('about')}}">about</a> page.</p>
+            <p>The information in the following table is as provided by the publisher, except where changes have been made by Publish What You Fund staff (marked with the button <a class="btn btn-mini" role="button"><i class="icon-info-sign hideindent">changes</i></a>, which you can click for details of changes).</p>
+            <p>Where a field has been scored, it is marked with a <i class="icon-ok"></i> icon. Where a field has not been weighted (for all donors) it is marked with a <i class="icon-ban-circle hideindent">N/A</i> icon. You can read more about the scoring methodology on the <a href="{{url_for('about')}}">about</a> page.</p>
             <table class="table" id="tabledetailed">
             <thead>
                 <th>Level</th>
@@ -152,9 +152,18 @@
                             </td>
                             <td>{% if propertyvalues.data.date_actual is not none %}{{propertyvalues.data.date_actual}}{%endif%}</td>
                             <td>{{propertyvalues.data.notes_actual}}</td>
-                            <td>{% if unweight %}<i class="icon-ban-circle hideindent" title="Field not scored (for all donors).">N/A</i>{%else%}{% if propertyvalues.data.score is not none %}<i class="icon-ok hideindent">1</i>{%endif%}{%endif%}</td>
+                            <td>{% if unweight %}<a href="#noweightbox" role="button" class="btn" data-toggle="modal"><i class="icon-ban-circle hideindent" title="Field not scored (for all donors).">N/A</i></a> 
+<div id="noweightbox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="noweightboxlabel" aria-hidden="true"> 
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="noweightboxlabel">Unweighted field</h3>
+    </div>
+    <div class="modal-body">
+    <p>The scores for this field have not been included in determining a donor's total scores or their ambition levels.</p>
+    </div>
+</div>{%else%}{% if propertyvalues.data.score is not none %}<i class="icon-ok hideindent">1</i>{%endif%}{%endif%}</td>
                             <td>{% if (propertyvalues.data.status_change or propertyvalues.data.date_change or propertyvalues.data.notes_change)  %}
-                            <a href="#change{{propertyvalues.data.id}}" role="button" class="btn" data-toggle="modal"><i class="icon-info-sign"></i></a>
+                            <a href="#change{{propertyvalues.data.id}}" role="button" class="btn" data-toggle="modal"><i class="icon-info-sign hideindent">changes</i></a>
 
                             <div id="change{{propertyvalues.data.id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-header">
@@ -162,7 +171,7 @@
                                     <h3 id="myModalLabel">Change log</h3>
                                     </div>
                                     <div class="modal-body">
-                                    <p>Implementation schedules sometimes have to be adjusted when the information has been interpreted in a different way.</p>
+                                    <p>Implementation schedules were amended when information provided was incomplete, not parsed properly or required interpretation.</p>
                                     <table class="table">
                                     <thead><th>Component</th><th>Initial</th><th>Corrected</th><th>Change reason</th></thead>
                                     <tbody>

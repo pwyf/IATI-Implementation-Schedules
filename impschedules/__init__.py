@@ -863,21 +863,6 @@ def timeline(id=id):
         ).join(models.Element).all()
     return render_template("timeline.html", elements=elements, auth=check_login())
 
-@app.route("/flush/")
-@login_required
-def flush():
-    db.session.remove()
-    db.drop_all()
-    return 'Deleted. <a href="/setup">Setup</a> again?'
-
-@app.route("/parse/")
-@login_required
-def parse():
-    #try:
-        return load_package() + '<br />Parsed successfully. <a href="/">Go to front page</a>?'
-    #except Exception, e:
-    #    return "Failed"
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html', auth=check_login()), 404

@@ -9,21 +9,31 @@
     </script>
 
     <h1>Fields</h1>
-    <p class="lead">Total scores for each field are the average score for all donors with an implementation schedule (including those in the <span class="label label-inverse">No publication</span> and <span class="label">Under consideration</span> groups).</p>
+    <p class="lead">Score percentage indicates the percentage of donors who have received a score for the field.</p>
     <p class="lead">Click on a field to see each donor's publication plans.</p>
     <hr />
 	<table class="table" id="elements">
     <thead>
     <th>Field</th>
     <th>Score %</th>
+    <th></th>
     </thead>
     <tbody>
 	{% for d, element in data.items() %}
     {% set pct_compliant = element.scores.percentage %}
     <tr>
 	<td>{% if element.property.defining_attribute_value %}<a href="{{url_for('element', level=element.element.level, id=element.element.name, type=element.property.defining_attribute_value)}}">{{element.element.level|capitalize}} - {{ element.element.description }} ({{ element.property.defining_attribute_description }})</a>{% else %}<a href="{{url_for('element', level=element.element.level, id=element.element.name)}}">{{element.element.level|capitalize}} - {{ element.element.description }}</a>{%endif%} </td>
-
     <td><span class="pct">{{ pct_compliant }}</pct></td>
+    <td>{% if (element.element.weight ==0) or (element.property.weight==0) %}<a href="#noweightbox" role="button" class="btn" data-toggle="modal"><i class="icon-ban-circle hideindent" title="Field not scored (for all donors).">N/A</i></a> 
+<div id="noweightbox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="noweightboxlabel" aria-hidden="true"> 
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="noweightboxlabel">Unweighted field</h3>
+    </div>
+    <div class="modal-body">
+    <p>The scores for this field have not been included in determining a donor's total scores or their ambition levels.</p>
+    </div>
+</div>{%endif%}</td> 
     </tr>
 	{% endfor %}
 	</tbody>

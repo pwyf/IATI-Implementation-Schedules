@@ -11,6 +11,17 @@
     {% else %}
     {% if element.element.longdescription %}<p class="lead">{{element.element.longdescription}}</p>{%endif%}
     {%endif%}
+    {% if (element.element.weight ==0) or (element.properties and element.properties.weight==0) %}<a href="#noweightbox" role="button" class="btn" data-toggle="modal"><i class="icon-ban-circle hideindent" title="Field not scored (for all donors).">N/A</i> <b>Unweighted field</b></a> 
+<div id="noweightbox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="noweightboxlabel" aria-hidden="true"> 
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="noweightboxlabel">Unweighted field</h3>
+    </div>
+    <div class="modal-body">
+    <p>The scores for this field have not been included in determining a donor's total scores or their ambition levels.</p>
+    </div>
+</div>{%endif%}
+
     <table class="table">
     <thead>
         <th>Organisation</th>
