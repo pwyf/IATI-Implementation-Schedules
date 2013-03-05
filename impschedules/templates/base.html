@@ -51,12 +51,6 @@
     </div>
 
   <div class="container">
-
-    {% if ((active_page != "index") and (not auth)) %}    
-    <div class="alert alert-error alert-block"><h4>Watch out!</h4>
-    <p>This site is in beta; the content should not be relied on. You're strongly advised to check out the <a href="http://www.oecd.org/dac/aid-architecture/acommonstandard.htm">original implementation schedules</a> before drawing strong conclusions about this data.</p>
-    </div>
-    {%endif%}
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
