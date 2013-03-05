@@ -14,7 +14,6 @@
     </style>
     {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('organisation_edit', id=publisher.publisher_code_actual)}}">Edit organisation</a>{%endif%}
     <h1>{{publisher.publisher_actual}} <span class="{{score.group_code}} label lead" >{{score.group}}</span> </h1>
-    {% if not schedule.under_consideration %}
         {% if schedule.analysis %}
             <div class="alert alert-info">
             <h3>Summary</h3>
@@ -22,6 +21,7 @@
             </div>
             <hr />
         {% endif%}
+    {% if not schedule.under_consideration %}
     <h3>Overview</h3>
     <h4>Publication approach</h4>
     <table class="table">
