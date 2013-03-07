@@ -78,7 +78,6 @@
     </tr>
     </tbody>
     </table>
-    {% endif%}
 
     <div id="basicinfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
@@ -124,6 +123,7 @@
             </div>
     </div>
     <hr />
+    {% endif%}
     {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('edit_schedule', publisher_id=publisher.publisher_code_actual, id=schedule.id)}}">Edit</a>{%endif%}
             <h3>Detailed results</h3>
             <p>The information in the following table is as provided by the publisher, except where changes have been made by Publish What You Fund staff (marked with the button <a class="btn btn-mini" role="button"><i class="icon-info-sign hideindent">changes</i></a>, which you can click for details of changes).</p>
