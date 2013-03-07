@@ -752,7 +752,7 @@ def organisation(id=None, fileformat=None):
                         out.writerow({"level": evalues["level"], "name": makeName(evalues, pvalues), "compliance_status": pvalues["data"].status_actual, "publication_date": pvalues["data"].date_actual, "notes": makeNiceEncoding(pvalues["data"].notes_actual), "score": pvalues["data"].score})
             strIO.seek(0)
             return send_file(strIO,
-                             attachment_filename="organisations.csv",
+                             attachment_filename=id + ".csv",
                              as_attachment=True)
 
         else:
