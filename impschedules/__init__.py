@@ -636,6 +636,9 @@ def makeName(evalues, pvalues):
     else:
         return evalues["description"]
 
+def makeNiceEncoding(value):
+    return value.encode("UTF-8", "ignore")
+
 @app.route("/organisations/")
 @app.route("/organisations.<fileformat>")
 @app.route("/organisations/<id>/")
@@ -746,7 +749,7 @@ def organisation(id=None, fileformat=None):
             for d, dvalues in data.items():
                 for e, evalues in dvalues["elements"].items():
                     for p,pvalues in evalues["properties"].items():
-                        out.writerow({"level": evalues["level"], "name": makeName(evalues, pvalues), "compliance_status": pvalues["data"].status_actual, "publication_date": pvalues["data"].date_actual, "notes": pvalues["data"].notes_actual, "score": pvalues["data"].score})
+                        out.writerow({"level": evalues["level"], "name": makeName(evalues, pvalues), "compliance_status": pvalues["data"].status_actual, "publication_date": pvalues["data"].date_actual, "notes": makeNiceEncoding(pvalues["data"].notes_actual), "score": pvalues["data"].score})
             strIO.seek(0)
             return send_file(strIO,
                              attachment_filename="organisations.csv",
