@@ -628,6 +628,14 @@ def element(level=None, id=None, type=None):
 
         return render_template("elements.html", data=data, auth=check_login())
 
+
+
+def makeName(evalues, pvalues):
+    if pvalues["defining_attribute_value"]:
+        return evalues["description"] + " (" + pvalues["defining_attribute_value_description"] + ")"
+    else:
+        return evalues["description"]
+
 @app.route("/organisations/")
 @app.route("/organisations.<fileformat>")
 @app.route("/organisations/<id>/")
@@ -727,7 +735,29 @@ def organisation(id=None, fileformat=None):
         if schedule.under_consideration:
             s['group'] = "Under consideration"
             s['group_code'] = "alert-info"
-        return render_template("publisher.html", publisher=publisher, schedule=schedule, data=data, segments=schedule_data, properties=properties, score=s, score_calculations=Markup(s["calculations"]), auth=check_login(), change_reasons=change_reasons)
+
+        if ((fileformat is not None) and (fileformat=='csv')):
+            import StringIO
+            import csv
+            
+            strIO = StringIO.StringIO()
+            out = csv.DictWriter(strIO, fieldnames="level name compliance_status publication_date notes score".split())
+            out.writerow({"level": "level", "name": "name", "compliance_status": "compliance_status", "publication_date": "publication_date", "notes": "notes", "score": "score"})
+            for d, dvalues in data.items():
+                for e, evalues in dvalues["elements"].items():
+                    for p,pvalues in evalues["properties"].items():
+                        try:
+                            out.writerow({"level": evalues["level"], "name": makeName(evalues, pvalues), "compliance_status": pvalues["data"].status_actual, "publication_date": pvalues["data"].date_actual, "notes": pvalues["data"].notes_actual, "score": pvalues["data"].score})
+                        except KeyError:
+                            pass
+            strIO.seek(0)
+            return send_file(strIO,
+                             attachment_filename="organisations.csv",
+                             as_attachment=True)
+
+        else:
+
+            return render_template("publisher.html", publisher=publisher, schedule=schedule, data=data, segments=schedule_data, properties=properties, score=s, score_calculations=Markup(s["calculations"]), auth=check_login(), change_reasons=change_reasons)
     else:
         # get all publishers
         allpublishers = models.Publisher.query.all()
@@ -783,11 +813,11 @@ def organisation(id=None, fileformat=None):
             import csv
             
             strIO = StringIO.StringIO()
-            out = csv.DictWriter(strIO, fieldnames="publisher_name publisher_code implementation_date will_publish approach fields".split())
-            out.writerow({"publisher_name": "publisher_name", "publisher_code": "publisher_code", "implementation_date": "implementation_date", "will_publish": "will_publish", "approach": "approach", "fields": "fields"})
+            out = csv.DictWriter(strIO, fieldnames="publisher_name publisher_code implementation_date will_publish approach fields group".split())
+            out.writerow({"publisher_name": "publisher_name", "publisher_code": "publisher_code", "implementation_date": "implementation_date", "will_publish": "will_publish", "approach": "approach", "fields": "fields", "group": "group"})
             for org,values in orgs.items(): 
                 try:
-                    out.writerow({"publisher_name": values["publisher"].publisher_actual, "publisher_code": values["publisher"].publisher_code_actual, "implementation_date": values["properties"]["publishing_timetable_date_initial"]["value"], "will_publish": scores[values["publisher"].id]["score"]["will_publish"], "approach": scores[values["publisher"].id]["score"]["approach"], "fields": scores[values["publisher"].id]["score"]["elements"]})
+                    out.writerow({"publisher_name": values["publisher"].publisher_actual, "publisher_code": values["publisher"].publisher_code_actual, "implementation_date": values["properties"]["publishing_timetable_date_initial"]["value"], "will_publish": scores[values["publisher"].id]["score"]["will_publish"], "approach": scores[values["publisher"].id]["score"]["approach"], "fields": scores[values["publisher"].id]["score"]["elements"], "group": scores[values["publisher"].id]["score"]["group"]})
                 except KeyError:
                     pass
             strIO.seek(0)
