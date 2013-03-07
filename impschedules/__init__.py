@@ -816,7 +816,10 @@ def organisation(id=None, fileformat=None):
             out = csv.DictWriter(strIO, fieldnames="publisher_name publisher_code implementation_date will_publish approach fields group".split())
             out.writerow({"publisher_name": "publisher_name", "publisher_code": "publisher_code", "implementation_date": "implementation_date", "will_publish": "will_publish", "approach": "approach", "fields": "fields", "group": "group"})
             for org,values in orgs.items(): 
-                out.writerow({"publisher_name": values["publisher"].publisher_actual, "publisher_code": values["publisher"].publisher_code_actual, "implementation_date": values["properties"]["publishing_timetable_date_initial"]["value"], "will_publish": scores[values["publisher"].id]["score"]["will_publish"], "approach": scores[values["publisher"].id]["score"]["approach"], "fields": scores[values["publisher"].id]["score"]["elements"], "group": scores[values["publisher"].id]["score"]["group"]})
+                try:
+                    out.writerow({"publisher_name": values["publisher"].publisher_actual, "publisher_code": values["publisher"].publisher_code_actual, "implementation_date": values["properties"]["publishing_timetable_date_initial"]["value"], "will_publish": scores[values["publisher"].id]["score"]["will_publish"], "approach": scores[values["publisher"].id]["score"]["approach"], "fields": scores[values["publisher"].id]["score"]["elements"], "group": scores[values["publisher"].id]["score"]["group"]})
+                except Exception:
+                    pass
             strIO.seek(0)
             return send_file(strIO,
                              attachment_filename="organisations.csv",
