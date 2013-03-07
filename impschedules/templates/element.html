@@ -1,4 +1,4 @@
-{% set title=element.element.description + ' | Fields | Implementation schedule browser'%}{% set active_page='elements'%}{% extends "base.html" %}
+{% set title=element.element.description + ' | Fields | Aid Transparency Tracker'%}{% set active_page='elements'%}{% extends "base.html" %}
 {% block content %}
     {% if auth %}{% if element.properties%}
     <a class="btn btn-success pull-right" href="{{url_for('edit_element', id=element.element.name, level=element.element.level, type=element.properties.defining_attribute_value)}}">Edit</a>

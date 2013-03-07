@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response, current_app
+from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response, current_app, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import sys, os
 from lxml import etree
@@ -629,8 +629,10 @@ def element(level=None, id=None, type=None):
         return render_template("elements.html", data=data, auth=check_login())
 
 @app.route("/organisations/")
+@app.route("/organisations.<fileformat>")
 @app.route("/organisations/<id>/")
-def organisation(id=None):
+@app.route("/organisations/<id>.<fileformat>")
+def organisation(id=None, fileformat=None):
     if (id is not None):
         """ need to return:
             # publisher information
@@ -774,16 +776,26 @@ def organisation(id=None):
             merge_dict(orgs, o)
 
         scores=score_all(org_data, publishers, elementgroups, orgs)
-        
-        #scores = score_all(org_data)
-        #print xx
 
-        # need to get:
-        # publisher data (not just publishing timetable date initial)
-        # total scores per group where weight is not 0
-        
-        totalnum = db.session.query(func.count(models.ImpSchedule.id).label("number")).first()
-        return render_template("publishers.html", orgs=orgs, totalnum=totalnum.number, scores=scores, auth=check_login(), notpublishing=allpublishers)
+
+        if ((fileformat is not None) and (fileformat=='csv')):
+            import StringIO
+            import csv
+            
+            strIO = StringIO.StringIO()
+            out = csv.DictWriter(strIO, fieldnames="publisher_name publisher_code implementation_date will_publish approach fields".split())
+            out.writerow({"publisher_name": "publisher_name", "publisher_code": "publisher_code", "implementation_date": "implementation_date", "will_publish": "will_publish", "approach": "approach", "fields": "fields"})
+            for org,values in orgs.items(): 
+                try:
+                    out.writerow({"publisher_name": values["publisher"].publisher_actual, "publisher_code": values["publisher"].publisher_code_actual, "implementation_date": values["properties"]["publishing_timetable_date_initial"]["value"], "will_publish": scores[values["publisher"].id]["score"]["will_publish"], "approach": scores[values["publisher"].id]["score"]["approach"], "fields": scores[values["publisher"].id]["score"]["elements"]})
+                except KeyError:
+                    pass
+            strIO.seek(0)
+            return send_file(strIO,
+                             attachment_filename="organisations.csv",
+                             as_attachment=True)
+        else:
+            return render_template("publishers.html", orgs=orgs, scores=scores, auth=check_login(), notpublishing=allpublishers)
 
 def merge_dict(d1, d2):
     # from here: http://stackoverflow.com/questions/10703858/python-merge-multi-level-dictionaries
