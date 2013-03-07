@@ -632,7 +632,7 @@ def element(level=None, id=None, type=None):
 
 def makeName(evalues, pvalues):
     if pvalues["defining_attribute_value"]:
-        return evalues["description"] + " (" + pvalues["defining_attribute_value_description"] + ")"
+        return evalues["description"] + " (" + pvalues["defining_attribute_description"] + ")"
     else:
         return evalues["description"]
 
@@ -746,10 +746,7 @@ def organisation(id=None, fileformat=None):
             for d, dvalues in data.items():
                 for e, evalues in dvalues["elements"].items():
                     for p,pvalues in evalues["properties"].items():
-                        try:
-                            out.writerow({"level": evalues["level"], "name": makeName(evalues, pvalues), "compliance_status": pvalues["data"].status_actual, "publication_date": pvalues["data"].date_actual, "notes": pvalues["data"].notes_actual, "score": pvalues["data"].score})
-                        except KeyError:
-                            pass
+                        out.writerow({"level": evalues["level"], "name": makeName(evalues, pvalues), "compliance_status": pvalues["data"].status_actual, "publication_date": pvalues["data"].date_actual, "notes": pvalues["data"].notes_actual, "score": pvalues["data"].score})
             strIO.seek(0)
             return send_file(strIO,
                              attachment_filename="organisations.csv",
