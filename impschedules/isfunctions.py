@@ -1,5 +1,6 @@
 import json
 from flask import Flask, current_app, request
+from functools import wraps
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -11,6 +12,30 @@ def jsonify(*args, **kwargs):
     return current_app.response_class(json.dumps(dict(*args, **kwargs),
             indent=None if request.is_xhr else 2, cls=JSONEncoder),
         mimetype='application/json')
+
+def support_jsonp(f):
+    """Wraps JSONified output for JSONP"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        callback = request.args.get('callback', False)
+        if callback:
+            content = str(callback) + '(' + str(f().data) + ')'
+            return current_app.response_class(content, mimetype='application/json')
+        else:
+            return f(*args, **kwargs)
+    return decorated_function
+
+def support_jsonp_publishercode(f):
+    """Wraps JSONified output for JSONP"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        callback = request.args.get('callback', False)
+        if callback:
+            content = str(callback) + '(' + str(f(kwargs['publisher_code']).data) + ')'
+            return current_app.response_class(content, mimetype='application/json')
+        else:
+            return f(*args, **kwargs)
+    return decorated_function
 
 def publication_timeline(data, cumulative=False, group=6, provide={7,2}, label_group="date", label_provide={"count", "element"}):
     properties = set(map(lambda x: (str(x[group])), data))

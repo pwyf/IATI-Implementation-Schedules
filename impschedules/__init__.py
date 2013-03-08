@@ -830,7 +830,7 @@ def organisation(id=None, fileformat=None):
 
 
         if ((fileformat is not None) and (fileformat=='csv')):
-            
+        
             strIO = StringIO.StringIO()
             out = csv.DictWriter(strIO, fieldnames="publisher_name publisher_code implementation_date will_publish approach fields group".split())
             out.writerow({"publisher_name": "publisher_name", "publisher_code": "publisher_code", "implementation_date": "implementation_date", "will_publish": "will_publish", "approach": "approach", "fields": "fields", "group": "group"})
