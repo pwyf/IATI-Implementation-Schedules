@@ -13,6 +13,9 @@ import random
 import iatiimplementationxml.toxml as toxml
 import collections
 from functools import wraps
+import StringIO
+import csv
+from icalendar import Calendar, Event
 
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
@@ -739,21 +742,39 @@ def organisation(id=None, fileformat=None):
             s['group'] = "Under consideration"
             s['group_code'] = "alert-info"
 
-        if ((fileformat is not None) and (fileformat=='csv')):
-            import StringIO
-            import csv
-            
-            strIO = StringIO.StringIO()
-            out = csv.DictWriter(strIO, fieldnames="level name compliance_status publication_date notes score".split())
-            out.writerow({"level": "level", "name": "name", "compliance_status": "compliance_status", "publication_date": "publication_date", "notes": "notes", "score": "score"})
-            for d, dvalues in data.items():
-                for e, evalues in dvalues["elements"].items():
-                    for p,pvalues in evalues["properties"].items():
-                        out.writerow({"level": evalues["level"], "name": makeName(evalues, pvalues), "compliance_status": pvalues["data"].status_actual, "publication_date": pvalues["data"].date_actual, "notes": makeNiceEncoding(pvalues["data"].notes_actual), "score": pvalues["data"].score})
-            strIO.seek(0)
-            return send_file(strIO,
-                             attachment_filename=id + ".csv",
-                             as_attachment=True)
+        if fileformat is not None:
+            if fileformat=='csv':
+                strIO = StringIO.StringIO()
+                out = csv.DictWriter(strIO, fieldnames="level name compliance_status publication_date notes score".split())
+                out.writerow({"level": "level", "name": "name", "compliance_status": "compliance_status", "publication_date": "publication_date", "notes": "notes", "score": "score"})
+                for d, dvalues in data.items():
+                    for e, evalues in dvalues["elements"].items():
+                        for p,pvalues in evalues["properties"].items():
+                            out.writerow({"level": evalues["level"], "name": makeName(evalues, pvalues), "compliance_status": pvalues["data"].status_actual, "publication_date": pvalues["data"].date_actual, "notes": makeNiceEncoding(pvalues["data"].notes_actual), "score": pvalues["data"].score})
+                strIO.seek(0)
+                return send_file(strIO,
+                                 attachment_filename=id + ".csv",
+                                 as_attachment=True)
+            if fileformat=='ics':
+                cal = Calendar()
+                cal.add('prodid', '-//IATI-Common Standard Publication for ' + publisher.publisher_actual + '//')
+                for d, dvalues in data.items():
+                    for e, evalues in dvalues["elements"].items():
+                        for p,pvalues in evalues["properties"].items():
+                            try:
+                                event = Event()
+                                event.add('summary', publisher.publisher_actual + ' publishes ' + makeName(evalues, pvalues))
+                                event.add('dtstart', datetime.datetime(pvalues["data"].date_actual.year, pvalues["data"].date_actual.month, pvalues["data"].date_actual.day))
+                                event.add('dtend', (datetime.datetime(pvalues["data"].date_actual.year, pvalues["data"].date_actual.month, pvalues["data"].date_actual.day)+datetime.timedelta(hours=23, minutes=59)))
+                                cal.add_component(event)
+                            except AttributeError:
+                                pass
+                strIO = StringIO.StringIO()
+                strIO.write(cal.to_ical())
+                strIO.seek(0)
+                return send_file(strIO,
+                                 attachment_filename=id + ".ics",
+                                 as_attachment=True)
 
         else:
 
@@ -809,8 +830,6 @@ def organisation(id=None, fileformat=None):
 
 
         if ((fileformat is not None) and (fileformat=='csv')):
-            import StringIO
-            import csv
             
             strIO = StringIO.StringIO()
             out = csv.DictWriter(strIO, fieldnames="publisher_name publisher_code implementation_date will_publish approach fields group".split())
