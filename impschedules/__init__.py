@@ -765,7 +765,7 @@ def organisation(id=None, fileformat=None):
                                 event = Event()
                                 event.add('summary', publisher.publisher_actual + ' publishes ' + makeName(evalues, pvalues))
                                 event.add('dtstart', datetime.datetime(pvalues["data"].date_actual.year, pvalues["data"].date_actual.month, pvalues["data"].date_actual.day))
-                                event.add('dtend', (datetime.datetime(pvalues["data"].date_actual.year, pvalues["data"].date_actual.month, pvalues["data"].date_actual.day)+datetime.timedelta(hours=23, minutes=59)))
+                                event.add('dtend', (datetime.datetime(pvalues["data"].date_actual.year, pvalues["data"].date_actual.month, pvalues["data"].date_actual.day)))
                                 cal.add_component(event)
                             except AttributeError:
                                 pass

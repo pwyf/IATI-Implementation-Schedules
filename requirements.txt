@@ -14,3 +14,4 @@ kombu==2.4.7
 lxml==2.3.6
 python-dateutil==1.5
 wsgiref==0.1.2
+icalendar
