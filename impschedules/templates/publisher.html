@@ -13,7 +13,7 @@
     }
     </style>
     {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('organisation_edit', id=publisher.publisher_code_actual)}}">Edit organisation</a>{%endif%}
-    <a class="btn btn-mini pull-right" href="{{url_for('organisation', id=publisher.publisher_code_actual, fileformat='csv')}}"><i class="icon-download"></i> CSV</a>
+    <div class="pull-right"><a class="btn btn-mini" href="{{url_for('organisation', id=publisher.publisher_code_actual, fileformat='ics')}}"><i class="icon-calendar"></i> iCal</a> <a class="btn btn-mini" href="{{url_for('organisation', id=publisher.publisher_code_actual, fileformat='csv')}}"><i class="icon-download"></i> CSV</a></div>
     <h1>{{publisher.publisher_actual}} <span class="{{score.group_code}} label lead" >{{score.group}}</span> </h1>
         {% if schedule.analysis %}
             <div class="alert alert-info">
