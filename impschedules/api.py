@@ -7,6 +7,7 @@ import collections
 import models
 import properties
 import flask
+import re
 
 @app.route("/api/publishers/data/<segment>/")
 def publishers_implementation_data(segment):
@@ -75,9 +76,11 @@ def api_publishers():
     for org in orgs:
         publisher = orgs[org]["publisher"].id
         schedule = orgs[org]["impschedule"].id
-        d.append({"publisher_name": orgs[schedule]["publisher"].publisher_actual, "publisher_code": orgs[schedule]["publisher"].publisher_code_actual, "implementation_date": orgs[schedule]["properties"]["publishing_timetable_date_initial"]["value"], "will_publish": scores[schedule]["score"]["will_publish"], "approach": scores[schedule]["score"]["approach"], "fields": scores[schedule]["score"]["elements"], "group": scores[schedule]["score"]["group"]})
+        d.append({"publisher_name": orgs[schedule]["publisher"].publisher_actual, "publisher_code": orgs[schedule]["publisher"].publisher_code_actual, "implementation_date": orgs[schedule]["properties"]["publishing_timetable_date_initial"]["value"], "will_publish": scores[schedule]["score"]["will_publish"], "approach": scores[schedule]["score"]["approach"], "fields": scores[schedule]["score"]["elements"], "group": scores[schedule]["score"]["group"], "group_code": makeGroupCode(scores[schedule]["score"]["group"])})
     return jsonify({"data": d})
 
+def makeGroupCode(group):
+    return (re.sub(" ", "-", group)).lower()
 
 def merge_dict(d1, d2):
     # from here: http://stackoverflow.com/questions/10703858/python-merge-multi-level-dictionaries
