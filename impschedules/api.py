@@ -124,8 +124,55 @@ def publisher_implementation_data(publisher_code):
                        "status_actual": x[0], 
                        "date_actual": str(x[1]), 
                        "notes_actual": x[2]}, data)
+
+
+    # TODO: tidy all this up, it's a bit of a mess
+
+    orgs = db.session.query(models.Publisher,
+                            models.ImpSchedule, 
+                            models.ImpScheduleData
+            ).join(models.ImpSchedule
+            ).join(models.ImpScheduleData
+            ).order_by(models.Publisher.publisher_actual
+            ).filter(models.ImpSchedule.id==impschedule.id
+            ).all()
+
+    # get impschedule id, # results for this score, the score, the elementgroup id
+    org_data = db.session.query(models.Data.impschedule_id,
+                                func.count(models.Data.id),
+                                models.Data.score,
+                                models.ElementGroup.id
+            ).join(models.Property
+            ).join(models.Element
+            ).join(models.ElementGroup
+            ).group_by(models.Data.impschedule_id
+            ).group_by(models.ElementGroup
+            ).group_by(models.Data.score
+            ).filter(models.Element.weight == None,
+                     models.Property.weight == None,
+                     models.Data.impschedule_id==impschedule.id
+            ).all()
+
+    publishers = set(map(lambda x: x[0], org_data))
     
-    return jsonify({"publisher": publisher.as_dict(), "data": d})
+    elementgroups = set(map(lambda x: x[3], org_data))
+    org_data = dict(map(lambda x: ((x[0],x[3],x[2]),(x[1])), org_data))
+    org_pdata = map(lambda x: {x[1].id: {
+                                'publisher': x[0],
+                                'impschedule': x[1],
+                                'properties': {
+                                    x[2].segment: {
+                                        "value": x[2].segment_value_actual
+                                    }
+                                }
+                            }}, orgs)
+    orgs = collections.OrderedDict()
+    for o in org_pdata:
+        merge_dict(orgs, o)
+
+    scores=isprocessing.score_all(org_data, publishers, elementgroups, orgs)
+    
+    return jsonify({"publisher": publisher.as_dict(), "data": d, "scores": scores[impschedule.id]['score']})
 
 @app.route("/api/elements/dates/groups/")
 def element_dates_groups():
