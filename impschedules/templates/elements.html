@@ -1,6 +1,6 @@
 {% set title='Fields | Aid Transparency Tracker'%}{% set active_page='elements'%}{% extends "base.html" %}
 {% block content %}
-    <script src="/static/jquery.tablesorter.min.js"></script>
+    <script src="{{url_for('static', filename='jquery.tablesorter.min.js')}}"></script>
     <script >
     $(function() {
     $("table#elements").tablesorter({ sortList: [[0,1]] });
