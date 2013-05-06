@@ -19,23 +19,23 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 
-  <link rel="stylesheet" href="/static/css/timeline.css">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/timeline.css')}}">
 
 
   <!-- 3rd party JS libraries -->
-  <script type="text/javascript" src="/static/vendor/jquery/1.7.1/jquery.js"></script>
-  <script type="text/javascript" src="/static/vendor/underscore/1.4.2/underscore.js"></script>
-  <script type="text/javascript" src="/static/vendor/underscore.deferred/0.4.0/underscore.deferred.js"></script>
-  <script type="text/javascript" src="/static/vendor/backbone/0.9.2/backbone.js"></script>
-  <script type="text/javascript" src="/static/vendor/moment/1.6.2/moment.js"></script>
-  <script type="text/javascript" src="/static/vendor/mustache/0.5.0-dev/mustache.js"></script>
-  <script type="text/javascript" src="/static/vendor/timeline/20120520/js/timeline.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='vendor/jquery/1.7.1/jquery.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='vendor/underscore/1.4.2/underscore.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='vendor/underscore.deferred/0.4.0/underscore.deferred.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='vendor/backbone/0.9.2/backbone.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='vendor/moment/1.6.2/moment.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='vendor/mustache/0.5.0-dev/mustache.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='vendor/timeline/20120520/js/timeline.js"></script>
 
-  <script type="text/javascript" src="/static/src/backend.json.js"></script>
-  <script type="text/javascript" src="/static/src/backend.memory.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='src/backend.json.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='src/backend.memory.js"></script>
 
-  <script type="text/javascript" src="/static/src/view.timeline.js"></script>
-  <script type="text/javascript" src="/static/src/model.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='src/view.timeline.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='src/model.js"></script>
 
   <style>
     a.btn-timeline {
@@ -140,7 +140,7 @@
 
 <script>jQuery(function($) {
     
-  var url = "/api/publishers/data/publishing_timetable_date_initial/";
+  var url = "{{url_for('publishers_implementation_data', segment='publishing_timetable_date_initial')}}/";
   var dataset = new recline.Model.Dataset({
       url:url,
       fields: [
@@ -192,7 +192,7 @@ var TimelinerView = Backbone.View.extend({
         if (out) {
             out.headline = record.get('organisation_name').toString();
             out.text = "Initial implementation";
-            out.text += '<p><a class="btn btn-timeline" href="/organisations/' + record.get('organisation_code') + '">Organisation page &raquo;</a></p>';
+            out.text += '<p><a class="btn btn-timeline" href="{{url_for('organisation')}}' + record.get('organisation_code') + '">Organisation page &raquo;</a></p>';
         }
         return out;
     }
