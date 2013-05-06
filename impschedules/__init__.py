@@ -648,6 +648,9 @@ def makeNiceEncoding(value):
 @app.route("/organisations/<id>.<fileformat>")
 def organisation(id=None, fileformat=None):
     if (id is not None):
+        # Small hack for now...
+        if id.startswith('US'):
+            id=='US'
         """ need to return:
             # publisher information
             # publisher data
