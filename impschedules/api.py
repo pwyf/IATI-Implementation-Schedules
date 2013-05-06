@@ -103,7 +103,7 @@ def merge_dict(d1, d2):
 def publisher_implementation_data(publisher_code):
     # Small hack for now...
     if publisher_code.startswith('US'):
-        publisher_code=='US'
+        publisher_code='US'
     publisher = models.Publisher.query.filter_by(publisher_code_actual=publisher_code).first_or_404()
     impschedule = models.ImpSchedule.query.filter_by(publisher_id=publisher.id).first_or_404()
    
