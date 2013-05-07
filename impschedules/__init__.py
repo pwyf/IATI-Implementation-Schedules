@@ -606,6 +606,7 @@ def element(level=None, id=None, type=None):
                              func.count(models.Data.id)
         ).group_by(models.Data.score
         ).group_by(models.Property.id
+        ).group_by(models.Element
         ).join(models.Element
         ).join(models.Data
         #).join(models.ImpSchedule
