@@ -205,7 +205,12 @@ def element_dates():
                             models.Element.level,
                             models.Data.date_actual,
                             func.count(models.Data.id)
-        ).group_by(models.Data.status_actual, models.Property
+        ).group_by(models.Data.status_actual, 
+                   models.Property, 
+                   models.Element.id, 
+                   models.Element.name, 
+                   models.Element.level, 
+                   models.Data.date_actual
         ).join(models.Element).join(models.Data).all()
 
     compliance = publication_timeline(compliance_data, True)
