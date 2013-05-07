@@ -153,3 +153,29 @@ h1, .brand {
     top:0;
     color:#ffffff;
 }
+.plan-branding {
+    background: #EA7F1E;
+    background: -moz-linear-gradient(45deg,#EA7F1E 0%,#ea984d 100%);
+    background: -webkit-gradient(linear,left bottom,right top,color-stop(0%,#EA7F1E),color-stop(100%,#ea984d));
+    background: -webkit-linear-gradient(45deg,#EA7F1E 0%,#ea984d 100%);
+    background: -o-linear-gradient(45deg,#EA7F1E 0%,#ea984d 100%);
+    background: -ms-linear-gradient(45deg,#EA7F1E 0%,#ea984d 100%);
+    background: linear-gradient(45deg, #EA7F1E 0%, #ea984d 100%) repeat scroll 0 0 transparent;
+    margin-top:none;
+    top:0;
+    color:#ffffff;
+}
+.plan-branding a.dropdown-toggle {
+    color:#ffffff !important;
+    text-shadow: 0 1px 0 #777777 !important;
+}
+.plan-branding.open a.dropdown-toggle {
+    background: #EA7F1E !important;
+}
+.navbar {
+    margin-bottom:19px;
+}
+.plan-branding .dropdown-toggle .caret {
+    border-bottom-color: #FFFFFF !important;
+    border-top-color: #FFFFFF !important;
+}
