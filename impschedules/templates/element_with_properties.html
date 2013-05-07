@@ -1,4 +1,5 @@
-{% set title=element.element.description + ' | Fields | Aid Transparency Tracker'%}{% set active_page='elements'%}{% extends "base.html" %}
+{% set active_page='elements'%}{% extends "base.html" %}
+{% block title %}{{element.element.description}} &raquo; Fields {% endblock %}
 {% block content %}
     <h1>{{element.element.description}}</h1>
     <h3>Multiple versions of {{element.element.name}}</h3>

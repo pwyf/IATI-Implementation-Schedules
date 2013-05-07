@@ -1,4 +1,5 @@
-{% set title=publisher.publisher_actual + ' | Organisations | Aid Transparency Tracker'%}{% set active_page='organisations'%}{% extends "base.html" %}
+{% set active_page='organisations'%}{% extends "base.html" %}
+{% block title %}{{publisher.publisher_actual}} &raquo; Organisations {% endblock %}
 {% block content %}
     <form action="" method="post">
     <h1>{{publisher.publisher}}</h1>

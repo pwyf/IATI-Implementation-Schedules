@@ -1,4 +1,6 @@
-{% set title=publisher.publisher_actual + ' | Edit Schedule | Aid Transparency Tracker'%}{% set active_page='organisations'%}{% extends "base.html" %}
+{% set active_page='organisations'%}
+{% extends "base.html" %}
+{% block title %}{{publisher.publisher_actual}} &raquo; Edit Schedule{% endblock %}
 {% block content %}
     <style>
     .bigchoice label {

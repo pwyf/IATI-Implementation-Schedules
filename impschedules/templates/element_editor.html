@@ -1,4 +1,5 @@
-{% set title=element.element.description + ' | Edit Fields | Aid Transparency Tracker'%}{% set active_page='elements'%}{% extends "base.html" %}
+{% set active_page='elements'%}{% extends "base.html" %}
+{% block title %}{{element.element.description}} &raquo; Edit Fields {% endblock %}
 {% block content %}
     <form action="" method="post">
     <h1>{{element.element.description}}</h1>

@@ -1,13 +1,7 @@
 {% extends "base.html" %}
+{% block title %}Home{% endblock %}
 {% block content %}
 <style>
-.highlight-yellow {
-    background-color: yellow;
-}
-.black {
-    color:#000000;
-    font-size:75px;
-}
 .recline-timeline .vmm-timeline, .data-views .recline-map .map {
     height: 400px;
 }
@@ -75,61 +69,74 @@
     }
     </style>
 
-    <div class="jumbotron">
-    <h1><span class="black">Plan</span></h1>
-    <p class="lead">Donors have released plans to publish more information about their aid activities.</p>
-    <p class="lead">Want to see the big picture? Put the pieces together. Browse the plans.</p>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="span6">
-            <h1>Organisations</h1>
-            <p class="lead">See plans from individual organisations</p>
-            <p>
-            <a class="btn btn-primary" href="{{url_for('organisation')}}">Organisations »</a>
-            </p>
-        </div>
-        <div class="span6">
-            <h1>Fields</h1>
-            <p class="lead">See data fields across all organisations' plans</p>
-            <p>
-            <a class="btn btn-primary" href="{{url_for('element')}}">Fields »</a>
-            </p>
+    <div class="jumbotron masthead">
+        <div class="container">
+        <h1><span class="black">Plan</span></h1>
+        <p class="lead">Donors have released plans to publish more information about their aid activities.</p>
+        <p class="lead">Want to see the big picture? Put the pieces together. Browse the plans.</p>
         </div>
     </div>
-    <div class="row">
-        <div class="span6">
-            <h1>Timeline</h1>
-            <p class="lead">Use the timeline to see a graph of publication over time for different fields</p>
-            <p>
-            <a class="btn btn-primary" href="{{url_for('timeline')}}">Timeline »</a>
-            </p>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+                  <div class="alert alert-{{category}}">
+                    <p>{{message}}</p>
+                    </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <div class="row">
+            <div class="span6">
+                <h1>Organisations</h1>
+                <p class="lead">See plans from individual organisations</p>
+                <p>
+                <a class="btn btn-primary" href="{{url_for('organisation')}}">Organisations »</a>
+                </p>
+            </div>
+            <div class="span6">
+                <h1>Fields</h1>
+                <p class="lead">See data fields across all organisations' plans</p>
+                <p>
+                <a class="btn btn-primary" href="{{url_for('element')}}">Fields »</a>
+                </p>
+            </div>
         </div>
-        <div class="span6">
-            <h1>Report</h1>
-            <p class="lead">Download a report containing our initial analysis</p>
-            <p>
-            <a class="btn btn-primary" href="http://www.publishwhatyoufund.org/files/2013/03/Comparative-analysis-of-the-common-standard-implementation-schedules-Mar-13.docx">Get the report »</a>
-            </p>
+        <div class="row">
+            <div class="span6">
+                <h1>Timeline</h1>
+                <p class="lead">Use the timeline to see a graph of publication over time for different fields</p>
+                <p>
+                <a class="btn btn-primary" href="{{url_for('timeline')}}">Timeline »</a>
+                </p>
+            </div>
+            <div class="span6">
+                <h1>Report</h1>
+                <p class="lead">Download a report containing our initial analysis</p>
+                <p>
+                <a class="btn btn-primary" href="http://www.publishwhatyoufund.org/files/2013/03/Comparative-analysis-of-the-common-standard-implementation-schedules-Mar-13.docx">Get the report »</a>
+                </p>
+            </div>
         </div>
-    </div>
-    <hr />
-    <div class="row-fluid">
-        <div class="span12 data-views">
-          <center><h3>Initial implementation</h3></center>
-          <div class="timeline"></div>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
+        <hr />
+        <div class="row-fluid">
+            <div class="span12 data-views">
+              <center><h3>Initial implementation</h3></center>
+              <div class="timeline"></div>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+            </div>
         </div>
     </div>
 

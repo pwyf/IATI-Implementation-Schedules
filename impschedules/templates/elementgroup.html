@@ -1,4 +1,5 @@
-{% set title=elementgroup.description + ' | Field Group | Aid Transparency Tracker'%}{% set active_page='elementgroups'%}{% extends "base.html" %}
+{% set active_page='elementgroups'%}{% extends "base.html" %}
+{% block title %}{{elementgroup.description}} &raquo; Field Group {% endblock %}
 {% block content %}
     <form action="" method="post">
     <h1>Field Group: {{elementgroup.description}}</h1>
