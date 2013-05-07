@@ -1,6 +1,6 @@
 {% set active_page='elements'%}
 {% extends "base.html" %}
-{% block title %}{{element.element.description}} &raquo; {% endblock %}
+{% block title %}{{element.element.description}} &raquo; Fields {% endblock %}
 {% block content %}
     {% if auth %}{% if element.properties%}
     <a class="btn btn-success pull-right" href="{{url_for('edit_element', id=element.element.name, level=element.element.level, type=element.properties.defining_attribute_value)}}">Edit</a>
