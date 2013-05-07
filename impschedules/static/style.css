@@ -135,3 +135,21 @@ h1, .brand {
 .masthead a:hover {
     color:#ffffff;
 }
+
+.masthead-tracker-home {
+    background: #A1218D;
+    background: -moz-linear-gradient(45deg,#A1218D 0%,#cf48ba 100%);
+    background: -webkit-gradient(linear,left bottom,right top,color-stop(0%,#A1218D),color-stop(100%,#cf48ba));
+    background: -webkit-linear-gradient(45deg,#A1218D 0%,#cf48ba 100%);
+    background: -o-linear-gradient(45deg,#A1218D 0%,#cf48ba 100%);
+    background: -ms-linear-gradient(45deg,#A1218D 0%,#cf48ba 100%);
+    background: linear-gradient(45deg, #A1218D 0%, #cf48ba 100%) repeat scroll 0 0 transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A1218D',endColorstr='#cf48ba',GradientType=1);
+    -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2),inset 0 -3px 7px rgba(0,0,0,.2);
+    -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2),inset 0 -3px 7px rgba(0,0,0,.2);
+    box-shadow: inset 0 3px 7px rgba(0,0,0,.2),inset 0 -3px 7px rgba(0,0,0,.2);
+    padding:60px 0 30px;
+    margin-top:none;
+    top:0;
+    color:#ffffff;
+}
