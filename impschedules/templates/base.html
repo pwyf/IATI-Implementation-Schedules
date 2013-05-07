@@ -47,6 +47,7 @@
                   <li ><a href="/publish/">Publish</a></li>
                 </ul>
               </li>
+              <li{% if active_page == "index" %} class="active"{%endif%}><a href="{{url_for('index')}}">Home</a></li>
               <li{% if active_page == "organisations" %} class="active"{%endif%}><a href="{{url_for('organisation')}}">Organisations</a></li>
               <li{% if active_page == "elements" %} class="active"{%endif%}><a href="{{url_for('element')}}">Fields</a></li>
               <li{% if active_page == "timeline" %} class="active"{%endif%}><a href="{{url_for('timeline')}}">Timeline</a></li>
