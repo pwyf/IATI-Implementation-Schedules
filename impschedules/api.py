@@ -188,7 +188,7 @@ def element_dates_groups():
                             models.Data.date_actual,
                             func.count(models.Data.id)
         ).group_by(models.Property.id, models.Data.date_actual
-        ).filter(models.Data.score==1
+        ).filter(models.Data.score==True
         ).filter(models.Data.date_actual!=None
         ).join(models.Element).join(models.Data).all()
 
