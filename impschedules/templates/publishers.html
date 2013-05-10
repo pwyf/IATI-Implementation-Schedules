@@ -31,7 +31,7 @@
     {% if auth%}<a class="btn btn-success pull-right" href="{{url_for('import_schedule')}}">Import new schedule</a>{%endif%}
     <a class="btn btn-mini pull-right" href="{{url_for('organisation', fileformat='csv')}}"><i class="icon-download"></i> CSV</a>
 	<h1>Organisations</h1>
-    <p class="lead">Organisations' implementation plans have been categorised into groups based on the following criteria. <a href="{{url_for('about')}}" class="btn btn-mini">More details &raquo;</a></p>
+    <p class="lead">Organisations' implementation plans have been categorised into groups based on their intention to publish; their overall publication approach; and coverage. <a href="{{url_for('about')}}" class="btn btn-mini">More details &raquo;</a></p>
     <table class="table">
         <thead>
             <th>Group</th><th>Intention to publish</th><th>Publication approach</th><th>Fields</th>
