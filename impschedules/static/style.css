@@ -207,7 +207,7 @@ h1, .brand {
 }
 .btn-publish {
     background-color: #365e93;
-    background-image: linear-gradient(to bottom, #365e93, #7c9ac4);
+    background-image: linear-gradient(to bottom, #7c9ac4, #365e93);
     background-repeat: repeat-x;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     color: #FFFFFF;
