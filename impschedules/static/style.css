@@ -206,6 +206,21 @@ h1, .brand {
     border-top-color: #FFFFFF !important;
 }
 .btn-publish {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #365e93;
+    *background-color: #365e93;
+    background-image: -moz-linear-gradient(top, #7c9ac4, #365e93);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7c9ac4), to(#365e93));
+    background-image: -webkit-linear-gradient(top, #7c9ac4, #365e93);
+    background-image: -o-linear-gradient(top, #7c9ac4, #365e93);
+    background-image: linear-gradient(to bottom, #7c9ac4, #365e93);
+    background-repeat: repeat-x;
+    border-color: #0044cc #0044cc #002a80;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff7c9ac4', endColorstr='#ff365e93', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+
     background-color: #365e93;
     background-image: linear-gradient(to bottom, #7c9ac4, #365e93);
     background-repeat: repeat-x;
@@ -214,12 +229,20 @@ h1, .brand {
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 .btn-plan {
-    background-color: #EA7F1E;
-    background-image: linear-gradient(to bottom, #ea984d, #EA7F1E);
-    background-repeat: repeat-x;
-    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    color: #FFFFFF;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+      color: #ffffff;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+      background-color: #EA7F1E;
+      *background-color: #EA7F1E;
+      background-image: -moz-linear-gradient(top, #ea984d, #EA7F1E);
+      background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ea984d), to(#EA7F1E));
+      background-image: -webkit-linear-gradient(top, #ea984d, #EA7F1E);
+      background-image: -o-linear-gradient(top, #ea984d, #EA7F1E);
+      background-image: linear-gradient(to bottom, #ea984d, #EA7F1E);
+      background-repeat: repeat-x;
+      border-color: #0044cc #0044cc #002a80;
+      border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffea984d', endColorstr='#ffEA7F1E', GradientType=0);
+      filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 .btn-publish:hover, .btn-publish:focus, .btn-publish:active, .btn-publish.active, .btn-publish.disabled, .btn-publish[disabled] {
     background-color: #365e93;
