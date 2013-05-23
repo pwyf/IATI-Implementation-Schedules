@@ -220,13 +220,6 @@ h1, .brand {
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff7c9ac4', endColorstr='#ff365e93', GradientType=0);
     filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-
-    background-color: #365e93;
-    background-image: linear-gradient(to bottom, #7c9ac4, #365e93);
-    background-repeat: repeat-x;
-    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    color: #FFFFFF;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 .btn-plan {
       color: #ffffff;
