@@ -42,7 +42,7 @@
   <script type="text/javascript" src="{{url_for('static', filename='src/view.multiview.js')}}"></script>
 
 <h1>Timeline</h1>
-<p class="lead">Select fields on the right and see a graph of how many organisations will be publishing that IATI field over time.</p>
+<p class="lead">Select fields on the right and see how many organisations plan to publish that field.</p>
 
 <div id="elementsgraph"></div>
 <div style='clear: both;'></div>
@@ -102,7 +102,7 @@ var createExplorer = function(dataset, state) {
         state: {
             graphType: "lines",
             group: "date",
-            series: ["5", "6"]
+            series: ["5", "41"]
           }
       })
     }
