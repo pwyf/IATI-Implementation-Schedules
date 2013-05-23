@@ -221,3 +221,15 @@ h1, .brand {
     color: #FFFFFF;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
+.btn-publish:hover, .btn-publish:focus, .btn-publish:active, .btn-publish.active, .btn-publish.disabled, .btn-publish[disabled] {
+    background-color: #365e93;
+    color: #FFFFFF;
+}
+.btn-publish:active, .btn-publish.active {
+}
+.btn-plan:hover, .btn-plan:focus, .btn-plan:active, .btn-plan.active, .btn-plan.disabled, .btn-plan[disabled] {
+    background-color: #EA7F1E;
+    color: #FFFFFF;
+}
+.btn-plan:active, .btn-plan.active {
+}
