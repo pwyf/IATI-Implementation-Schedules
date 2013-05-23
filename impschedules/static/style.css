@@ -215,7 +215,7 @@ h1, .brand {
 }
 .btn-plan {
     background-color: #EA7F1E;
-    background-image: linear-gradient(to bottom, #EA7F1E, #ea984d);
+    background-image: linear-gradient(to bottom, #ea984d, #EA7F1E);
     background-repeat: repeat-x;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     color: #FFFFFF;
