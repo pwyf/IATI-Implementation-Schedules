@@ -19,11 +19,11 @@
     $(function() {
         $("table#organisations").tablesorter({ 
                 headers: {
-                    {% if auth %}6{%else%}2{%endif%}: {
+                    {% if auth %}6{%else%}3{%endif%}: {
                         sorter: 'ambitionsorter'
                        }
                 },
-                sortList: [[{% if auth %}6{%else%}2{%endif%},0],[0,0]]
+                sortList: [[{% if auth %}6{%else%}3{%endif%},0],[0,0]]
              });
         $("table#noschedules").tablesorter({ sortList: [[0,0]] });
     });
@@ -52,8 +52,8 @@
     <tr>
 	<td><a href="{{url_for('organisation', id=org_data.publisher.publisher_code_actual)}}">{{ org_data.publisher.publisher_actual }}</a></td>
     <td>{{org_data.properties.publishing_timetable_date_initial.value}}</td>
-    {% if auth %}
     <td>{{scores[org].score.total}}</td>
+    {% if auth %}
     <td>{{scores[org].score.will_publish}}</td>
     <td>{{scores[org].score.approach}}</td>
     <td>{{scores[org].score.elements}}</td>
