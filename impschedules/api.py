@@ -102,7 +102,7 @@ def merge_dict(d1, d2):
 @support_jsonp_publishercode
 def publisher_implementation_data(publisher_code):
     # Small hack for now...
-    if publisher_code.startswith('US'):
+    if ((publisher_code.startswith('US')) and (not publisher_code.startswith('US-EIN'))):
         publisher_code='US'
     elif publisher_code.startswith('JP'):
         publisher_code='JP'
