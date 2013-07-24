@@ -129,6 +129,41 @@ def index():
 def about():
     return render_template("about.html", auth=check_login())
 
+
+@app.route("/impschedules/")
+@login_required
+def show_impschedules():
+    impschedules = db.session.query(models.ImpSchedule,
+                                    models.Publisher
+                ).join(models.Publisher
+                ).all()
+    return render_template("impschedules.html",
+                impschedules=impschedules,
+                auth=check_login())
+
+@app.route("/organisations/<publisher_id>/<id>/delete/")
+@login_required
+def delete_schedule(publisher_id, id):
+    try:
+        # Delete data:
+        data = models.Data.query.filter_by(impschedule_id=id).all()
+        for d in data:
+            db.session.delete(d)
+        db.session.commit()
+
+        isdata = models.ImpScheduleData.query.filter_by(publisher_id=id).all()
+        for isd in isdata:
+            db.session.delete(isd)
+        db.session.commit()
+        
+        schedule = models.ImpSchedule.query.filter_by(id=id).first()
+        db.session.delete(schedule)
+        db.session.commit()
+        flash('Successfully deleted schedule', 'success')
+    except Exception:
+        flash("Couldn't delete schedule", 'error')
+    return redirect(url_for('show_impschedules'))
+
 @app.route("/organisations/<publisher_id>/<id>/edit/", methods=['GET', 'POST'])
 @login_required
 def edit_schedule(publisher_id=None, id=None):
