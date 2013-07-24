@@ -61,7 +61,8 @@
                 <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li ><a href="{{url_for('logout')}}">Log out</a></li>
+                  <li><a href="{{url_for('logout')}}">Log out</a></li>
+                  <li><a href="{{url_for('show_impschedules')}}"{% if active_page == "impschedules" %} class="active"{%endif%}>Implementation Schedules</a></li>
                 </ul>
               </li>
             </ul>
