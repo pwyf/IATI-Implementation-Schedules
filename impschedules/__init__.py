@@ -871,13 +871,13 @@ def organisation(id=None, fileformat=None):
         if ((fileformat is not None) and (fileformat=='csv')):
         
             strIO = StringIO.StringIO()
-            out = csv.DictWriter(strIO, fieldnames="publisher_name publisher_code implementation_date will_publish approach fields group".split())
-            out.writerow({"publisher_name": "publisher_name", "publisher_code": "publisher_code", "implementation_date": "implementation_date", "will_publish": "will_publish", "approach": "approach", "fields": "fields", "group": "group"})
+            out = csv.DictWriter(strIO, fieldnames="publisher_name publisher_code implementation_date total will_publish approach fields group".split())
+            out.writerow({"publisher_name": "publisher_name", "publisher_code": "publisher_code", "implementation_date": "implementation_date", "total": "total", "will_publish": "will_publish", "approach": "approach", "fields": "fields", "group": "group"})
             for org in orgs:
                 
                 publisher = orgs[org]["publisher"].id
                 schedule = orgs[org]["impschedule"].id
-                out.writerow({"publisher_name": orgs[schedule]["publisher"].publisher_actual, "publisher_code": orgs[schedule]["publisher"].publisher_code_actual, "implementation_date": orgs[schedule]["properties"]["publishing_timetable_date_initial"]["value"], "will_publish": scores[schedule]["score"]["will_publish"], "approach": scores[schedule]["score"]["approach"], "fields": scores[schedule]["score"]["elements"], "group": scores[schedule]["score"]["group"]})
+                out.writerow({"publisher_name": orgs[schedule]["publisher"].publisher_actual, "publisher_code": orgs[schedule]["publisher"].publisher_code_actual, "implementation_date": orgs[schedule]["properties"]["publishing_timetable_date_initial"]["value"], "total": scores[schedule]["score"]["total"], "will_publish": scores[schedule]["score"]["will_publish"], "approach": scores[schedule]["score"]["approach"], "fields": scores[schedule]["score"]["elements"], "group": scores[schedule]["score"]["group"]})
             strIO.seek(0)
             return send_file(strIO,
                              attachment_filename="organisations.csv",
