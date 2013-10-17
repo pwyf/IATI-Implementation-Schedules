@@ -41,7 +41,8 @@ def score_all(data, publishers, elements, org_data):
         else:
             will_publish = 0.0
         
-        if (org_data[publisher]["properties"]["publishing_license"]["value"] != ""):
+        if ((org_data[publisher]["properties"]["publishing_license"]["value"] != "") and 
+                (org_data[publisher]["properties"]["publishing_license"]["value"] != "o"):
             license = 1.0
         else:
             license = 0.0
