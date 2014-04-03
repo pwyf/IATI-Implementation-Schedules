@@ -3,7 +3,7 @@ from impschedules import app
 from impschedules import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class User(db.Model):
+class ImpSchedUser(db.Model):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     username = Column(UnicodeText)
