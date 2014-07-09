@@ -8,6 +8,7 @@ import models
 import properties
 import flask
 import re
+import publisher_redirects
 
 @app.route("/api/publishers/data/<segment>/")
 def publishers_implementation_data(segment):
@@ -102,12 +103,8 @@ def merge_dict(d1, d2):
 @support_jsonp_publishercode
 def publisher_implementation_data(publisher_code):
     # Small hack for now...
-    if ((publisher_code.startswith('US')) and (not publisher_code.startswith('US-EIN'))):
-        publisher_code='US'
-    elif publisher_code.startswith('JP'):
-        publisher_code='JP'
-    elif publisher_code.startswith('DE'):
-        publisher_code='DE-1'
+    
+    publisher_code = publisher_redirects.correct_publisher(publisher_code)
     publisher = models.Publisher.query.filter_by(publisher_code_actual=publisher_code).first_or_404()
     impschedule = models.ImpSchedule.query.filter_by(publisher_id=publisher.id).first_or_404()
    
