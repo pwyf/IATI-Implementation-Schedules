@@ -45,7 +45,7 @@ def check_login():
     else:
         return None
 
-@app.route('/setup/')
+#@app.route('/setup/')
 def setup():
     db.create_all()
     # create user
