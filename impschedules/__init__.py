@@ -27,6 +27,7 @@ import properties
 import api
 from isfunctions import *
 from isprocessing import *
+import publisher_redirects
 
 db.create_all()
 
@@ -681,8 +682,8 @@ def makeNiceEncoding(value):
 def organisation(id=None, fileformat=None):
     if (id is not None):
         # Small hack for now...
-        if id.startswith('US'):
-            id='US'
+        id = publisher_redirects.correct_publisher(id)
+
         """ need to return:
             # publisher information
             # publisher data
