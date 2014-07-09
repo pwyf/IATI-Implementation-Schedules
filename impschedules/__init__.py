@@ -27,112 +27,19 @@ import properties
 import api
 from isfunctions import *
 from isprocessing import *
-import publisher_redirects
-
-db.create_all()
-
-def login_required(fn):
-    @wraps(fn)
-    def decorated_function(*args, **kwargs):
-        if "username" not in session:
-            flash('You must log in to access that page.', 'error')
-            return redirect(url_for('index'))
-        return fn(*args, **kwargs)
-    return decorated_function
-
-def check_login():
-    if ("username" in session):
-        return session["admin"]
-    else:
-        return None
-
-#@app.route('/setup/')
-def setup():
-    db.create_all()
-    # create user
-    username = "admin"
-    password = app.config["ADMIN_PASSWORD"]
-    admin = 1
-    u = models.ImpSchedUser(username,password,admin)
-    db.session.add(u)
-    db.session.commit()
-
-    # create publishers
-
-    for publisher in properties.publishers:
-        p = models.Publisher()
-        p.publisher_actual = publisher["name"]
-        p.publisher_original = publisher["name"]
-        p.publisher_code_actual = publisher["code"]
-        p.publisher_code_original = publisher["code"]
-        db.session.add(p)
-    db.session.commit()
-    
-    # create properties
-    attributes = {'notes': {}, 'status_category': {}, 'publication_date': {}, 'exclusions': {}}
-    elementgroups = properties.elementgroups
-    
-    for elementgroup, values in elementgroups.items():
-        eg = models.ElementGroup()
-        eg.name = elementgroup
-        eg.description = values["description"]
-        eg.order = values["order"]
-        db.session.add(eg)
-    db.session.commit()
-
-    elementgroups = db.session.query(
-                    models.ElementGroup.id,
-                    models.ElementGroup.name
-                    ).all()
-    elementgroups = dict(map(lambda x: (x[1],x[0]), elementgroups))
-
-    elements = properties.elements
-    for level, values in elements.items():
-        for element, elvalue in values.items():
-            e = models.Element()
-            e.name = element
-            e.level = level
-            e.elementgroup = elementgroups[elvalue["group"]]
-            if (elvalue.has_key("description")):
-                e.description = elvalue["description"]
-                e.order = elvalue["order"]
-            db.session.add(e)
-            db.session.commit()
-            element_id = e.id
-            if (elvalue.has_key("defining_attribute")):
-                # if there are multiple versions of this element, e.g. funding, extending participating-orgs
-                for defining_attribute_value, property_values in elvalue["defining_attribute_values"].items():
-                    #for attribute in attributes:
-                    p = models.Property()
-                    p.level = level
-                    p.parent_element = element_id
-                    #p.attribute = attribute
-                    p.defining_attribute = elvalue["defining_attribute"]
-                    p.defining_attribute_value = defining_attribute_value
-                    p.defining_attribute_description = property_values['description']
-                    p.order = property_values['order']
-                    db.session.add(p)
-            else:
-                #for attribute in attributes:
-                p = models.Property()
-                p.level = level
-                p.parent_element = element_id
-                #p.attribute = attribute
-                db.session.add(p)
-    db.session.commit()
-    return 'Setup. <a href="/import">Import</a> XML files?'
+import publisher_redirects, usermanagement
 
 @app.route("/")
 def index():
-    return render_template("dashboard.html", auth=check_login())
+    return render_template("dashboard.html", auth=usermanagement.check_login())
 
 @app.route("/about/")
 def about():
-    return render_template("about.html", auth=check_login())
+    return render_template("about.html", auth=usermanagement.check_login())
 
 
 @app.route("/impschedules/")
-@login_required
+@usermanagement.login_required
 def show_impschedules():
     impschedules = db.session.query(models.ImpSchedule,
                                     models.Publisher
@@ -140,10 +47,10 @@ def show_impschedules():
                 ).all()
     return render_template("impschedules.html",
                 impschedules=impschedules,
-                auth=check_login())
+                auth=usermanagement.check_login())
 
 @app.route("/organisations/<publisher_id>/<id>/delete/")
-@login_required
+@usermanagement.login_required
 def delete_schedule(publisher_id, id):
     try:
         # Delete data:
@@ -166,7 +73,7 @@ def delete_schedule(publisher_id, id):
     return redirect(url_for('show_impschedules'))
 
 @app.route("/organisations/<publisher_id>/<id>/edit/", methods=['GET', 'POST'])
-@login_required
+@usermanagement.login_required
 def edit_schedule(publisher_id=None, id=None):
     if (request.method == 'POST'):
         if ("do_import" in request.form):
@@ -319,10 +226,10 @@ def edit_schedule(publisher_id=None, id=None):
         data = {}
         for d in elementdata:
             merge_dict(data, d)
-        return render_template("edit_schedule.html", auth=check_login(), publisher=publisher, schedule=schedule, schedule_data=schedule_data, data=data, properties=properties)
+        return render_template("edit_schedule.html", auth=usermanagement.check_login(), publisher=publisher, schedule=schedule, schedule_data=schedule_data, data=data, properties=properties)
 
 @app.route("/import/", methods=['GET', 'POST'])
-@login_required
+@usermanagement.login_required
 def import_schedule():
     if (request.method == 'POST'):
         if ("form#createupdate" in request.form):
@@ -463,36 +370,36 @@ def import_schedule():
             url = request.form['url']
             structure = request.form['structure']
             local_file_name = app.config["TEMP_FILES_DIR"] + "/" + ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range (5))
-            try:
-                try:
-                    f = urllib.urlretrieve(url, local_file_name)
-                except IOError:
-                    raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
+            #try:
+            #try:
+            f = urllib.urlretrieve(url, local_file_name)
+            #except IOError:
+            #    raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
 
-                # Pass to implementation schedule converter
-                try:
-                    xml = toxml.convert_schedule(local_file_name, structure)
-                except Exception, e:
-                    msg = "Could not convert your schedule: " + str(e)
-                    flash (msg, "error")
-                    return render_template('import.html')
-                doc = etree.fromstring(xml)
-                context = {}
-                context['source_file'] = url
-                schedules = doc.findall("metadata")
-                try:
-                    flash ("Successfully parsed your implementation schedule.", "success")
-                    return render_template("import_schedule_steps.html", doc=doc, properties=properties, source_file=url, publishers=publishers)
-                except Exception, e:
-                    msg = "There was an unknown error importing your schedule. The error was: " + str(e)
-                    flash (msg, "error")
-                    return render_template('import.html')
+            # Pass to implementation schedule converter
+            try:
+                xml = toxml.convert_schedule(local_file_name, structure)
+            except Exception, e:
+                msg = "Could not convert your schedule: " + str(e)
+                flash (msg, "error")
+                return render_template('import.html')
+            doc = etree.fromstring(xml)
+            context = {}
+            context['source_file'] = url
+            schedules = doc.findall("metadata")
+            try:
+                flash ("Successfully parsed your implementation schedule.", "success")
+                return render_template("import_schedule_steps.html", doc=doc, properties=properties, source_file=url, publishers=publishers)
             except Exception, e:
                 msg = "There was an unknown error importing your schedule. The error was: " + str(e)
                 flash (msg, "error")
-                return render_template('import.html', auth=check_login())
+                return render_template('import.html')
+            """except Exception, e:
+                msg = "There was an unknown error importing your schedule. The error was: " + str(e)
+                flash (msg, "error")
+                return render_template('import.html', auth=usermanagement.check_login())"""
     else:
-        return render_template("import.html", auth=check_login())
+        return render_template("import.html", auth=usermanagement.check_login())
 
 @app.route("/fieldgroups/")
 @app.route("/fieldgroups/<id>/")
@@ -506,7 +413,7 @@ def elementgroup(id=None):
                     ).filter(
                     models.ElementGroup.id==id
                     ).first()
-        return render_template("elementgroup.html", elementgroup=elementgroup, auth=check_login())
+        return render_template("elementgroup.html", elementgroup=elementgroup, auth=usermanagement.check_login())
     else:
         elementgroups = db.session.query(
                     models.ElementGroup.id,
@@ -516,10 +423,10 @@ def elementgroup(id=None):
                     models.ElementGroup.order
                     ).order_by(models.ElementGroup.order
                     ).all()
-        return render_template("elementgroups.html", elementgroups=elementgroups, auth=check_login())
+        return render_template("elementgroups.html", elementgroups=elementgroups, auth=usermanagement.check_login())
 
 @app.route("/fieldgroups/<id>/edit/", methods=['GET', 'POST'])
-@login_required
+@usermanagement.login_required
 def elementgroup_edit(id=None):
     if (request.method == 'POST'):
         # handle post
@@ -528,7 +435,7 @@ def elementgroup_edit(id=None):
         db.session.add(elementgroup)
         db.session.commit()
         flash('Updated element group', "success")
-        return render_template("elementgroup_edit.html", elementgroup=elementgroup, auth=check_login())
+        return render_template("elementgroup_edit.html", elementgroup=elementgroup, auth=usermanagement.check_login())
     else:
         elementgroup = db.session.query(
                     models.ElementGroup.id,
@@ -538,11 +445,11 @@ def elementgroup_edit(id=None):
                     ).filter(
                     models.ElementGroup.id==id
                     ).first()
-        return render_template("elementgroup_edit.html", elementgroup=elementgroup, auth=check_login())
+        return render_template("elementgroup_edit.html", elementgroup=elementgroup, auth=usermanagement.check_login())
 
 @app.route("/fields/<level>/<id>/edit/", methods=['GET', 'POST'])
 @app.route("/fields/<level>/<id>/<type>/edit/", methods=['GET', 'POST'])
-@login_required
+@usermanagement.login_required
 def edit_element(level=None,id=None,type=None):
     if (level is not None and id is not None):
         if (request.method == 'POST'):
@@ -574,7 +481,7 @@ def edit_element(level=None,id=None,type=None):
 
             db.session.commit()
             flash('Updated element', "success")
-            return render_template("element_editor.html", element=elements, auth=check_login())
+            return render_template("element_editor.html", element=elements, auth=usermanagement.check_login())
         else:
             if (type):
                 element = db.session.query(models.Element, models.Property
@@ -589,7 +496,7 @@ def edit_element(level=None,id=None,type=None):
                     ).join(models.Property).first()
                 elements = {'element': element[0]}
 
-            return render_template("element_editor.html", element=elements, auth=check_login())
+            return render_template("element_editor.html", element=elements, auth=usermanagement.check_login())
     else:
         abort(404)
 
@@ -633,8 +540,8 @@ def element(level=None, id=None, type=None):
                 ).join(models.Element).all()
                 elements = {'element': element[0],
                             'properties':prop}
-                return render_template("element_with_properties.html", element=elements, auth=check_login())
-        return render_template("element.html", element=elements, data=data, auth=check_login(), properties=properties)
+                return render_template("element_with_properties.html", element=elements, auth=usermanagement.check_login())
+        return render_template("element.html", element=elements, data=data, auth=usermanagement.check_login(), properties=properties)
     else:
         x = db.session.query(models.Property,
                              models.Element,
@@ -662,7 +569,7 @@ def element(level=None, id=None, type=None):
                     data[x]["scores"][v] = 0
             data[x]["scores"]["percentage"] = int(round(((float(data[x]["scores"][True])/(float(data[x]["scores"][True]+data[x]["scores"][None])))*100),0))
 
-        return render_template("elements.html", data=data, auth=check_login())
+        return render_template("elements.html", data=data, auth=usermanagement.check_login())
 
 
 
@@ -814,7 +721,7 @@ def organisation(id=None, fileformat=None):
 
         else:
 
-            return render_template("publisher.html", publisher=publisher, schedule=schedule, data=data, segments=schedule_data, properties=properties, score=s, score_calculations=Markup(s["calculations"]), auth=check_login(), change_reasons=change_reasons)
+            return render_template("publisher.html", publisher=publisher, schedule=schedule, data=data, segments=schedule_data, properties=properties, score=s, score_calculations=Markup(s["calculations"]), auth=usermanagement.check_login(), change_reasons=change_reasons)
     else:
         # get all publishers
         allpublishers = models.Publisher.query.all()
@@ -880,7 +787,7 @@ def organisation(id=None, fileformat=None):
                              attachment_filename="organisations.csv",
                              as_attachment=True)
         else:
-            return render_template("publishers.html", orgs=orgs, scores=scores, auth=check_login(), notpublishing=allpublishers)
+            return render_template("publishers.html", orgs=orgs, scores=scores, auth=usermanagement.check_login(), notpublishing=allpublishers)
 
 def merge_dict(d1, d2):
     # from here: http://stackoverflow.com/questions/10703858/python-merge-multi-level-dictionaries
@@ -925,7 +832,7 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route("/organisations/<id>/edit/", methods=['GET', 'POST'])
-@login_required
+@usermanagement.login_required
 def organisation_edit(id=id):
     if (request.method == 'POST'):
         publisher = models.Publisher.query.filter_by(publisher_code_actual=id).first()
@@ -945,7 +852,7 @@ def organisation_edit(id=id):
     else:
         publisher = models.Publisher.query.filter_by(publisher_code_actual=id).first()
         impschedule = models.ImpSchedule.query.filter_by(publisher_id=publisher.id).first()
-        return render_template("publisher_editor.html", publisher=publisher, impschedule=impschedule, auth=check_login())
+        return render_template("publisher_editor.html", publisher=publisher, impschedule=impschedule, auth=usermanagement.check_login())
 
 @app.route("/timeline/")
 def timeline(id=id):
@@ -958,12 +865,12 @@ def timeline(id=id):
                             models.Property.id.label("propertyid")
         ).distinct(
         ).join(models.Element).all()
-    return render_template("timeline.html", elements=elements, auth=check_login())
+    return render_template("timeline.html", elements=elements, auth=usermanagement.check_login())
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html', auth=check_login()), 404
+    return render_template('404.html', auth=usermanagement.check_login()), 404
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return render_template('500.html', error=e, auth=check_login()), 500
+    return render_template('500.html', error=e, auth=usermanagement.check_login()), 500
