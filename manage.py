@@ -1,11 +1,15 @@
-from flask.ext.script import Manager
-from flask.ext.celery import install_commands as install_celery_commands
+#!/usr/bin/env python
 
-from impschedules import app, db
+from flask.ext.script import Manager, Server
 
-db.create_all()
-manager = Manager(app)
-install_celery_commands(manager)
+import impschedules
+
+def run():
+    impschedules.db.create_all()
+    manager = Manager(impschedules.app)
+    server = Server(host='0.0.0.0')
+    manager.add_command("runserver", server)
+    manager.run()
 
 if __name__ == "__main__":
-    manager.run()
+    run()
