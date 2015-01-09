@@ -234,7 +234,7 @@ def organisation(id=None, fileformat=None):
                 ).all()
 
 
-        elementdata = db.session.query(models.Data,
+        element_data = db.session.query(models.Data,
                                        models.Property,
                                        models.Element,
                                        models.ElementGroup,
@@ -246,7 +246,7 @@ def organisation(id=None, fileformat=None):
                                       ).all()
         
         data = collections.OrderedDict()
-        elementdata = map(lambda ed: {ed.ElementGroup.id : {
+        element_data = map(lambda ed: {ed.ElementGroup.id : {
                    'name': ed.ElementGroup.name,
                    'description': ed.ElementGroup.description,
                    'weight': ed.Element.weight,
@@ -269,9 +269,9 @@ def organisation(id=None, fileformat=None):
                             }
                       }
                     }
-                }}}, elementdata)
+                }}}, element_data)
 
-        for d in elementdata:
+        for d in element_data:
             merge_dict(data, d)
     
         change_reasons = models.AlterationCategory.query.all()
