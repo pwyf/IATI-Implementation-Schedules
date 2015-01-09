@@ -1,28 +1,13 @@
 from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response, current_app, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import sys, os
-from lxml import etree
 from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import func
-import datetime
-import re
-import json
-import urllib
-import string
-import random
-import iatiimplementationxml.toxml as toxml
-import collections
-from functools import wraps
-import StringIO
-import csv
-from icalendar import Calendar, Event
 
 from impschedules import app, db
 
-import models, properties, api
+import models, properties, api, usermanagement
 from isfunctions import *
 from isprocessing import *
-import publisher_redirects, usermanagement
 
 @app.route("/")
 def index():
