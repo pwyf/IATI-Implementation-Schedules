@@ -11,7 +11,7 @@ from icalendar import Calendar, Event
 import models, usermanagement, publisher_redirects
 from impschedules import app, db, properties
 from isfunctions import merge_dict
-from isprocessing import score2, score_all
+from isprocessing import score2, score_all, score_publisher
 
 @app.route("/organisations/<publisher_id>/<id>/delete/")
 @usermanagement.login_required
@@ -210,29 +210,12 @@ def organisation(id=None, fileformat=None):
         # Small hack for now...
         id = publisher_redirects.correct_publisher(id)
 
-        """ need to return:
-            # publisher information
-            # publisher data
-            # elementgroups 
-                # element-property
-                    # element-property data
-                    # data
-
-            Query: publisher for ImpSchedule
-                   publisher data
-                   all data where impschedule = id
-                            + property
-                            + element
-                            + parent element
-        """
-
         publisher = models.Publisher.query.filter_by(publisher_code_actual=id).first_or_404()
         schedule = models.ImpSchedule.query.filter_by(publisher_id=publisher.id).first_or_404()
         schedule_data = db.session.query(models.ImpScheduleData
                 ).filter(models.ImpSchedule.id==schedule.id
                 ).join(models.ImpSchedule
                 ).all()
-
 
         element_data = db.session.query(models.Data,
                                        models.Property,
