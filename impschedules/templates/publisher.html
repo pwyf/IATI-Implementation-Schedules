@@ -14,7 +14,11 @@
     }
     </style>
     {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('organisation_edit', id=publisher.publisher_code_actual)}}">Edit organisation</a>{%endif%}
-    <div class="pull-right"><a href="{{schedule.source_file}}" title="{{schedule.source_file}}" class="btn btn-mini"><i class="icon icon-file"></i> Source</a> <a class="btn btn-mini" href="{{url_for('organisation', id=publisher.publisher_code_actual, fileformat='ics')}}"><i class="icon-calendar"></i> iCal</a> <a class="btn btn-mini" href="{{url_for('organisation', id=publisher.publisher_code_actual, fileformat='csv')}}"><i class="icon-download"></i> CSV</a></div>
+    <div class="pull-right">
+      <a href="{{schedule.source_file}}" title="{{schedule.source_file}}" class="btn btn-mini"><i class="icon icon-file"></i> Source</a> 
+      <a class="btn btn-mini" href="{{url_for('organisation', id=publisher.publisher_code_actual, fileformat='ics')}}"><i class="icon-calendar"></i> iCal</a> 
+      <a class="btn btn-mini" href="{{url_for('organisation', id=publisher.publisher_code_actual, fileformat='csv')}}"><i class="icon-download"></i> CSV</a>
+    </div>
     <h1>{{publisher.publisher_actual}} <span class="{{score.group_code}} label lead" >{{score.group}}</span> </h1>
         {% if schedule.analysis %}
             <div class="alert alert-info">
@@ -32,20 +36,25 @@
         <th width="30%">Status</th>
     </thead>
     <tbody>
-            <tr>
-                <td>Frequency</td><td>
-                <div class="progress">
-                    <div class="bar" data-width="{{score.frequency*100|int}}"></div>
-                </div></td><td>{% if score.frequency ==1 %}At least quarterly{%else %}Less than quarterly{%endif%}</td>
-            </tr>
-            <tr>
-                <td>Licence</td><td><div class="progress">
-                    <div class="bar" data-width="{{score.license*100|int}}"></div>
-                </div></td><td>{% if score.license ==1 %}Open licence{%else %}Not an open licence{%endif%}</td>
-            </tr>
-            <tr><td></td><td></td>
-                <td> <a href="#basicinfo" class="btn" role="button" data-toggle="modal">Details &raquo;</a></td>
-            </tr>
+      <tr>
+        <td>Frequency</td>
+        <td><div class="progress">
+            <div class="bar" data-width="{{score.frequency*100|int}}"></div>
+        </div></td>
+        <td>{% if score.frequency ==1 %}At least quarterly{%else %}Less than quarterly{%endif%}</td>
+      </tr>
+      <tr>
+        <td>Licence</td>
+        <td><div class="progress">
+            <div class="bar" data-width="{{score.license*100|int}}"></div>
+        </div></td>
+        <td>{% if score.license ==1 %}Open licence{%else %}Not an open licence{%endif%}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td> <a href="#basicinfo" class="btn" role="button" data-toggle="modal">Details &raquo;</a></td>
+      </tr>
     </tbody>
     </table>
     <h4>Fields</h4>
@@ -58,7 +67,7 @@
     </thead>
     <tbody>
     {% for groupid, groupvalues in data.items() %}
-        <tr>
+      <tr>
         <td><a href="#{{groupvalues.name}}" class="scrollto">{{groupvalues.description}}</a></td>
         <td><div class="progress">
                 <div class="bar" data-width="{{score.groups[groupid].total|int}}"></div>
@@ -66,15 +75,15 @@
         </td>
         <td>{{score.groups[groupid].total}}%</td>
         <td>{{score.groups[groupid].yes}} of {{(score.groups[groupid].no+score.groups[groupid].yes)}}</td>
-        </tr>
+      </tr>
     {% endfor%}
-    <tr><td>Average for all groups</td>
-
-        <td><div class="progress">
-                <div class="bar" data-width="{{score.elements}}"></div>
-            </div>
-        </td>
-        <td colspan="2">{{score.elements}}%</td>
+    <tr>
+      <td>Average for all groups</td>
+      <td><div class="progress">
+              <div class="bar" data-width="{{score.elements}}"></div>
+          </div>
+      </td>
+      <td colspan="2">{{score.elements}}%</td>
     </tr>
     </tbody>
     </table>
@@ -82,113 +91,122 @@
     <div id="basicinfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Publication approach: detailed information</h3>
-            </div>
-            <div class="modal-body">
-           <table class="table">
-                <thead>
-                    <th width="50%">Item</th>
-                    <th width="50%">Value</th>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Publisher name</td>
-                    <td>{{publisher.publisher_actual}}</td>
-                </tr>
-                <tr>
-                    <td>Publisher code</td>
-                    <td>{{publisher.publisher_code_actual}}</td>
-                </tr>
-                <tr>
-                    <td>Schedule version</td>
-                    <td>{{schedule.schedule_version_actual}}</td>
-                </tr>
-                <tr>
-                    <td>Schedule date</td>
-                    <td>{{schedule.schedule_date_actual}}</td>
-                </tr>
-                {% for segment in segments %}
-                <tr>
-                    <td>{{properties.properties[segment.segment]["name"]}}</td>
-                    <td>{% if properties.properties[segment.segment]["type"] == "text" %}{% if segment.segment_value_actual is not none %}{{segment.segment_value_actual}}{%endif%}{%else%}
-                    {{properties.codes[properties.properties[segment.segment]["code"]][segment.segment_value_actual]}}
-                    {% endif%}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            </div>
+      <h3 id="myModalLabel">Publication approach: detailed information</h3>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+              <th width="50%">Item</th>
+              <th width="50%">Value</th>
+          </thead>
+          <tbody>
+          <tr>
+              <td>Publisher name</td>
+              <td>{{publisher.publisher_actual}}</td>
+          </tr>
+          <tr>
+              <td>Publisher code</td>
+              <td>{{publisher.publisher_code_actual}}</td>
+          </tr>
+          <tr>
+              <td>Schedule version</td>
+              <td>{{schedule.schedule_version_actual}}</td>
+          </tr>
+          <tr>
+              <td>Schedule date</td>
+              <td>{{schedule.schedule_date_actual}}</td>
+          </tr>
+          {% for segment in segments %}
+          <tr>
+              <td>{{properties.properties[segment.segment]["name"]}}</td>
+              <td>{% if properties.properties[segment.segment]["type"] == "text" %}{% if segment.segment_value_actual is not none %}{{segment.segment_value_actual}}{%endif%}{%else%}
+              {{properties.codes[properties.properties[segment.segment]["code"]][segment.segment_value_actual]}}
+              {% endif%}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
     </div>
     <hr />
     {% if auth %}<a class="btn btn-success pull-right" href="{{url_for('edit_schedule', publisher_id=publisher.publisher_code_actual, id=schedule.id)}}">Edit</a>{%endif%}
-            <h3>Detailed results</h3>
-            <p>The information in the following table is as provided by the publisher, except where changes have been made by Publish What You Fund staff (marked with the button <a class="btn btn-mini" role="button"><i class="icon-info-sign hideindent">changes</i></a>, which you can click for details of changes).</p>
-            <p>Where a field has been scored, it is marked with a <i class="icon-ok hideindent">1</i> icon. Where a field has not been weighted (for all donors) it is marked with a <i class="icon-ban-circle hideindent">N/A</i> icon. You can read more about the scoring methodology on the <a href="{{url_for('about')}}">about</a> page.</p>
-            <table class="table" id="tabledetailed">
-            <thead>
-                <th>Level</th>
-                <th>Field</th>
-                <th>Compliance</th>
-                <th>Publication date</th>
-                <th>Notes</th>
-                <th>Score?</th>
-                <th>Changes?</th>
-            </thead>
-            <tbody>
-            {% for groupid, groupvalues in data.items() %}
-                <tr class="info"><td colspan="7"><a id="{{groupvalues.name}}"></a><b>{{groupvalues.description}}</b></tr>
-                {% for elementid, elementvalues in groupvalues.elements.items() %}
-                   {% for propertyid, propertyvalues in elementvalues.properties.items() %}{% set unweight=false %}
-                        {% set status = propertyvalues.data.status_actual%}
-                        <tr{% if ((elementvalues.weight == 0) or (propertyvalues.weight==0)) %}{% set unweight=true %} class="muted"{%endif%}>
-                            <td>{{elementvalues.level|capitalize}}</td>
-                            <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', level=elementvalues.level, id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', level=elementvalues.level, id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_description}}){%endif%}</a></td>
-                            <td>
-                            <i class="{{properties.status_formatted[status]['class']}}" title="{{properties.status_formatted[status]['name']}}"></i><br />
-                            {{properties.status_formatted[status]['name']}}
-                            </td>
-                            <td>{% if propertyvalues.data.date_actual is not none %}{{propertyvalues.data.date_actual}}{%endif%}</td>
-                            <td>{{propertyvalues.data.notes_actual}}</td>
-                            <td>{% if unweight %}<a href="#noweightbox" role="button" class="btn" data-toggle="modal"><i class="icon-ban-circle hideindent" title="Field not scored (for all donors).">N/A</i></a>{%else%}{% if propertyvalues.data.score is not none %}<i class="icon-ok hideindent">1</i>{%endif%}{%endif%}</td>
-                            <td>{% if (propertyvalues.data.status_change or propertyvalues.data.date_change or propertyvalues.data.notes_change)  %}
-                            <a href="#change{{propertyvalues.data.id}}" role="button" class="btn" data-toggle="modal"><i class="icon-info-sign hideindent">changes</i></a>
+    <h3>Detailed results</h3>
+    <p>The information in the following table is as provided by the publisher, except where changes have been made by Publish What You Fund staff (marked with the button <a class="btn btn-mini" role="button"><i class="icon-info-sign hideindent">changes</i></a>, which you can click for details of changes).</p>
+    <p>Where a field has been scored, it is marked with a <i class="icon-ok hideindent">1</i> icon. Where a field has not been weighted (for all donors) it is marked with a <i class="icon-ban-circle hideindent">N/A</i> icon. You can read more about the scoring methodology on the <a href="{{url_for('about')}}">about</a> page.</p>
+    <table class="table" id="tabledetailed">
+    <thead>
+        <th>Level</th>
+        <th>Field</th>
+        <th>Compliance</th>
+        <th>Publication date</th>
+        <th>Notes</th>
+        <th>Score?</th>
+        <th>Changes?</th>
+    </thead>
+    <tbody>
+    {% for groupid, groupvalues in data.items() %}
+      <tr class="info"><td colspan="7"><a id="{{groupvalues.name}}"></a><b>{{groupvalues.description}}</b></tr>
+      {% for elementid, elementvalues in groupvalues.elements.items() %}
+      {% for propertyid, propertyvalues in elementvalues.properties.items() %}{% set unweight=false %}
+      {% set status = propertyvalues.data.status_actual%}
+      <tr{% if ((elementvalues.weight == 0) or (propertyvalues.weight==0)) %}{% set unweight=true %} class="muted"{%endif%}>
+          <td>{{elementvalues.level|capitalize}}</td>
+          <td><a href="{% if propertyvalues.defining_attribute_value %}{{url_for('element', level=elementvalues.level, id=elementvalues.name, type=propertyvalues.defining_attribute_value)}}{%else%}{{url_for('element', level=elementvalues.level, id=elementvalues.name)}}{%endif%}">{{elementvalues.description}}{% if propertyvalues.defining_attribute_value%} ({{propertyvalues.defining_attribute_description}}){%endif%}</a></td>
+          <td>
+          <i class="{{properties.status_formatted[status]['class']}}" title="{{properties.status_formatted[status]['name']}}"></i><br />
+          {{properties.status_formatted[status]['name']}}
+          </td>
+          <td>{% if propertyvalues.data.date_actual is not none %}{{propertyvalues.data.date_actual}}{%endif%}</td>
+          <td>{{propertyvalues.data.notes_actual}}</td>
+          <td>{% if unweight %}<a href="#noweightbox" role="button" class="btn" data-toggle="modal"><i class="icon-ban-circle hideindent" title="Field not scored (for all donors).">N/A</i></a>{%else%}{% if propertyvalues.data.score is not none %}<i class="icon-ok hideindent">1</i>{%endif%}{%endif%}</td>
+          <td>{% if (propertyvalues.data.status_change or propertyvalues.data.date_change or propertyvalues.data.notes_change)  %}
+          <a href="#change{{propertyvalues.data.id}}" role="button" class="btn" data-toggle="modal"><i class="icon-info-sign hideindent">changes</i></a>
 
-                            <div id="change{{propertyvalues.data.id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h3 id="myModalLabel">Change log</h3>
-                                    </div>
-                                    <div class="modal-body">
-                                    <p>Implementation schedules were amended when information provided was incomplete, not parsed properly or required interpretation.</p>
-                                    <table class="table">
-                                    <thead><th>Component</th><th>Initial</th><th>Corrected</th><th>Change reason</th></thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Status</td><td>{{properties.status[propertyvalues.data.status_original]}}</td><td>{{properties.status[propertyvalues.data.status_actual]}}</td>{% if propertyvalues.data.status_change %}<td><span title="{{change_reasons[propertyvalues.data.status_change][1]}}">{{properties.change_reasons[propertyvalues.data.status_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
-                                        </tr>
-                                        <tr>
-                                            <td>Date</td><td>{{propertyvalues.data.date_original}}</td><td>{{propertyvalues.data.date_actual}}</td>{%if propertyvalues.data.date_change%}<td><span title="{{change_reasons[propertyvalues.data.date_change][1]}}">{{properties.change_reasons[propertyvalues.data.date_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
-                                        </tr>
-                                        <tr>
-                                            <td>Notes</td><td>{{propertyvalues.data.notes_original}}</td><td>{{propertyvalues.data.notes_actual}}</td>{% if propertyvalues.data.notes_change %}<td><span title="{{change_reasons[propertyvalues.data.notes_change][1]}}">{{properties.change_reasons[propertyvalues.data.notes_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
-                                        </tr>
-                                    </table>
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                    </div>
-                            </div>
-                            {%endif%}
-                            </td>
-                        </tr>
-                   {%endfor%}
-                {% endfor %}
-            {% endfor %}
-            </tbody>
-            </table>
+          <div id="change{{propertyvalues.data.id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h3 id="myModalLabel">Change log</h3>
+                  </div>
+                  <div class="modal-body">
+                  <p>Implementation schedules were amended when information provided was incomplete, not parsed properly or required interpretation.</p>
+                  <table class="table">
+                  <thead><th>Component</th><th>Initial</th><th>Corrected</th><th>Change reason</th></thead>
+                  <tbody>
+                      <tr>
+                          <td>Status</td>
+                          <td>{{properties.status[propertyvalues.data.status_original]}}</td>
+                          <td>{{properties.status[propertyvalues.data.status_actual]}}</td>
+                          {% if propertyvalues.data.status_change %}<td><span title="{{change_reasons[propertyvalues.data.status_change][1]}}">{{properties.change_reasons[propertyvalues.data.status_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
+                      </tr>
+                      <tr>
+                          <td>Date</td>
+                          <td>{{propertyvalues.data.date_original}}</td>
+                          <td>{{propertyvalues.data.date_actual}}</td>
+                          {%if propertyvalues.data.date_change%}<td><span title="{{change_reasons[propertyvalues.data.date_change][1]}}">{{properties.change_reasons[propertyvalues.data.date_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
+                      </tr>
+                      <tr>
+                          <td>Notes</td>
+                          <td>{{propertyvalues.data.notes_original}}</td>
+                          <td>{{propertyvalues.data.notes_actual}}</td>
+                          {% if propertyvalues.data.notes_change %}<td><span title="{{change_reasons[propertyvalues.data.notes_change][1]}}">{{properties.change_reasons[propertyvalues.data.notes_change]}}</span></td>{%else%}<td class="muted">No change</td>{%endif%}
+                      </tr>
+                  </table>
+                  </div>
+                  <div class="modal-footer">
+                  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                  </div>
+          </div>
+          {%endif%}
+          </td>
+      </tr>
+      {%endfor%}
+      {% endfor %}
+    {% endfor %}
+    </tbody>
+    </table>
             
 <div id="noweightbox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="noweightboxlabel" aria-hidden="true"> 
     <div class="modal-header">
