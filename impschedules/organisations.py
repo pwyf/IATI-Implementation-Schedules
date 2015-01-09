@@ -218,15 +218,15 @@ def organisation(id=None, fileformat=None):
                 ).all()
 
         element_data = db.session.query(models.Data,
-                                       models.Property,
-                                       models.Element,
-                                       models.ElementGroup,
-                                      ).filter(models.Data.impschedule_id == schedule.id
-                                      ).order_by(models.ElementGroup.order, models.Element.order, models.Property.order
-                                      ).join(models.Property
-                                      ).join(models.Element
-                                      ).join(models.ElementGroup
-                                      ).all()
+               models.Property,
+               models.Element,
+               models.ElementGroup,
+              ).filter(models.Data.impschedule_id == schedule.id
+              ).order_by(models.ElementGroup.order, models.Element.order, models.Property.order
+              ).join(models.Property
+              ).join(models.Element
+              ).join(models.ElementGroup
+              ).all()
         
         data = collections.OrderedDict()
         element_data = map(lambda ed: {ed.ElementGroup.id : {
