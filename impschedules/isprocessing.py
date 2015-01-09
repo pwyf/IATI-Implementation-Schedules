@@ -52,47 +52,57 @@ def score_all(data, publishers, elements, org_data):
         else:
             frequency = 0.0
 
-        out[publisher]["score"]["elements"] = out[publisher]["score"]["total"]
-        out[publisher]["score"]["total"] = out[publisher]["score"]["total"] * will_publish * ((license + frequency)/2)
+        out[publisher]["score"]["elements"] = round(out[publisher]["score"]["total"], 2)
+        out[publisher]["score"]["total"] = round(out[publisher]["score"]["total"] * will_publish * ((license + frequency)/2), 2)
         out[publisher]["score"]["will_publish"] = will_publish*100
         out[publisher]["score"]["approach"] = ((license + frequency)/2)*100
-        out[publisher]["score"]["approach"] = ((license + frequency)/2)*100
 
-        if (org_data[publisher]["impschedule"].under_consideration):
-            out[publisher]["score"]["group"] = "Under consideration"
-            out[publisher]["score"]["group_code"] = ""
-            out[publisher]["score"]["group_order"] = "4"
-        else:
-            if (out[publisher]["score"]["will_publish"] >= 100):
-                if ((out[publisher]["score"]["elements"] >=60)  and (out[publisher]["score"]["approach"]>=100)):
-                    out[publisher]["score"]["group"] = "Ambitious"
-                    out[publisher]["score"]["group_code"] = "label-success"
-                    out[publisher]["score"]["group_order"] = "1"
-                elif ((out[publisher]["score"]["elements"] >=40) and (out[publisher]["score"]["approach"]>=50)):
-                    out[publisher]["score"]["group"] = "Moderately ambitious"
-                    out[publisher]["score"]["group_code"] = "label-warning"
-                    out[publisher]["score"]["group_order"] = "2"
-                elif (out[publisher]["score"]["elements"] >=1):
-                    out[publisher]["score"]["group"] = "Unambitious"
-                    out[publisher]["score"]["group_code"] = "label-important"
-                    out[publisher]["score"]["group_order"] = "3"
-                elif ((out[publisher]["score"]["elements"] == 0) and (out[publisher]["score"]["will_publish"] >=100)):
-                    out[publisher]["score"]["group"] = "Incomplete"
-                    out[publisher]["score"]["group_code"] = "label-important"
-                    out[publisher]["score"]["group_order"] = "5"
-            elif (out[publisher]["score"]["will_publish"] ==0):
-                out[publisher]["score"]["group"] = "No publication"
-                out[publisher]["score"]["group_code"] = "label-inverse"
-                out[publisher]["score"]["group_order"] = "6"
+        under_consideration = org_data[publisher]["impschedule"]
+        scoring_group = get_scoring_group(
+                    out[publisher]["score"]["will_publish"],
+                    out[publisher]["score"]["elements"],
+                    out[publisher]["score"]["approach"])
+                    
+        out[publisher]["score"]["group"] = scoring_group["group"]
+        out[publisher]["score"]["group_code"] = scoring_group["group_code"]
+        out[publisher]["score"]["group_order"] = scoring_group["group_order"]
 
     return out
+    
+def score_publisher():
+    return
+    
+def get_scoring_group(will_publish, elements, approach):
+    score = {}
+    if (will_publish >= 100):
+        if ((elements >=60)  and (approach>=100)):
+            score["group"] = "Ambitious"
+            score["group_code"] = "label-success"
+            score["group_order"] = "1"
+        elif ((elements >=40) and (approach>=50)):
+            score["group"] = "Moderately ambitious"
+            score["group_code"] = "label-warning"
+            score["group_order"] = "2"
+        elif (elements >=1):
+            score["group"] = "Unambitious"
+            score["group_code"] = "label-important"
+            score["group_order"] = "3"
+        elif ((elements == 0) and (will_publish >=100)):
+            score["group"] = "Incomplete"
+            score["group_code"] = "label-important"
+            score["group_order"] = "5"
+    elif (will_publish ==0):
+        score["group"] = "No publication"
+        score["group_code"] = "label-inverse"
+        score["group_order"] = "6"
+            
+    return score
 
 def score2(publisher_data, element_data):
     s = {}
     s['calculations'] = ""
     s['value'] = 0.0
     s['groups'] = {}
-    properties = dict(map(lambda x: ((x.segment),(x.segment_value_actual)), publisher_data))
 
     num_groups = len(element_data)
     ok = 0.0
@@ -110,13 +120,14 @@ def score2(publisher_data, element_data):
                         else:
                             nook_group = nook_group + 1.0
         s['groups'][elementgroup] = {}
-        s['groups'][elementgroup]['yes'] = ok_group
-        s['groups'][elementgroup]['no'] = nook_group
-        s['groups'][elementgroup]['total'] = (ok_group/(ok_group+nook_group))*100
+        s['groups'][elementgroup]['yes'] = int(ok_group)
+        s['groups'][elementgroup]['no'] = int(nook_group)
+        s['groups'][elementgroup]['total'] = round((ok_group/(ok_group+nook_group))*100, 2)
         ok = (ok + ((ok_group/(ok_group+nook_group))/num_groups))
 
-    s['elements'] = ok*100
+    s['elements'] = round(ok*100, 2)
     
+    properties = dict(map(lambda x: ((x.segment),(x.segment_value_actual)), publisher_data))
     if (properties['publishing_timetable_date_initial'] != ''):
         willpublish = 1.0
     else:
@@ -138,24 +149,17 @@ def score2(publisher_data, element_data):
     s['approach'] = (((frequent+license)/2)*100)
     s['license'] = license
     s['frequency'] = frequent
+    
+    scoring_group = get_scoring_group(
+                s["will_publish"],
+                s["elements"],
+                s["approach"])
+                
+    s["group"] = scoring_group["group"]
+    s["group_code"] = scoring_group["group_code"]
+    s["group_order"] = scoring_group["group_order"]
 
-    if (s["will_publish"] == 100):
-        if ((s["elements"] >=60)  and (s["approach"]>=100)):
-            s["group"] = "Ambitious"
-            s["group_code"] = "label-success"
-        elif ((s["elements"] >=40) and (s["approach"]>=50)):
-            s["group"] = "Moderately ambitious"
-            s["group_code"] = "label-warning"
-        elif (s["elements"] >=1):
-            s["group"] = "Unambitious"
-            s["group_code"] = "label-important"
-        elif ((s["elements"] == 0) and (s["will_publish"] >=100)):
-            s["group"] = "Incomplete"
-            s["group_code"] = "label-important"
-    elif (s["will_publish"] ==0):
-        s["group"] = "No publication"
-        s["group_code"] = "label-inverse"
-
+    s["total"] = s["total"]
 
     return s
 
