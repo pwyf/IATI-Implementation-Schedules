@@ -616,26 +616,9 @@ def organisation(id=None, fileformat=None):
 
 
         elementdata = db.session.query(models.Data,
-                                       models.Property.id,
-                                       models.Property.parent_element,
-                                       models.Property.defining_attribute_value,
-                                       models.Element.id,#4
-                                       models.Element.name,
-                                       models.Element.description,
-                                       models.ElementGroup.id, #7
-                                       models.ElementGroup.name,
-                                       models.ElementGroup.description,
-                                       models.Element.level,
-                                       models.Element.weight,
-                                       models.ElementGroup.weight,
-                                       models.Property.weight,
-                                       models.ElementGroup.weight,
-                                       models.Element.weight,
-                                       models.Property.weight,
-                                       models.ElementGroup.order,
-                                       models.Element.order,
-                                       models.Property.order,
-                                       models.Property.defining_attribute_description,
+                                       models.Property,
+                                       models.Element,
+                                       models.ElementGroup,
                                       ).filter(models.Data.impschedule_id == schedule.id
                                       ).order_by(models.ElementGroup.order, models.Element.order, models.Property.order
                                       ).join(models.Property
@@ -644,30 +627,30 @@ def organisation(id=None, fileformat=None):
                                       ).all()
         
         data = collections.OrderedDict()
-        elementdata = map(lambda x: {x[7] : {
-                                               'name': x[8],
-                                               'description': x[9],
-                                               'weight': x[12],
-                                               'order': x[17],
-                                               'elements': {
-                                                  x[4]: {
-                                                      'name': x[5],
-                                                      'description': x[6],
-                                                      'level': x[10],
-                                                      'weight': x[11],
-                                                      'order': x[18],
-                                                      'properties': {
-                                                        x[1]: {
-                                                            'parent_element': x[2],
-                                                            'defining_attribute_value': x[3],
-                                                            'defining_attribute_description': x[20],
-                                                            'data': x[0],
-                                                            'weight': x[13],
-                                                            'order': x[19]
-                                                        }
-                                                  }
-                                                }
-                                    }}}, elementdata)
+        elementdata = map(lambda ed: {ed.ElementGroup.id : {
+                   'name': ed.ElementGroup.name,
+                   'description': ed.ElementGroup.description,
+                   'weight': ed.Element.weight,
+                   'order': ed.ElementGroup.order,
+                   'elements': {
+                      ed.Element.id: {
+                          'name': ed.Element.name,
+                          'description': ed.Element.description,
+                          'level': ed.Element.level,
+                          'weight': ed.Element.weight,
+                          'order': ed.Element.order,
+                          'properties': {
+                            ed.Property.id: {
+                                'parent_element': ed.Property.parent_element,
+                                'defining_attribute_value': ed.Property.defining_attribute_value,
+                                'defining_attribute_description': ed.Property.defining_attribute_description,
+                                'data': ed.Data,
+                                'weight': ed.Property.weight,
+                                'order': ed.Property.order
+                            }
+                      }
+                    }
+                }}}, elementdata)
 
         for d in elementdata:
             merge_dict(data, d)
@@ -687,13 +670,23 @@ def organisation(id=None, fileformat=None):
 
         if fileformat is not None:
             if fileformat=='csv':
+                fieldnames = ['level', 'name', 'compliance_status',
+                              'publication_date', 'notes', 'score']
                 strIO = StringIO.StringIO()
-                out = csv.DictWriter(strIO, fieldnames="level name compliance_status publication_date notes score".split())
-                out.writerow({"level": "level", "name": "name", "compliance_status": "compliance_status", "publication_date": "publication_date", "notes": "notes", "score": "score"})
+                out = csv.DictWriter(strIO, fieldnames=fieldnames)
+                out.writerow(dict(map(lambda fn: (fn, fn), fieldnames)))
+                
                 for d, dvalues in data.items():
                     for e, evalues in dvalues["elements"].items():
                         for p,pvalues in evalues["properties"].items():
-                            out.writerow({"level": evalues["level"], "name": makeName(evalues, pvalues), "compliance_status": pvalues["data"].status_actual, "publication_date": pvalues["data"].date_actual, "notes": makeNiceEncoding(pvalues["data"].notes_actual), "score": pvalues["data"].score})
+                            out.writerow({
+                        "level": evalues["level"],
+                        "name": makeName(evalues, pvalues),
+                        "compliance_status": pvalues["data"].status_actual,
+                        "publication_date": pvalues["data"].date_actual,
+                        "notes": makeNiceEncoding(pvalues["data"].notes_actual),
+                        "score": pvalues["data"].score,
+                        })
                 strIO.seek(0)
                 return send_file(strIO,
                                  attachment_filename=id + ".csv",
@@ -721,7 +714,16 @@ def organisation(id=None, fileformat=None):
 
         else:
 
-            return render_template("publisher.html", publisher=publisher, schedule=schedule, data=data, segments=schedule_data, properties=properties, score=s, score_calculations=Markup(s["calculations"]), auth=usermanagement.check_login(), change_reasons=change_reasons)
+            return render_template("publisher.html", 
+                publisher=publisher,
+                schedule=schedule,
+                data=data,
+                segments=schedule_data,
+                properties=properties,
+                score=s,
+                score_calculations=Markup(s["calculations"]),
+                auth=usermanagement.check_login(),
+                change_reasons=change_reasons)
     else:
         # get all publishers
         allpublishers = models.Publisher.query.all()
@@ -747,7 +749,8 @@ def organisation(id=None, fileformat=None):
                 ).group_by(models.Data.impschedule_id
                 ).group_by(models.ElementGroup
                 ).group_by(models.Data.score
-                ).filter(models.Element.weight == None,models.Property.weight == None
+                ).filter(models.Element.weight == None,
+                         models.Property.weight == None
                 ).all()
 
         publishers = set(map(lambda x: x[0], org_data))
@@ -775,13 +778,23 @@ def organisation(id=None, fileformat=None):
         if ((fileformat is not None) and (fileformat=='csv')):
         
             strIO = StringIO.StringIO()
-            out = csv.DictWriter(strIO, fieldnames="publisher_name publisher_code implementation_date total will_publish approach fields group".split())
-            out.writerow({"publisher_name": "publisher_name", "publisher_code": "publisher_code", "implementation_date": "implementation_date", "total": "total", "will_publish": "will_publish", "approach": "approach", "fields": "fields", "group": "group"})
+            fieldnames = ['publisher_name', 'publisher_code', 
+            'implementation_date', 'total', 'will_publish', 'approach', 
+            'fields', 'group']
+            out = csv.DictWriter(strIO, fieldnames=fieldnames)
+            out.writerow(dict(map(lambda fn: (fn, fn), fieldnames)))
             for org in orgs:
                 
                 publisher = orgs[org]["publisher"].id
                 schedule = orgs[org]["impschedule"].id
-                out.writerow({"publisher_name": orgs[schedule]["publisher"].publisher_actual, "publisher_code": orgs[schedule]["publisher"].publisher_code_actual, "implementation_date": orgs[schedule]["properties"]["publishing_timetable_date_initial"]["value"], "total": scores[schedule]["score"]["total"], "will_publish": scores[schedule]["score"]["will_publish"], "approach": scores[schedule]["score"]["approach"], "fields": scores[schedule]["score"]["elements"], "group": scores[schedule]["score"]["group"]})
+                out.writerow({"publisher_name": orgs[schedule]["publisher"].publisher_actual, 
+                "publisher_code": orgs[schedule]["publisher"].publisher_code_actual, 
+                "implementation_date": orgs[schedule]["properties"]["publishing_timetable_date_initial"]["value"], 
+                "total": scores[schedule]["score"]["total"], 
+                "will_publish": scores[schedule]["score"]["will_publish"], 
+                "approach": scores[schedule]["score"]["approach"], 
+                "fields": scores[schedule]["score"]["elements"], 
+                "group": scores[schedule]["score"]["group"]})
             strIO.seek(0)
             return send_file(strIO,
                              attachment_filename="organisations.csv",
