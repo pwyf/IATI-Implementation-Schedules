@@ -19,7 +19,7 @@
       <a class="btn btn-mini" href="{{url_for('organisation', id=publisher.publisher_code_actual, fileformat='ics')}}"><i class="icon-calendar"></i> iCal</a> 
       <a class="btn btn-mini" href="{{url_for('organisation', id=publisher.publisher_code_actual, fileformat='csv')}}"><i class="icon-download"></i> CSV</a>
     </div>
-    <h1>{{publisher.publisher_actual}} <span class="{{score.group_code}} label lead" >{{score.group}}</span> </h1>
+    <h1>{{publisher.publisher_actual}} <span class="{{score.score.group_code}} label lead" >{{score.score.group}}</span> </h1>
         {% if schedule.analysis %}
             <div class="alert alert-info">
             <h3>Summary</h3>
@@ -39,16 +39,16 @@
       <tr>
         <td>Frequency</td>
         <td><div class="progress">
-            <div class="bar" data-width="{{score.frequency*100|int}}"></div>
+            <div class="bar" data-width="{{score.score.frequency*100|int}}"></div>
         </div></td>
-        <td>{% if score.frequency ==1 %}At least quarterly{%else %}Less than quarterly{%endif%}</td>
+        <td>{{score.score.frequency_comment}}</td>
       </tr>
       <tr>
         <td>Licence</td>
         <td><div class="progress">
-            <div class="bar" data-width="{{score.license*100|int}}"></div>
+            <div class="bar" data-width="{{score.score.license*100|int}}"></div>
         </div></td>
-        <td>{% if score.license ==1 %}Open licence{%else %}Not an open licence{%endif%}</td>
+        <td>{{score.score.license_comment}}</td>
       </tr>
       <tr>
         <td></td>
@@ -70,20 +70,20 @@
       <tr>
         <td><a href="#{{groupvalues.name}}" class="scrollto">{{groupvalues.description}}</a></td>
         <td><div class="progress">
-                <div class="bar" data-width="{{score.groups[groupid].total|int}}"></div>
+                <div class="bar" data-width="{{score[groupid].total|int}}"></div>
             </div>
         </td>
-        <td>{{score.groups[groupid].total}}%</td>
-        <td>{{score.groups[groupid].yes}} of {{(score.groups[groupid].no+score.groups[groupid].yes)}}</td>
+        <td>{{score[groupid].total}}%</td>
+        <td>{{score[groupid].yes}} of {{(score[groupid].num)}}</td>
       </tr>
     {% endfor%}
     <tr>
       <td>Average for all groups</td>
       <td><div class="progress">
-              <div class="bar" data-width="{{score.elements}}"></div>
+              <div class="bar" data-width="{{score.score.elements}}"></div>
           </div>
       </td>
-      <td colspan="2">{{score.elements}}%</td>
+      <td colspan="2">{{score.score.elements}}%</td>
     </tr>
     </tbody>
     </table>
