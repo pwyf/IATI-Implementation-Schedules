@@ -11,58 +11,61 @@ import properties
 def score_all(data, publishers, elements, org_data):
     out = {}
     for publisher in publishers:
-        out[publisher] = {}
-        numelements = float(len(elements))
-        out[publisher]["score"] = {}
-        out[publisher]["score"]["total"] = 0.0
-        for element in elements:
-            out[publisher][element] = {}
-            try:
-                yes = float(data[(publisher,element,True)])
-            except KeyError:
-                yes = 0.0
-            try:
-                no = float(data[(publisher,element,None)])
-            except KeyError:
-                no = 0.0
-            try:
-                total = (yes/(yes+no))
-            except ZeroDivisionError:
-                total = 0.0
-            out[publisher][element]["total"] = total
-            out[publisher][element]["num"] = yes+no
-            out[publisher][element]["yes"] = yes
-            out[publisher][element]["no"] = no
-            out[publisher]["score"]["total"] += total/numelements
-        out[publisher]["score"]["total"] = round(
-            (out[publisher]["score"]["total"]*100), 2
-        )
-
-        # Get scoring headlines (total score etc)
-
-        out[publisher]["score"].update(get_scoring_headlines(
-            org_data[publisher]["properties"]["publishing_timetable_date_initial"]["value"],
-            org_data[publisher]["properties"]["publishing_license"]["value"],
-            org_data[publisher]["properties"]["publishing_frequency_frequency"]["value"],
-            out[publisher]["score"]["total"],
-            )
-        )
-
-        under_consideration = org_data[publisher]["impschedule"]
-
-        # Get the scoring group (ambitious, etc)
-
-        out[publisher]["score"].update(get_scoring_group(
-            out[publisher]["score"]["will_publish"],
-            out[publisher]["score"]["elements"],
-            out[publisher]["score"]["approach"]
-            )
-        )
-
+        out[publisher] = score_publisher(data, 
+                        publisher, elements, org_data[publisher])
     return out
     
-def score_publisher():
-    return
+def score_publisher(data, publisher, elements, org_data):
+    pub = {}
+    
+    # This is actually the number of element groups
+    numelements = float(len(elements))
+    
+    pub["score"] = {}
+    pub["score"]["total"] = 0.0
+    
+    def get_elements_score(pub, publisher, elements):
+        pub[element] = {}
+        yes = data.get((publisher, element, True), 0)
+        no = data.get((publisher, element, None), 0)
+        try:
+            total = (float(yes)/(yes+no))*100
+        except ZeroDivisionError:
+            total = 0.0
+        pub[element]["total"] = round(total, 2)
+        pub[element]["num"] = yes+no
+        pub[element]["yes"] = yes
+        pub[element]["no"] = no
+        pub["score"]["total"] += total
+        return pub
+        
+    [get_elements_score(pub, publisher, elements) for element in elements]
+        
+    pub["score"]["total"] = (
+        pub["score"]["total"]/numelements
+    )
+
+    # Get scoring headlines (total score etc)
+
+    pub["score"].update(get_scoring_headlines(
+        org_data["properties"]["publishing_timetable_date_initial"]["value"],
+        org_data["properties"]["publishing_license"]["value"],
+        org_data["properties"]["publishing_frequency_frequency"]["value"],
+        pub["score"]["total"],
+        )
+    )
+
+    under_consideration = org_data["impschedule"]
+
+    # Get the scoring group (ambitious, etc)
+
+    pub["score"].update(get_scoring_group(
+        pub["score"]["will_publish"],
+        pub["score"]["elements"],
+        pub["score"]["approach"]
+        )
+    )
+    return pub
     
 def get_scoring_headlines(initial_pub, license_val, frequency_val, elements):
 
@@ -133,71 +136,6 @@ def get_scoring_group(will_publish, elements, approach):
         score["group_order"] = "6"
             
     return score
-
-def score2(publisher_data, element_data):
-    s = {}
-    s['calculations'] = ""
-    s['value'] = 0.0
-    s['groups'] = {}
-
-    num_groups = len(element_data)
-    ok = 0.0
-    nook = 0.0
-    for elementgroup, elementgroupvalues in element_data.items():
-        ok_group = 0.0
-        nook_group = 0.0
-        for element, elementvalues in elementgroupvalues["elements"].items():
-            if elementvalues['weight'] == None:
-                for prop, propvalues in elementvalues["properties"].items():
-                    if propvalues['weight'] == None:
-                        score = propvalues["data"].score
-                        if (score == 1):
-                            ok_group = ok_group+1.0
-                        else:
-                            nook_group = nook_group + 1.0
-        s['groups'][elementgroup] = {}
-        s['groups'][elementgroup]['yes'] = int(ok_group)
-        s['groups'][elementgroup]['no'] = int(nook_group)
-        s['groups'][elementgroup]['total'] = round((ok_group/(ok_group+nook_group))*100, 2)
-        ok = (ok + ((ok_group/(ok_group+nook_group))/num_groups))
-
-    s['elements'] = round(ok*100, 2)
-    
-    properties = dict(map(lambda x: ((x.segment),(x.segment_value_actual)), publisher_data))
-    if (properties['publishing_timetable_date_initial'] != ''):
-        willpublish = 1.0
-    else:
-        willpublish = 0.0
-    if ((properties['publishing_frequency_frequency'] == 'm') or (properties['publishing_frequency_frequency'] == 'q')):
-        frequent = 1.0
-    else:
-        frequent = 0.0
-    try:
-        if ((properties['publishing_license'] == 'p') or (properties['publishing_license'] == 'a')):
-            license = 1.0
-        else:
-            license = 0.0
-    except KeyError:
-        license = 0.0
-   
-    s['total'] = round((willpublish*(ok)*((frequent+license)/2))*100)
-    s['will_publish'] = willpublish*100
-    s['approach'] = (((frequent+license)/2)*100)
-    s['license'] = license
-    s['frequency'] = frequent
-    
-    scoring_group = get_scoring_group(
-                s["will_publish"],
-                s["elements"],
-                s["approach"])
-                
-    s["group"] = scoring_group["group"]
-    s["group_code"] = scoring_group["group_code"]
-    s["group_order"] = scoring_group["group_order"]
-
-    s["total"] = s["total"]
-
-    return s
 
 def parse_implementation_schedule(schedule, out, package_filename):
  
