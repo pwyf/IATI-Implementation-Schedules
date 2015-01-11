@@ -260,9 +260,6 @@ def organisation(id=None, fileformat=None):
         change_reasons = models.AlterationCategory.query.all()
         change_reasons = dict(map(lambda x: (x.name, (x.description, x.longdescription)), change_reasons))
         
-        
-        
-
         # get impschedule id, # results for this score, the score, the elementgroup id
         org_data = db.session.query(models.Data.impschedule_id,
                                     func.count(models.Data.id),
