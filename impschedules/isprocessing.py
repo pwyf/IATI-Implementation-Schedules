@@ -34,44 +34,80 @@ def score_all(data, publishers, elements, org_data):
             out[publisher][element]["yes"] = yes
             out[publisher][element]["no"] = no
             out[publisher]["score"]["total"] += total/numelements
-        out[publisher]["score"]["total"] = round((out[publisher]["score"]["total"]*100), 0)
+        out[publisher]["score"]["total"] = round(
+            (out[publisher]["score"]["total"]*100), 2
+        )
 
-        if (org_data[publisher]["properties"]["publishing_timetable_date_initial"]["value"] != ""):
-            will_publish = 1.0
-        else:
-            will_publish = 0.0
-        
-        if ((org_data[publisher]["properties"]["publishing_license"]["value"] != "") and 
-                (org_data[publisher]["properties"]["publishing_license"]["value"] != "o")):
-            license = 1.0
-        else:
-            license = 0.0
-        
-        if ((org_data[publisher]["properties"]["publishing_frequency_frequency"]["value"] == "m") or (org_data[publisher]["properties"]["publishing_frequency_frequency"]["value"] == "q")):
-            frequency = 1.0
-        else:
-            frequency = 0.0
+        # Get scoring headlines (total score etc)
 
-        out[publisher]["score"]["elements"] = round(out[publisher]["score"]["total"], 2)
-        out[publisher]["score"]["total"] = round(out[publisher]["score"]["total"] * will_publish * ((license + frequency)/2), 2)
-        out[publisher]["score"]["will_publish"] = will_publish*100
-        out[publisher]["score"]["approach"] = ((license + frequency)/2)*100
+        out[publisher]["score"].update(get_scoring_headlines(
+            org_data[publisher]["properties"]["publishing_timetable_date_initial"]["value"],
+            org_data[publisher]["properties"]["publishing_license"]["value"],
+            org_data[publisher]["properties"]["publishing_frequency_frequency"]["value"],
+            out[publisher]["score"]["total"],
+            )
+        )
 
         under_consideration = org_data[publisher]["impschedule"]
-        scoring_group = get_scoring_group(
-                    out[publisher]["score"]["will_publish"],
-                    out[publisher]["score"]["elements"],
-                    out[publisher]["score"]["approach"])
-                    
-        out[publisher]["score"]["group"] = scoring_group["group"]
-        out[publisher]["score"]["group_code"] = scoring_group["group_code"]
-        out[publisher]["score"]["group_order"] = scoring_group["group_order"]
+
+        # Get the scoring group (ambitious, etc)
+
+        out[publisher]["score"].update(get_scoring_group(
+            out[publisher]["score"]["will_publish"],
+            out[publisher]["score"]["elements"],
+            out[publisher]["score"]["approach"]
+            )
+        )
 
     return out
     
 def score_publisher():
     return
     
+def get_scoring_headlines(initial_pub, license_val, frequency_val, elements):
+
+    # Will publish
+    if initial_pub != "":
+        will_publish = 100.0
+    else:
+        will_publish = 0.0
+
+    # License
+    if (license_val != "" and license_val != "o"):
+        license = 1.0
+        license_comment = "open license"
+    else:
+        license = 0.0
+        license_comment = "not an open license"
+
+    # Frequency
+    if (frequency_val in ['m', 'q']):
+        frequency = 1.0
+        frequency_comment = "at least quarterly"
+    else:
+        frequency = 0.0
+        frequency_comment = "less than quarterly"
+
+    # Approach
+    approach = ((license + frequency)/2)*100
+
+    # Total
+    total = elements * will_publish/100 * ((license + frequency)/2)
+
+    # Rounding
+    total = round(total, 0)
+    elements = round(elements, 0)
+
+
+    return {"will_publish": will_publish,
+            "approach": approach,
+            "license": license,
+            "license_comment": license_comment,
+            "frequency": frequency,
+            "frequency_comment": frequency_comment,
+            "elements": elements,
+            "total": total}
+
 def get_scoring_group(will_publish, elements, approach):
     score = {}
     if (will_publish >= 100):
