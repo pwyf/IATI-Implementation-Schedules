@@ -358,18 +358,26 @@ def organisation(id=None, fileformat=None):
         
         elementgroups = set(map(lambda x: x[3], org_data))
         org_data = dict(map(lambda x: ((x[0],x[3],x[2]),(x[1])), org_data))
-        org_pdata = map(lambda x: {x[1].id: {
+
+        def publisher_segments(publisher_id, data):
+            def relevant_data_filter(data):
+                return data[0].id == publisher_id
+
+            relevant_segments = filter(relevant_data_filter, data)
+            segments = dict(map(lambda x:
+                (x[2].segment, {
+                    "value": x[2].segment_value_actual
+                }), relevant_segments))
+            return segments
+
+        orgs = dict(map(lambda x: (x[1].id, {
                                     'publisher': x[0],
                                     'impschedule': x[1],
-                                    'properties': {
-                                        x[2].segment: {
-                                            "value": x[2].segment_value_actual
-                                        }
-                                    }
-                                }}, orgs)
-        orgs = collections.OrderedDict()
-        for o in org_pdata:
-            merge_dict(orgs, o)
+                                    'properties': publisher_segments(
+                                        x[0].id,
+                                        orgs
+                                    )
+                                }), orgs))
 
         scores=score_all(org_data, publishers, elementgroups, orgs)
 
