@@ -339,7 +339,6 @@ def organisation(id=None, fileformat=None):
                 ).order_by(models.Publisher.publisher_actual
                 ).all()
 
-        publishingpublishers = set(map(lambda x: x[0], orgs))
         # get impschedule id, # results for this score, the score, the elementgroup id
         org_data = db.session.query(models.Data.impschedule_id,
                                     func.count(models.Data.id),
