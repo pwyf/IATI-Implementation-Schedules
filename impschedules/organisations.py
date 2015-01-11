@@ -356,8 +356,6 @@ def organisation(id=None, fileformat=None):
                 ).all()
 
         publishers = set(map(lambda x: x[0], org_data))
-        for publisher in publishingpublishers:
-            allpublishers.pop(publisher.id)
         
         elementgroups = set(map(lambda x: x[3], org_data))
         org_data = dict(map(lambda x: ((x[0],x[3],x[2]),(x[1])), org_data))
@@ -402,7 +400,7 @@ def organisation(id=None, fileformat=None):
                              attachment_filename="organisations.csv",
                              as_attachment=True)
         else:
-            return render_template("publishers.html", orgs=orgs, scores=scores, auth=usermanagement.check_login(), notpublishing=allpublishers)
+            return render_template("publishers.html", orgs=orgs, scores=scores, auth=usermanagement.check_login())
 
 @app.route("/organisations/<id>/edit/", methods=['GET', 'POST'])
 @usermanagement.login_required
