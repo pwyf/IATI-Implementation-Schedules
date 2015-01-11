@@ -11,7 +11,7 @@ from icalendar import Calendar, Event
 import models, usermanagement, publisher_redirects
 from impschedules import app, db, properties
 from isfunctions import merge_dict
-from isprocessing import score2, score_all, score_publisher
+from isprocessing import score_all, score_publisher
 
 @app.route("/organisations/<publisher_id>/<id>/delete/")
 @usermanagement.login_required
@@ -260,15 +260,42 @@ def organisation(id=None, fileformat=None):
         change_reasons = models.AlterationCategory.query.all()
         change_reasons = dict(map(lambda x: (x.name, (x.description, x.longdescription)), change_reasons))
         
-        try:
-            s = score2(schedule_data, data)
-        except IndexError:
-            s = {}
-            s['value'] = 0
-            s['calculations'] = "Not able to calculate score"
-        if schedule.under_consideration:
-            s['group'] = "Under consideration"
-            s['group_code'] = "alert-info"
+        
+        
+
+        # get impschedule id, # results for this score, the score, the elementgroup id
+        org_data = db.session.query(models.Data.impschedule_id,
+                                    func.count(models.Data.id),
+                                    models.Data.score,
+                                    models.ElementGroup.id
+                ).join(models.Property
+                ).join(models.Element
+                ).join(models.ElementGroup
+                ).group_by(models.Data.impschedule_id
+                ).group_by(models.ElementGroup
+                ).group_by(models.Data.score
+                ).filter(models.Element.weight == None,
+                         models.Property.weight == None,
+                         models.Data.impschedule_id == schedule.id,
+                ).all()
+        
+        elementgroups = set(map(lambda x: x[3], org_data))
+        org_data = dict(map(lambda x: ((x[0],x[3],x[2]),(x[1])), org_data))
+
+        def publisher_segments(data):
+            segments = dict(map(lambda x:
+                (x.segment, {
+                    "value": x.segment_value_actual
+                }), data))
+            return segments
+
+        publisher_schedule_data = dict(map(lambda x: (1, {
+                                    'publisher': publisher.id,
+                                    'impschedule': schedule.id,
+                                    'properties': publisher_segments(schedule_data)
+                                }), schedule_data))[1]
+
+        s=score_publisher(org_data, schedule.id, elementgroups, publisher_schedule_data)
 
         if fileformat is not None:
             if fileformat=='csv':
@@ -323,7 +350,7 @@ def organisation(id=None, fileformat=None):
                 segments=schedule_data,
                 properties=properties,
                 score=s,
-                score_calculations=Markup(s["calculations"]),
+                score_calculations="",
                 auth=usermanagement.check_login(),
                 change_reasons=change_reasons)
     else:
