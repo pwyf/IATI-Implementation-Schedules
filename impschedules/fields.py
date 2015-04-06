@@ -2,7 +2,7 @@ from flask import Flask, render_template, flash, request, session, redirect, url
 
 from sqlalchemy import func
 from functools import wraps
-import models, usermanagement
+import models, usermanagement, properties
 from impschedules import app, db
 from isfunctions import merge_dict
 
