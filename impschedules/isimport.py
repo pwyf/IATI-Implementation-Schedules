@@ -1,5 +1,9 @@
 from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response, current_app, send_file
-from impschedules import app, db, models, usermanagement
+from impschedules import app, db, models, usermanagement, properties
+import random, string, urllib
+from iatiimplementationxml import toxml
+from lxml import etree
+import datetime
 
 @app.route("/import/", methods=['GET', 'POST'])
 @usermanagement.login_required
