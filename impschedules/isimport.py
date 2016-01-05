@@ -1,9 +1,10 @@
 from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response, current_app, send_file
 from impschedules import app, db, models, usermanagement, properties
-import random, string, urllib
+import random, string
 from iatiimplementationxml import toxml
 from lxml import etree
 import datetime
+import requests
 
 @app.route("/import/", methods=['GET', 'POST'])
 @usermanagement.login_required
@@ -149,7 +150,15 @@ def import_schedule():
             local_file_name = app.config["TEMP_FILES_DIR"] + "/" + ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range (5))
             #try:
             #try:
-            f = urllib.urlretrieve(url, local_file_name)
+
+            def download_file(url, local_file_name):
+                r = requests.get(url, stream=True)
+                with open(local_file_name, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=1024):
+                        if chunk:
+                            f.write(chunk)
+
+            download_file(url, local_file_name)
             #except IOError:
             #    raise Exception("Could not connect to server. Are you sure you spelled it correctly?")
 
