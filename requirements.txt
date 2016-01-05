@@ -17,3 +17,4 @@ wsgiref==0.1.2
 icalendar
 xlrd
 psycopg2
+requests
