@@ -103,7 +103,7 @@ def use_code(heading, text, codes=None):
         try:
             return codes[heading][text]
         except KeyError:
-            raise Exception("Error finding code " + text + " under " + heading + " in your structure. You may be using a different version of the template.")
+            raise Exception("Error finding code '" + text + "' under '" + heading + "' in your structure. You may be using a different version of the template.")
             pass
     else:
         return text
